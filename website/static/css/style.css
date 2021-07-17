@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "provicali";
+    src: url("../fonts/Provicali.otf") format("opentype");
+}
+
+/* this is provicali but it is bold and is not good */
+/* p{
+    font-family: "provicali";
+} */
