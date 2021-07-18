@@ -8,15 +8,61 @@
     font-family: "provicali";
 } */
 
+*{
+    font-family: 'provicali', sans-serif;
+}
+
+.logo-whatsapp{
+    width: 20em;
+}
 
 .riv{
     height: 100vh;
     background-color: gainsboro;
 }
 
-.red{
+.orange{
     height: 100vh;
     float: right;
     background-color: orangered;
-    width: 30vw;
+    width: 30%;
+}
+.container-fluid{
+    padding-top: 15%;
+}
+
+.image {
+    position: relative;
+    top: 25%;
+    right: 45%;
+    width: 100%;
+    height: auto;
+    box-shadow: 5px 0px 20px rgb(27, 27, 27);
+    border-radius: 100%;
+    background-color: rgb(207, 143, 5);
+    /* rotate: (45deg); */
+    transform: rotate(10deg);
+    padding: -5px;  
+    
+}
+
+.rotate {
+    animation: rotation 6s infinite linear;
+
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+    
+}
+
+@media only screen and (max-width: 900px){
+    body{
+        background-color: gainsboro;
+    }
 }
