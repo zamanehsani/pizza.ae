@@ -7,3 +7,16 @@
 /* p{
     font-family: "provicali";
 } */
+
+
+.riv{
+    height: 100vh;
+    background-color: gainsboro;
+}
+
+.red{
+    height: 100vh;
+    float: right;
+    background-color: orangered;
+    width: 30vw;
+}
