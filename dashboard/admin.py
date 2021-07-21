@@ -29,3 +29,5 @@ class Stock(admin.ModelAdmin):
     list_display = ("id", "name", 'quantity', "unit_type", "Unit_price", "totol_price", "date", "file")
     list_filter = ("unit_type","user")
 admin.site.register(models.Stock, Stock)
+
+

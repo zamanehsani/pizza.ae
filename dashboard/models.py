@@ -1,4 +1,3 @@
-from dashboard import urls
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -44,7 +43,7 @@ class Menu_category(models.Model):
 # this is the menu item and can be added to a category of menu
 class Menu(models.Model):
     name            = models.CharField(max_length=150, null=True, blank=True)
-    price           = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
+    price           = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     description     = models.TextField(null=True, blank=True)
     photo           = models.ImageField(default='default.png', upload_to = "menu", null=True, blank=True)
     date            = models.DateField(auto_now_add=True, auto_now=False)
