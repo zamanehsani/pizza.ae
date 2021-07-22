@@ -48,6 +48,7 @@ class Menu(models.Model):
     photo           = models.ImageField(default='default.png', upload_to = "menu", null=True, blank=True)
     date            = models.DateField(auto_now_add=True, auto_now=False)
     category        = models.ForeignKey(Menu_category, on_delete=models.CASCADE)
+    new             = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

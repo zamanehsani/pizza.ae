@@ -12,8 +12,8 @@ admin.site.register(models.Menu_category, Menu_category)
 
 # menu list
 class Menu(admin.ModelAdmin):
-    list_display = ("id", "name", 'price', "description", "date")
-    list_filter = ("category",)
+    list_display = ("id", "name", 'price',"new", "description", "date")
+    list_filter = ("category","new")
 admin.site.register(models.Menu, Menu)
 
 
