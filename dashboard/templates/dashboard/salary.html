@@ -1,0 +1,96 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block css %} {% endblock css %}
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Salary</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Salary</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <!-- /.card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Eemployee Salary</h3>
+                <a href="{% url 'dashboard:pay_salary' %}" class="btn btn-primary float-right pt-0 pb-0"> Make a new salary payment</a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead class="bg-secondary">
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Salary</th>
+                      <th>Month</th>
+                      <th>Payment</th>
+                      <th>Date</th>
+                      <th>payment by</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for salary in object_list  %}
+                      <tr>
+                        <td>{{salary.name}}</td>
+                        <td>{{salary.salary}}</td>
+                        <td>{{salary.month}}</td>
+                        <td class="{% if salary.Pay < salary.salary %} badge-warning {% endif %}" >{{salary.Pay}}</td>
+                        <td>{{salary.date}}</td>
+                        <td>{{salary.pay_by}}</td>
+                        <td class="text-center"> 
+                          <a href="{% url 'dashboard:update_salary' salary.id %}" class=" mr-3 pt-0 pb-0" title="make changes to this paymenet"><i class="fas fa-edit"></i></a> 
+                          <a href="{% url 'dashboard:delete_salary' salary.id %}" class="pt-0 pb-0 text-danger" title="Remove this payment. Only the person made the payment can remove it"><i class="fas fa-trash"></i></a>
+                        </td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+                  <tfoot class="bg-secondary">
+                  <tr>
+                 
+                    <th>Employee Name</th>
+                    <th>Salary</th>
+                    <th>Month</th>
+                    <th>Payment</th>
+                    <th>Date</th>
+                    <th>Payer</th>
+                    <th>Action</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content  %}
+
+{% block js %}
+{% endblock js %}

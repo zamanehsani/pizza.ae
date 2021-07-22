@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "dashboard.apps.DashboardConfig",
     "api.apps.ApiConfig",
     "rest_framework",
+    'crispy_forms',
 ]
 
 
@@ -133,6 +134,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL   = '/dashboard'
+LOGIN_URL            = '/dashboard/login'
+LOGOUT_REDIRECT_URL  = '/dashboard/login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -74,7 +74,7 @@ class Order(models.Model):
         return  self.name
 
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard:order')
 
     class Meta:
         verbose_name_plural = "Order"
@@ -85,17 +85,18 @@ def stock_file(filename):
     date_time = date.now().strftime("%m/%Y")	
     return 'stock/{0}/{1}'.format(date_time, filename)
 
+
 # for the expenses of the store (what you spend for store)
 class Stock(models.Model):
-    options = (('Piece', 'Piece'),('KG', 'KG'),('Liter', 'Liter'),('Gallon', ' Gallon'), ('Package', 'Package'))
-    name = models.CharField(max_length=300, null=True, blank=True)
-    quantity = models.SmallIntegerField()
-    unit_type = models.CharField(max_length=150, null=True, blank=True, default="Piece", choices=options)
-    Unit_price = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
+    options     = (('Piece', 'Piece'),('KG', 'KG'),('Liter', 'Liter'),('Gallon', ' Gallon'), ('Package', 'Package'))
+    name        = models.CharField(max_length=300, null=True, blank=True)
+    quantity    = models.SmallIntegerField()
+    unit_type   = models.CharField(max_length=150, null=True, blank=True, default="Piece", choices=options)
+    Unit_price  = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
     totol_price = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
-    date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    file = models.FileField(upload_to = stock_file, null=True, blank=True)
+    date        = models.DateTimeField(auto_now=False, auto_now_add=True)
+    user        = models.ForeignKey(User, on_delete=models.CASCADE)
+    file        = models.FileField(upload_to = stock_file, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Stock"
@@ -104,4 +105,28 @@ class Stock(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard:stock')
+
+
+
+# what the store member eat
+class Staff_Salary(models.Model):
+    months = (('January', 'January'),('February', 'February'),('March', 'March'),('April', ' April'), 
+              ('May', 'May'), ('June', 'June'), ('July', 'July'), ('August', 'August'), ('September', 'September'),
+              ('October', 'October'), ('November', 'November'), ('December', 'December'))
+
+    pay_by  = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    name    = models.ForeignKey(User, on_delete=models.CASCADE,related_name="staff")
+    salary  = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
+    month   = models.CharField(max_length=150, null=True, blank=True, choices=months)
+    Pay     = models.DecimalField(max_digits=10, decimal_places=3)
+    date    = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Staff Salary"
+    
+    def __str__(self):
+        return self.name.username + " - " + self.month
+    
+    def get_absolute_url(self):
+        return reverse('dashboard:salary')
