@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class Dashboard(LoginRequiredMixin, TemplateView):
-    login_url = "/login"
+    # login_url = "./dashboard/login"
     template_name = "dashboard/index.html"
 
     def get_context_data(self, *args, **kwargs):
@@ -25,7 +25,7 @@ class MenuList(ListView):
         return data
     
 # the expenses, 
-class Stock(ListView):
+class Stock(LoginRequiredMixin, ListView):
     model = models.Stock
     template_name = "dashboard/Stock.html"
 
@@ -46,7 +46,7 @@ class Add_Stock(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
 
 class Update_Stock(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    login_url = '/login'
+    # login_url = '/login'
     model = models.Stock
     template_name = 'dashboard/Stock_form.html'
     fields = ['name', 'quantity', 'unit_type', 'Unit_price']
@@ -68,7 +68,7 @@ class Update_Stock(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class Delete_Stock(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
     model = models.Stock
-    login_url ="/login"
+    # login_url ="/login"
     template_name = "dashboard/delete_stock.html"
     success_url = '/dash/stock'
     def get_context_data(self, *args, **kwargs):
@@ -88,7 +88,7 @@ class Delete_Stock(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
 class Salary(LoginRequiredMixin, ListView):
     model = models.Staff_Salary
     template_name = "dashboard/salary.html"
-    login_url = '/login'
+    # login_url = '/login'
 
     def get_context_data(self, *args, **kwargs):
         data = super(Salary, self).get_context_data(*args, **kwargs)
@@ -96,7 +96,7 @@ class Salary(LoginRequiredMixin, ListView):
         return data
 
 class Pay_salary(LoginRequiredMixin, CreateView):
-    login_url = '/login'
+    # login_url = '/login'
     model = models.Staff_Salary
     template_name = 'dashboard/staff_salary_form.html'
     fields = ['name', 'salary', 'month', 'Pay']
@@ -107,7 +107,7 @@ class Pay_salary(LoginRequiredMixin, CreateView):
 
 
 class Update_salary(LoginRequiredMixin, UpdateView):
-    login_url = '/login'
+    # login_url = '/login'
     model = models.Staff_Salary
     template_name = 'dashboard/staff_salary_form.html'
     fields = ['name', 'salary', 'month', 'Pay']
@@ -125,7 +125,7 @@ class Update_salary(LoginRequiredMixin, UpdateView):
 class Delete_Salary(LoginRequiredMixin, DeleteView):
     model = models.Staff_Salary
     template_name = "dashboard/delete_salary.html"
-    success_url = '/dash/salary'
+    # success_url = '/dash/salary'
     def get_context_data(self, *args, **kwargs):
         data = super(Delete_Salary, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Employee Salary'
