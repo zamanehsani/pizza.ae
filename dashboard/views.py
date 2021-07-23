@@ -1,20 +1,65 @@
 
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
-from . import models
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
+from dashboard import models
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from dashboard import forms
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
     template_name = "dashboard/index.html"
 
+    def get_queryset(self):
+        category = self.kwargs.get("category")
+        # s/alary 
+        # if category:
+        #     queryset = Product.objects.filter(category__iexact=category)
+        # else:
+        #     queryset = Product.objects.all()
+        # return queryset
+
     def get_context_data(self, *args, **kwargs):
         data = super(Dashboard, self).get_context_data(*args, **kwargs)
+        
+        from datetime import datetime
+        month = datetime.now().strftime('%B')
         data['page_title'] = 'Dashboard'
+        data['salaries'] = models.Staff_Salary.objects.filter(month = month).count()
+        data['users'] = User.objects.all().count()
+        data['stocks'] = models.Stock.objects.all().count()
+        data['menus'] = models.Menu.objects.all().count()
+        data['orders'] = models.Order.objects.all().count()
+
         return data
 
+class Profile(LoginRequiredMixin,SuccessMessageMixin, DetailView):
+    model = User
+    template_name = 'dashboard/profile.html'
 
-class MenuList(ListView):
+    def post(self, request, pk):
+        user = User.objects.get(pk = request.user.id)
+        u_form = forms.UserUpdateform(request.POST, instance=user)
+        p_form = forms.UserProfileform(request.POST, request.FILES, instance=user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, 'your Profile has been updated.', fail_silently=True)
+            return redirect('dashboard:profile', pk=user.id)
+        return redirect('dashboard:profile', pk=user.id)
+
+class UserList(LoginRequiredMixin, ListView):
+    model = User
+    template_name = "dashboard/users.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(UserList, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Users'
+        return data
+
+class MenuList(LoginRequiredMixin, ListView):
     # login_url = '/login'
     model = models.Menu
     template_name = "dashboard/MenuList.html"

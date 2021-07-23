@@ -2,6 +2,35 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+def profile_location(instance, filename):
+    return 'profiles/{0}/{1}'.format(instance.user.username, filename)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    about = models.TextField("tell me about yourself",null=True, blank=True)
+    phone = models.PositiveIntegerField("what is your phone?",null=True, blank=True)
+    address = models.CharField("where do you live?",max_length=500,null=True, blank=True)
+    photo = models.ImageField("Upload a square picture of yourself.",default='default.png', upload_to = profile_location, null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     img = Image.open(self.photo.path)
+    #     if img.height > 400 or img.width > 400:
+    #         output_size = (400,400)
+    #         img.thumbnail(output_size)
+    #         img.save(user.photo.path)
+    #         print("your photo was large, so we resized and saved")
+
+    def __str__(self):
+        return self.user.username
+    
+    def get_absolute_url(self):
+        return reverse('dashboard:profile')
+
+    class Meta:
+        verbose_name_plural = "Profile"
+
+        
 class About_company(models.Model):
     name = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -18,7 +47,7 @@ class About_company(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard:dashboard')
 
     class Meta:
         verbose_name_plural = "About Company"

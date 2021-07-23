@@ -12,12 +12,12 @@
         <div class="container">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0"> Dashboard <small>Home</small></h1>
+              <h1 class="m-0"> Users <small></small></h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
-                <li class="breadcrumb-item active"> Dashboard</li>
+                <li class="breadcrumb-item active"> Users</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -31,149 +31,33 @@
           <!-- Small boxes (Stat box) -->
          
           <div class="row">
+            {% for user in object_list %}
             <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>{{orders}}</h3>
-                  <p>New Orders</p>
+              <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                         src="{{user.profile.photo.url}}"
+                         alt="User profile picture">
+                  </div>
+  
+                  <h3 class="profile-username text-center m-0">{{user.get_full_name|default:"name here"|title}}</h3>
+                  <p class="text-muted text-center m-0">[{{user.username}}]</p>
+                  <p class="text-muted text-center m-0">{{user.email|default:"email here"|title}}</p>
+                  <p class="text-muted text-center">{{user.profile.phone|default:"phone here"|title}}</p>  
+                  {% if user.is_superuser %}
+                  <a href="" id="setting" class="btn btn-success btn-block"><b>Admin</b></a>
+                  {% else %}
+                  <a href="" id="setting" class="btn btn-primary btn-block"><b>{{ user.groups.all.0 }}</b></a>
+                  {% endif %}
                 </div>
-                <div class="icon">
-                  <i class="fas fa-shopping-cart"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <!-- /.card-body -->
               </div>
+             
             </div>
-
-
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>45<sup style="font-size: 20px"></sup></h3>
-
-                  <p>Delivery</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-truck"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>{{menus}}</h3>
-
-                  <p>Menu Dine-in</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-utensils"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-orange">
-                <div class="inner">
-                  <h3>{{menus}}</h3>
-
-                  <p> <a href="#" class="text-dark"> Menu Items</a> </p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-bars"></i>
-                </div>
-                <a href="{%url 'dashboard:menulist' %}" class="small-box-footer">Go to the menu <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
+            {% endfor %}
           </div>
-          <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-orange">
-                <div class="inner">
-                  <h3>{{stocks}}</h3>
-                  <p> Items in stock</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-archive"></i>
-                </div>
-                <a href="{% url 'dashboard:stock' %}" class="small-box-footer">Go to the Stock <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-
-
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>53<sup style="font-size: 20px"></sup></h3>
-
-                  <p>Reports</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-file"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-orange">
-                <div class="inner">
-                  <h3>{{salaries}}</h3>
-
-                  <p>month of {% now "M" %}</p>
-                </div>
-                <div class="icon">
-                  <i class="fa fa-money-bill"></i>
-                </div>
-                <a href="{% url 'dashboard:salary' %}" class="small-box-footer">Go to the salary page <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>65</h3>
-
-                  <p>Invioce</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-receipt"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-             <!-- ./col -->
-             <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-orange">
-                <div class="inner">
-                  <h3>{{users}}</h3>
-
-                  <p>Users</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-user"></i>
-                </div>
-                <a href="{% url 'dashboard:users' %}" class="small-box-footer">Goto the Users settings <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-
-          </div>
-
+        
           <!-- /.row -->
 
           {% comment "this is not necessary" %}

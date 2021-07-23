@@ -40,3 +40,8 @@ class Staff_salary(admin.ModelAdmin):
     list_display=("name", "month", "date","Pay","salary", "pay_by")
     list_filter = ("pay_by", "month")
 admin.site.register(models.Staff_Salary, Staff_salary)
+
+
+class Profile(admin.ModelAdmin):
+    list_display = ('user', 'phone', 'address', 'about')
+admin.site.register(models.Profile, Profile)

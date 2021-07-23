@@ -137,10 +137,30 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL   = '/dashboard'
-LOGIN_URL            = '/dashboard/login'
-LOGOUT_REDIRECT_URL  = '/dashboard/login'
+LOGIN_URL            = 'login'
+LOGOUT_REDIRECT_URL  = 'login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Z2020z@98 is the email password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = '	aldeyarbakery@gmail.com'
+EMAIL_HOST_PASSWORD = 'mfkvxhotyijcakuh' #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Aldeyar Bakery'
+
+
+from django.contrib import messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
