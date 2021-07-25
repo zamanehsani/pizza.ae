@@ -49,8 +49,8 @@
     right: 4%;
     width: 40%;
     height: auto;
-    box-shadow: 0px 0px 10px rgb(61, 61, 61);
-    border-radius: 100%;
+    /* box-shadow: 0px 0px 10px rgb(61, 61, 61); */
+    /* border-radius: 100%; */
     /* background-color: rgb(207, 143, 5); */
     
 }
