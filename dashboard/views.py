@@ -61,7 +61,7 @@ class UserList(LoginRequiredMixin, ListView):
 
 class MenuList(LoginRequiredMixin, ListView):
     # login_url = '/login'
-    model = models.Menu
+    model = models.Menu_category
     template_name = "dashboard/MenuList.html"
 
     def get_context_data(self, *args, **kwargs):

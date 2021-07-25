@@ -31,12 +31,12 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Eemployee Salary</h3>
-                <a href="{% url 'dashboard:pay_salary' %}" class="btn btn-primary float-right pt-0 pb-0"> Make a new salary payment</a>
+                <a href="{% url 'dashboard:pay_salary' %}" class="btn bg-orange float-right pt-0 pb-0"> Make a new salary payment</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
-                  <thead class="bg-secondary">
+                  <thead class="bg-orange">
                     <tr>
                       <th>Employee Name</th>
                       <th>Salary</th>
@@ -57,13 +57,13 @@
                         <td>{{salary.date}}</td>
                         <td>{{salary.pay_by}}</td>
                         <td class="text-center"> 
-                          <a href="{% url 'dashboard:update_salary' salary.id %}" class=" mr-3 pt-0 pb-0" title="make changes to this paymenet"><i class="fas fa-edit"></i></a> 
+                          <a href="{% url 'dashboard:update_salary' salary.id %}" class=" mr-3 pt-0 pb-0 text-orange" title="make changes to this paymenet"><i class="fas fa-edit"></i></a> 
                           <a href="{% url 'dashboard:delete_salary' salary.id %}" class="pt-0 pb-0 text-danger" title="Remove this payment. Only the person made the payment can remove it"><i class="fas fa-trash"></i></a>
                         </td>
                       </tr>
                   {% endfor %}
                   </tbody>
-                  <tfoot class="bg-secondary">
+                  <tfoot class="bg-orange">
                   <tr>
                  
                     <th>Employee Name</th>

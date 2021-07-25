@@ -33,12 +33,12 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Stock</h3>
-                <a href="{% url 'dashboard:add_stock'%}" class="btn btn-primary float-right pt-0 pb-0"> Enter a new item</a>
+                <a href="{% url 'dashboard:add_stock'%}" class="btn bg-orange float-right pt-0 pb-0"> Enter a new item</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
-                  <thead class="bg-secondary">
+                  <thead class="bg-orange">
                     <tr>
                       <th>Date</th>
                       <th>Name</th>
@@ -61,13 +61,13 @@
                         <td>{{obj.totol_price}}</td>
                         <td>{{obj.user|title}}</td>
                         <td class="text-center"> 
-                          <a href="{% url 'dashboard:update_stock' obj.id %}" class=" mr-3 pt-0 pb-0" title="make changes"><i class="fas fa-edit"></i></a> 
+                          <a href="{% url 'dashboard:update_stock' obj.id %}" class="mr-3 pt-0 pb-0 text-orange" title="make changes"><i class="fas fa-edit"></i></a> 
                           <a href="{% url 'dashboard:delete_stock' obj.id %}" class="pt-0 pb-0 text-danger" title="Remove the Record. Only the person made entery can remove"><i class="fas fa-trash"></i></a>
                         </td>
                       </tr>
                   {% endfor %}
                   </tbody>
-                  <tfoot class="bg-secondary">
+                  <tfoot class="bg-orange">
                   <tr>
                     <th>Date</th>
                     <th>Name</th>

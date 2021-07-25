@@ -33,7 +33,7 @@
           <div class="row">
             {% for user in object_list %}
             <div class="col-lg-3 col-6">
-              <div class="card card-primary card-outline">
+              <div class="card card-orange card-outline">
                 <div class="card-body box-profile">
                   <div class="text-center">
                     <img class="profile-user-img img-fluid img-circle"
@@ -48,7 +48,7 @@
                   {% if user.is_superuser %}
                   <a href="" id="setting" class="btn btn-success btn-block"><b>Admin</b></a>
                   {% else %}
-                  <a href="" id="setting" class="btn btn-primary btn-block"><b>{{ user.groups.all.0 }}</b></a>
+                  <a href="" id="setting" class="btn bg-orange btn-block"><b>{{ user.groups.all.0 }}</b></a>
                   {% endif %}
                 </div>
                 <!-- /.card-body -->
