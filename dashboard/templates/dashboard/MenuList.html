@@ -11,12 +11,12 @@
     <div class="container">
         <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0"> Dashboard <small>Home</small></h1>
+            <h1 class="m-0"> Dashboard <small>Menu</small></h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item active"> Dashboard</li>
+            <li class="breadcrumb-item active"> Menu</li>
             </ol>
         </div><!-- /.col -->
         </div><!-- /.row -->
@@ -27,38 +27,83 @@
 <div class="content">
     <div class="container">
       <div class="card card-orange card-outline">
+        <div class="card-header">
+          <h3 class="card-title d-none d-lg-inline"> <i class="fas fa-edit"></i>  Menu Category</h3>
+          {% if perms.dashboard.add_menu_category %}
+          <a href="{% url 'dashboard:add_menu_category'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add Menu Category</a>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for menu in object_list %}
+            <div class="col-sm-3">
+              <div class="info-box">
+                <span class="info-box-icon bg-orange"><i class="fas fa-utensils"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">{{menu.name}}
+                    {% if perms.dashboard.change_menu or perms.dashboard.delete_menu_category %}
+                    {% if perms.dashboard.delete_menu_category %}
+                      <a href="{% url 'dashboard:delete_menu_category' menu.id %}" class="float-right pt-0 pb-0 text-danger" 
+                        title="Remove the Record."><i class="fas fa-trash"></i>
+                      </a>
+                    {%endif%}
+                    {% if perms.dashboard.change_menu_category %}
+                      <a href="{% url 'dashboard:update_menu_category' menu.id %}" class="float-right mr-3 pt-0 pb-0 text-orange" title="make changes">
+                        <i class="fas fa-edit"></i>
+                      </a> 
+                    {%endif%}
+                  {%endif%}
+                  </span>
+                  <span class="info-box-number">
+                   {{menu.menu_set.count}}
+                  </span>
+                 
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
+      </div>
+      <div class="card card-orange card-outline">
           <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-edit"></i>
-              Menu Items and Categories
-            </h3>
+            <h3 class="card-title "> <i class="fas fa-edit"></i>  Menu Items</h3>
+            {% if perms.dashboard.add_menu %}
+            <a href="{% url 'dashboard:add_menu'%}" class="btn bg-orange float-right pt-0 pb-0"> Add Menu Item</a>
+            {% endif %}
+         
           </div>
           <div class="card-body">
             <!-- <h4>Left Sided</h4> -->
             <div class="row">
-              <div class="col-2 col-sm-2">
+              <div class="col-3 col-sm-3">
                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                   {% for menu in object_list|dictsortreversed:"id" %}
-                  <a  class="nav-link {% if forloop.first%}active{% endif %}" 
-                      id="vert-tabs-{{menu}}-tab" 
+                      <a  id="vert-tabs-{{menu}}-tab" class="nav-link {% if forloop.first%}active{% endif %}"" 
                       data-toggle="pill" href="#vert-tabs-{{menu}}" 
                       role="tab" aria-controls="vert-tabs-{{menu}}" 
-                      aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{menu}}
-                  </a>
+                      aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                      {{menu}}
+                      </a>
+                      <!-- <p>
+                     
+                   </p> -->
                   {% endfor %}
                 </div>
               </div>
-              <div class="col-10 col-sm-10">
+              <div class="col-9 col-sm-9">
                 <div class="tab-content" id="vert-tabs-tabContent">
-                  <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
-                    Mauris tincidunt mi at erat gravida, 
-                 </div>
+                
                   {% for menu in object_list|dictsortreversed:"id" %}
                   <div class="tab-pane fade text-left {% if forloop.first %}  show active {% endif %}" 
                     id="vert-tabs-{{menu}}" role="tabpanel" aria-labelledby="vert-tabs-{{menu}}-tab">
                     <div class="row">
                       {% for obj in menu.menu_set.all %}
-                      <div class="col-lg-3 col-6">
+                      <div class="col-lg-3 col-sm-12">
                           <div class="card card-orange">
                               {% if obj.new %}
                               <div class="ribbon-wrapper">
@@ -74,6 +119,19 @@
                               <!-- /.card-body -->
                               <div class="card-footer">
                                 {{obj.price}} AED
+                                {% if perms.dashboard.change_menu or perms.dashboard.delete_menu %}
+                                  {% if perms.dashboard.delete_menu %}
+                                  <a href="{% url 'dashboard:delete_menu' obj.id %}" class=" float-right pt-0 pb-0 text-danger" 
+                                    title="Remove the Record."><i class="fas fa-trash"></i>
+                                  </a>
+                                  {%endif%}
+                                  {% if perms.dashboard.change_menu %}
+                                  <a href="{% url 'dashboard:update_menu' obj.id %}" class=" float-right mr-3 pt-0 pb-0 text-orange" title="make changes">
+                                    <i class="fas fa-edit"></i>
+                                  </a> 
+                                  {%endif%}
+                                {%endif%}
+
                               </div>
                               <!-- /.card-footer -->
                           </div>
@@ -87,7 +145,7 @@
                 </div>
               </div>
             </div>
-            
+          
           </div>
           <!-- /.card -->
       </div>

@@ -11,7 +11,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-import dashboard
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
@@ -86,7 +85,6 @@ class Update_User(LoginRequiredMixin, UpdateView):
         data['page_title'] = 'Users'
         return data
 
-
 @login_required(login_url="/login")
 def Passchange(request, pk):
     user = User.objects.get(pk = pk)
@@ -101,7 +99,6 @@ def Passchange(request, pk):
             return render(request, 'dashboard/User_form.html',{'form':form})
     return render(request, 'dashboard/User_form.html',{'form':form})
     
-
 class Delete_User(LoginRequiredMixin, DeleteView):
     model = User
     # login_url ="/login"
@@ -112,7 +109,6 @@ class Delete_User(LoginRequiredMixin, DeleteView):
         data['page_title'] = 'Users'
         return data
     
-
 class MenuList(LoginRequiredMixin, ListView):
     # login_url = '/login'
     model = models.Menu_category
@@ -122,7 +118,65 @@ class MenuList(LoginRequiredMixin, ListView):
         data = super(MenuList, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Menu'
         return data
-    
+
+class Add_Menu(LoginRequiredMixin,CreateView):
+    model = models.Menu
+    template_name = 'dashboard/Menu_form.html'
+    fields = "__all__"
+    def get_context_data(self, *args, **kwargs):
+        data = super(Add_Menu, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+class Update_Menu(LoginRequiredMixin, UpdateView):
+    model = models.Menu
+    template_name = 'dashboard/Menu_form.html'
+    fields = "__all__"
+    def get_context_data(self, *args, **kwargs):
+        data = super(Update_Menu, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+
+class Delete_Menu(LoginRequiredMixin, DeleteView):
+    model = models.Menu
+    template_name = "dashboard/delete_menu.html"
+    success_url = '/dashboard/menu'
+    def get_context_data(self, *args, **kwargs):
+        data = super(Delete_Menu, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+class Add_Menu_category(LoginRequiredMixin,CreateView):
+    model = models.Menu_category
+    template_name = 'dashboard/Menu_category_form.html'
+    fields = "__all__"
+    def get_context_data(self, *args, **kwargs):
+        data = super(Add_Menu_category, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+class Update_Menu_category(LoginRequiredMixin, UpdateView):
+    model = models.Menu_category
+    template_name = 'dashboard/Menu_category_form.html'
+    fields = "__all__"
+    def get_context_data(self, *args, **kwargs):
+        data = super(Update_Menu_category, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+
+class Delete_Menu_category(LoginRequiredMixin, DeleteView):
+    model = models.Menu_category
+    template_name = "dashboard/delete_menu_category.html"
+    success_url = '/dashboard/menu'
+    def get_context_data(self, *args, **kwargs):
+        data = super(Delete_Menu_category, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Menu'
+        return data
+
+
+
 # the expenses, 
 class Stock(LoginRequiredMixin, ListView):
     model = models.Stock
@@ -139,10 +193,10 @@ class Add_Stock(LoginRequiredMixin,CreateView):
     template_name = 'dashboard/Stock_form.html'
     fields = ['name', 'quantity', 'unit_type', 'Unit_price']
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.totol_price = form.instance.quantity * form.instance.Unit_price
-        return super().form_valid(form)
+    def get_context_data(self, *args, **kwargs):
+        data = super(Add_Stock, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Stock'
+        return data
 
 class Update_Stock(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     # login_url = '/login'
@@ -169,7 +223,7 @@ class Delete_Stock(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
     model = models.Stock
     # login_url ="/login"
     template_name = "dashboard/delete_stock.html"
-    success_url = '/dash/stock'
+    success_url = '/dashboard/stock'
     def get_context_data(self, *args, **kwargs):
         data = super(Delete_Stock, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Stock'
@@ -180,8 +234,6 @@ class Delete_Stock(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
         if self.request.user == expense.user:
             return True
         return False
-
-
 
 # the salary module includes the listing, making the payment, removal and editing
 class Salary(LoginRequiredMixin, ListView):
@@ -203,7 +255,6 @@ class Pay_salary(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.pay_by = self.request.user
         return super().form_valid(form)
-
 
 class Update_salary(LoginRequiredMixin, UpdateView):
     # login_url = '/login'

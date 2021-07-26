@@ -16,6 +16,15 @@ urlpatterns = [
     path('passchange/<int:pk>', dashboard_views.Passchange, name="changepss"),
 
     path("menu/" ,dashboard_views.MenuList.as_view(), name="menulist"),
+    path("add-menu/", dashboard_views.Add_Menu.as_view(), name="add_menu" ),
+    path('menu/<int:pk>/update', dashboard_views.Update_Menu.as_view(), name="update_menu"),
+    path('menu/<int:pk>/delete', dashboard_views.Delete_Menu.as_view(), name="delete_menu"),
+
+    path("add-menu-category/", dashboard_views.Add_Menu_category.as_view(), name="add_menu_category" ),
+    path('menu-category/<int:pk>/update', dashboard_views.Update_Menu_category.as_view(), name="update_menu_category"),
+    path('menu-category/<int:pk>/delete', dashboard_views.Delete_Menu_category.as_view(), name="delete_menu_category"),
+
+
     path("stock/", dashboard_views.Stock.as_view(), name="stock"),
     path('add-stock/', dashboard_views.Add_Stock.as_view(), name="add_stock"),
     path('stock/<int:pk>/update', dashboard_views.Update_Stock.as_view(), name="update_stock"),

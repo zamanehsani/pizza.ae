@@ -63,7 +63,7 @@ class Menu_category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard:menulist')
 
     class Meta:
         verbose_name_plural = "Menu Category"
@@ -74,7 +74,7 @@ class Menu(models.Model):
     name            = models.CharField(max_length=150, null=True, blank=True)
     price           = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     description     = models.TextField(null=True, blank=True)
-    photo           = models.ImageField(default='default.png', upload_to = "menu", null=True, blank=True)
+    photo           = models.ImageField(default='default-pizza.png', upload_to = "menu", null=True, blank=True)
     date            = models.DateField(auto_now_add=True, auto_now=False)
     category        = models.ForeignKey(Menu_category, on_delete=models.CASCADE)
     new             = models.BooleanField(default=False)
@@ -83,7 +83,7 @@ class Menu(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard:menulist')
 
     class Meta:
         verbose_name_plural = "Menu"
