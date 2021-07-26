@@ -29,8 +29,9 @@
       <div class="content">
         <div class="container">
           <!-- Small boxes (Stat box) -->
-         
+       
           <div class="row">
+            {% if perms.dashboard.view_order %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-success">
@@ -44,15 +45,15 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-
+            {% endif %}
 
             <!-- ./col -->
+            {% if perms.dashboard.view_delivery %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
                   <h3>45<sup style="font-size: 20px"></sup></h3>
-
                   <p>Delivery</p>
                 </div>
                 <div class="icon">
@@ -61,7 +62,9 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            {% endif %}
             <!-- ./col -->
+            {% if perms.dashboard.view_menu %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-success">
@@ -76,7 +79,9 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            {% endif %}
             <!-- ./col -->
+            {% if perms.dashboard.view_menu %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-orange">
@@ -91,9 +96,9 @@
                 <a href="{%url 'dashboard:menulist' %}" class="small-box-footer">Go to the menu <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            {% endif %}
             <!-- ./col -->
-          </div>
-          <div class="row">
+            {% if perms.dashboard.view_stock %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-orange">
@@ -107,9 +112,10 @@
                 <a href="{% url 'dashboard:stock' %}" class="small-box-footer">Go to the Stock <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-
+            {% endif %}
 
             <!-- ./col -->
+            {% if perms.dashboard.view_report %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-success">
@@ -124,7 +130,9 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            {%endif%}
             <!-- ./col -->
+            {% if perms.dashboard.view_staff_salary %}
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-orange">
@@ -139,23 +147,11 @@
                 <a href="{% url 'dashboard:salary' %}" class="small-box-footer">Go to the salary page <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
-                <div class="inner">
-                  <h3>65</h3>
-
-                  <p>Invioce</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-receipt"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
+            {% endif %}
+          
             <!-- ./col -->
              <!-- ./col -->
+             {% if perms.dashboard.view_user %}
              <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-orange">
@@ -170,11 +166,12 @@
                 <a href="{% url 'dashboard:users' %}" class="small-box-footer">Goto the Users settings <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            {%endif%}
             <!-- ./col -->
-
           </div>
+         
 
-          <!-- /.row -->
+      
 
           {% comment "this is not necessary" %}
           <!-- <h5 class="mb-2">Shortcuts</h5> -->

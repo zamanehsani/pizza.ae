@@ -2,11 +2,16 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 from dashboard import models
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from dashboard import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.shortcuts import redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.shortcuts import redirect, render
+
+import dashboard
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
@@ -58,6 +63,55 @@ class UserList(LoginRequiredMixin, ListView):
         data = super(UserList, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Users'
         return data
+
+class Add_User(LoginRequiredMixin,CreateView):
+    model = User
+    form_class = UserCreationForm
+    template_name = 'dashboard/User_form.html'
+    success_url = '/dashboard/users'
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Add_User, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Users'
+        return data
+
+class Update_User(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'dashboard/User_form.html'
+    fields = [ 'first_name', 'last_name', 'username', "is_active", "user_permissions"]
+    success_url = '/dashboard/users'
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Update_User, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Users'
+        return data
+
+
+@login_required(login_url="/login")
+def Passchange(request, pk):
+    user = User.objects.get(pk = pk)
+    form = PasswordChangeForm(user=user)
+    if request.method =="POST":
+        form = PasswordChangeForm(user=user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{user} password has been changed.', fail_silently=True)
+            return redirect("dashboard:users")
+        else:
+            return render(request, 'dashboard/User_form.html',{'form':form})
+    return render(request, 'dashboard/User_form.html',{'form':form})
+    
+
+class Delete_User(LoginRequiredMixin, DeleteView):
+    model = User
+    # login_url ="/login"
+    template_name = "dashboard/delete_user.html"
+    success_url = '/dashboard/users'
+    def get_context_data(self, *args, **kwargs):
+        data = super(Delete_User, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Users'
+        return data
+    
 
 class MenuList(LoginRequiredMixin, ListView):
     # login_url = '/login'

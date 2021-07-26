@@ -47,7 +47,9 @@
                       <th>Price</th>
                       <th>Total Price</th>
                       <th>Added By</th>
+                      {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
                       <th>Action</th>
+                      {%endif%}
                     </tr>
                   </thead>
                   <tbody>
@@ -60,12 +62,23 @@
                         <td>{{obj.Unit_price}}</td>
                         <td>{{obj.totol_price}}</td>
                         <td>{{obj.user|title}}</td>
+                        {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
                         <td class="text-center"> 
-                          <a href="{% url 'dashboard:update_stock' obj.id %}" class="mr-3 pt-0 pb-0 text-orange" title="make changes"><i class="fas fa-edit"></i></a> 
-                          <a href="{% url 'dashboard:delete_stock' obj.id %}" class="pt-0 pb-0 text-danger" title="Remove the Record. Only the person made entery can remove"><i class="fas fa-trash"></i></a>
+                          {% if perms.dashboard.change_stock %}
+                          <a href="{% url 'dashboard:update_stock' obj.id %}" class="mr-3 pt-0 pb-0 text-orange" title="make changes">
+                            <i class="fas fa-edit"></i>
+                          </a> 
+                          {%endif%}
+                          {% if perms.dashboard.delete_stock %}
+                          <a href="{% url 'dashboard:delete_stock' obj.id %}" class="pt-0 pb-0 text-danger" 
+                            title="Remove the Record. Only the person made entery can remove"><i class="fas fa-trash"></i>
+                          </a>
+                          {%endif%}
                         </td>
+                        {%endif%}
                       </tr>
-                  {% endfor %}
+
+                      {% endfor %}
                   </tbody>
                   <tfoot class="bg-orange">
                   <tr>
@@ -76,7 +89,9 @@
                     <th>Price</th>
                     <th>Total Price</th>
                     <th>Added by</th>
+                    {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
                     <th>Action</th>
+                    {%endif%}
                   </tr>
                   </tfoot>
                 </table>

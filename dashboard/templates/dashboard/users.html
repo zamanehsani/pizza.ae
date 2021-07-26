@@ -28,35 +28,73 @@
       <!-- Main content -->
       <div class="content">
         <div class="container">
-          <!-- Small boxes (Stat box) -->
-         
           <div class="row">
-            {% for user in object_list %}
-            <div class="col-lg-3 col-6">
-              <div class="card card-orange card-outline">
-                <div class="card-body box-profile">
-                  <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle"
-                         src="{{user.profile.photo.url}}"
-                         alt="User profile picture">
-                  </div>
-  
-                  <h3 class="profile-username text-center m-0">{{user.get_full_name|default:"name here"|title}}</h3>
-                  <p class="text-muted text-center m-0">[{{user.username}}]</p>
-                  <p class="text-muted text-center m-0">{{user.email|default:"email here"|title}}</p>
-                  <p class="text-muted text-center">{{user.profile.phone|default:"phone here"|title}}</p>  
-                  {% if user.is_superuser %}
-                  <a href="" id="setting" class="btn btn-success btn-block"><b>Admin</b></a>
-                  {% else %}
-                  <a href="" id="setting" class="btn bg-orange btn-block"><b>{{ user.groups.all.0 }}</b></a>
-                  {% endif %}
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Stock</h3>
+                  <a href="{% url 'dashboard:add_user'%}" class="btn bg-orange float-right pt-0 pb-0"> Add a new User</a>
                 </div>
-                <!-- /.card-body -->
+                <div class="card-body">
+                  <div class="row">
+                    {% for user in object_list %}
+                    <div class="col-lg-3 col-6">
+                      <div class="card card-orange card-outline">
+                        <div class="card-body box-profile">
+                          <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 src="{{user.profile.photo.url}}"
+                                 alt="User profile picture">
+                          </div>
+                          <h3 class="profile-username text-center m-0">{{user.get_full_name|default:"name here"|title}}</h3>
+                          <p class="text-muted text-center m-0">[{{user.username}}]</p>
+                          <p class="text-muted text-center m-0">{{user.email|default:"email here"|title}}</p>
+                          <p class="text-muted text-center m-0">{{user.profile.phone|default:"phone here"|title}}</p>  
+                            
+
+                          {% if user.is_superuser %}
+                          <div class="col mb-2 text-center">
+                            {% if perms.dashboard.change_user %}
+                            <a href="{% url 'dashboard:update_user' user.id %}" class="mr-3 text-orange" title="make changes">
+                              <i class="fas fa-edit"></i>
+                            </a> 
+                            <a href="{% url 'dashboard:changepss' pk=user.id %}" class="mr-3 text-orange" title="changee user passoword">
+                              <i class="fas fa-lock"></i>
+                            </a>
+                            {%endif%}
+                          </div>
+                     
+                          <a href="" id="setting" class="btn btn-success btn-block"><b>Admin</b></a>
+                          {% else %}
+                          <div class="col mb-2 text-center">
+                            {% if perms.dashboard.change_user %}
+                            <a href="{% url 'dashboard:update_user' user.id %}" class="mr-3 text-orange" title="make changes">
+                              <i class="fas fa-edit"></i>
+                            </a> 
+                            <a href="{% url 'dashboard:changepss' pk=user.id %}" class="mr-3 text-orange" title="changee user passoword">
+                              <i class="fas fa-lock"></i>
+                            </a>
+                            {%endif%}
+                            {% if perms.dashboard.delete_user %}
+                            <a href="{% url 'dashboard:delete_user' user.id %}" class="pt-1 text-danger" 
+                              title="Remove user. Only admin can remove"><i class="fas fa-trash"></i>
+                            </a>
+                            {%endif%}
+                          </div>
+                     
+                          <a href="" id="setting" class="btn bg-orange btn-block"><b>{{user.groups.all.0|default:"no group"}}</b></a>
+                          {% endif %}
+                        </div>
+                        <!-- /.card-body -->
+                      </div>                     
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
               </div>
-             
             </div>
-            {% endfor %}
           </div>
+          <!-- Small boxes (Stat box) -->
         
           <!-- /.row -->
 

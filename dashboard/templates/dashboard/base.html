@@ -102,7 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-orange elevation-4">
     <!-- Brand Logo -->
     <a href="{% url 'dashboard:dashboard' %}" class="brand-link">
       <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -126,77 +126,86 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        
+               
           <li class="nav-item">
             <a href="{%url 'dashboard:dashboard'%}" class="nav-link {% if page_title == 'Dashboard' %} active {% endif %} ">
               <i class="nav-icon far fa-image"></i>
               <p>Dashboard</p>
             </a>
           </li>
+          {% if perms.dashboard.view_order %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-shopping-bag"></i>
               <p>Orders</p>
             </a>
           </li>
-      
+          {%endif%}
+          {% if perms.dashboard.view_stock %}
           <li class="nav-item">
             <a href="{% url 'dashboard:stock' %}" class="nav-link {% if page_title == 'Stock'  %} active {% endif %}">
               <i class="nav-icon fas fa-archive"></i>
               <p>Stock</p>
             </a>
           </li>
+          {%endif%}
+          {% if perms.dashboard.view_user %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>Users</p>
             </a>
           </li>
+          {%endif%}
+          {% if perms.dashboard.view_menu %}
           <li class="nav-item">
             <a href="{%url 'dashboard:menulist' %}" class="nav-link {% if page_title == 'Menu' %} active {% endif %} ">
               <i class="nav-icon fas fa-bars"></i>
               <p>Menu</p>
             </a>
           </li>
+          {%endif%}
+          {% if perms.dashboard.view_delivery %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-truck"></i>
               <p>Delivery</p>
             </a>
           </li>
-
+          {%endif%}
+          {% if perms.dashboard.view_menu %}
           <li class="nav-item">
             <a href="#" class="nav-link ">
               <i class="nav-icon fas fa-utensils"></i>
               <p>Menu Dine-in</p>
             </a>
           </li>
+          {%endif%}
+          {% if perms.dashboard.view_report %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>Reports</p>
             </a>
           </li>
-
+          {%endif%}
+          {% if perms.dashboard.view_staff_salary %}
           <li class="nav-item">
             <a href="{% url 'dashboard:salary' %}" class="nav-link {% if page_title == 'Employee Salary' %} active {% endif %}">
               <i class="nav-icon fas fa-money-bill"></i>
               <p>Salary</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-receipt"></i>
-              <p>Invioce</p>
-            </a>
-          </li>
+          {%endif%}
+        
+          {% if perms.dashboard.view_user %}                                  
           <li class="nav-item">
             <a href="{% url 'dashboard:users' %}" class="nav-link {% if page_title == 'Users' %} active {% endif %}">
               <i class="nav-icon fas fa-user"></i>
               <p>Users</p>
             </a>
           </li>
-
+          {%endif%}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

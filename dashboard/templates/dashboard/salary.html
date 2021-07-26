@@ -31,7 +31,9 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Eemployee Salary</h3>
+                {% if perms.dashboard.add_staff_salary %}
                 <a href="{% url 'dashboard:pay_salary' %}" class="btn bg-orange float-right pt-0 pb-0"> Make a new salary payment</a>
+                {%endif%}
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -44,7 +46,9 @@
                       <th>Payment</th>
                       <th>Date</th>
                       <th>payment by</th>
+                      {% if perms.dashboard.change_staff_salary or delete_staff_salary %}
                       <th>Action</th>
+                      {%endif%}
                     </tr>
                   </thead>
                   <tbody>
@@ -56,23 +60,34 @@
                         <td class="{% if salary.Pay < salary.salary %} badge-warning {% endif %}" >{{salary.Pay}}</td>
                         <td>{{salary.date}}</td>
                         <td>{{salary.pay_by}}</td>
+                        {% if perms.dashboard.change_staff_salary or perms.dashboard.delete_staff_salary %}
                         <td class="text-center"> 
-                          <a href="{% url 'dashboard:update_salary' salary.id %}" class=" mr-3 pt-0 pb-0 text-orange" title="make changes to this paymenet"><i class="fas fa-edit"></i></a> 
-                          <a href="{% url 'dashboard:delete_salary' salary.id %}" class="pt-0 pb-0 text-danger" title="Remove this payment. Only the person made the payment can remove it"><i class="fas fa-trash"></i></a>
+                          {% if perms.dashboard.change_staff_salary %}
+                          <a href="{% url 'dashboard:update_salary' salary.id %}" class=" mr-3 pt-0 pb-0 text-orange" title="make changes to this paymenet">
+                            <i class="fas fa-edit"></i>
+                          </a> 
+                          {%endif%}
+                          {% if perms.dashboard.delete_staff_salary %}
+                          <a href="{% url 'dashboard:delete_salary' salary.id %}" class="pt-0 pb-0 text-danger" title="Remove this payment. Only the person made the payment can remove it">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                          {%endif%}
                         </td>
+                        {%endif%}
                       </tr>
                   {% endfor %}
                   </tbody>
                   <tfoot class="bg-orange">
                   <tr>
-                 
                     <th>Employee Name</th>
                     <th>Salary</th>
                     <th>Month</th>
                     <th>Payment</th>
                     <th>Date</th>
                     <th>Payer</th>
+                    {% if perms.dashboard.change_staff_salary or perms.dashboard.delete_staff_salary %}
                     <th>Action</th>
+                    {%endif%}
                   </tr>
                   </tfoot>
                 </table>

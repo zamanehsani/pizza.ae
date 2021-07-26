@@ -10,7 +10,10 @@ urlpatterns = [
     # profile
     path('profile/<int:pk>', dashboard_views.Profile.as_view(), name="profile"),
     path('users/', dashboard_views.UserList.as_view(), name ="users"),
-    # path('profile/<int:pk>/u/pdate', dashboard_views.Update_profile.as_view(), name="update_profile"),
+    path('add-user/', dashboard_views.Add_User.as_view(), name="add_user"),
+    path('user/<int:pk>/update', dashboard_views.Update_User.as_view(), name="update_user"),
+    path('user/<int:pk>/delete', dashboard_views.Delete_User.as_view(), name="delete_user"),
+    path('passchange/<int:pk>', dashboard_views.Passchange, name="changepss"),
 
     path("menu/" ,dashboard_views.MenuList.as_view(), name="menulist"),
     path("stock/", dashboard_views.Stock.as_view(), name="stock"),
