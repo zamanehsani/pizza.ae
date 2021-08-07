@@ -168,6 +168,26 @@
             </div>
             {%endif%}
             <!-- ./col -->
+
+             <!-- ./col -->
+             {% if perms.dashboard.view_user %}
+             <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>3</h3>
+
+                  <p>Area</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-map-marker"></i>
+                </div>
+                <a href="{% url 'dashboard:area' %}" class="small-box-footer">Goto the Area settings <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            {%endif%}
+            <!-- ./col -->
+
           </div>
          
 

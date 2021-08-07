@@ -1,0 +1,126 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+    /* Set the size of the div element that contains the map */
+#map {
+  height: 600px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}
+</style>
+
+<script>
+    // Initialize and add the map
+    function initMap() {
+      // The location of Uluru
+      const pizza = { lat: 25.156433, lng: 55.2045668 };
+      var mapOptions ={ center: pizza, zoom:12, }
+
+      // show map
+      const map = new google.maps.Map(document.getElementById("map"),mapOptions);
+
+    //   drawing polygons
+      var destinations = new google.maps.MVCArray();
+      destinations.push(new google.maps.LatLng(25.146, 55.2145));
+      destinations.push(new google.maps.LatLng(25.106, 55.2945));
+      destinations.push(new google.maps.LatLng(25.156433, 55.2045778));
+
+      var polygonOptions = {path, destinations};
+      var polygon = new google.maps.Polygon(polygonOptions);
+      polygon.setMap(map);
+
+    //   const marker = new google.maps.Marker({
+    //     position: pizza,
+    //     map: map,
+    //   });
+    }
+
+    // this is from google itself
+//     function initMap() {
+//   const map = new google.maps.Map(document.getElementById("map"), {
+//     center: { lat: -34.397, lng: 150.644 },
+//     zoom: 8,
+//   });
+//   const drawingManager = new google.maps.drawing.DrawingManager({
+//     drawingMode: google.maps.drawing.OverlayType.MARKER,
+//     drawingControl: true,
+//     drawingControlOptions: {
+//       position: google.maps.ControlPosition.TOP_CENTER,
+//       drawingModes: [
+//         google.maps.drawing.OverlayType.MARKER,
+//         google.maps.drawing.OverlayType.CIRCLE,
+//         google.maps.drawing.OverlayType.POLYGON,
+//         google.maps.drawing.OverlayType.POLYLINE,
+//         google.maps.drawing.OverlayType.RECTANGLE,
+//       ],
+//     },
+//     markerOptions: {
+//       icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+//     },
+//     circleOptions: {
+//       fillColor: "#ffff00",
+//       fillOpacity: 1,
+//       strokeWeight: 5,
+//       clickable: false,
+//       editable: true,
+//       zIndex: 1,
+//     },
+//   });
+//   drawingManager.setMap(map);
+// }
+
+
+  </script>
+
+{% endblock css %}
+
+
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0"> Dashboard <small>Coverage Area</small></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active"> Area</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+  
+      <!-- Main content -->
+      <div class="content">
+        <div class="container">
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+          <h2>PIZZA.AE location</h2>
+          
+            <div id="map"></div>
+       
+          </div>
+        </div><!-- /.container -->
+      </div>
+      <!-- /.content -->
+
+
+
+{% endblock content %}
+
+
+{% block js %}
+
+ <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+ <script
+ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2hMp2NUANTFXPhBCNJ2nHQB_yj1MPKbY&callback=initMap&libraries=&v=weekly" async>
+</script>
+
+{% endblock js %}

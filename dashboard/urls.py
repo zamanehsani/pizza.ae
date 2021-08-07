@@ -34,4 +34,7 @@ urlpatterns = [
     path('pay-salary', dashboard_views.Pay_salary.as_view(), name="pay_salary"),
     path('salary/<int:pk>/update', dashboard_views.Update_salary.as_view(), name="update_salary"),
     path('salary/<int:pk>/delete', dashboard_views.Delete_Salary.as_view(), name="delete_salary"),
+
+    # area
+    path('area', dashboard_views.Area.as_view(), name="area"),
 ]

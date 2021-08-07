@@ -176,6 +176,14 @@ class Delete_Menu_category(LoginRequiredMixin, DeleteView):
         return data
 
 
+# order section
+# coverage area section
+class Area(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/Area.html'
+    def get_context_data(self, *args, **kwargs):
+        data = super(Area, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Area'
+        return data
 
 # the expenses, 
 class Stock(LoginRequiredMixin, ListView):

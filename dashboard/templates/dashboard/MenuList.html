@@ -103,41 +103,41 @@
                     id="vert-tabs-{{menu}}" role="tabpanel" aria-labelledby="vert-tabs-{{menu}}-tab">
                     <div class="row">
                       {% for obj in menu.menu_set.all %}
-                      <div class="col-lg-3 col-sm-12">
-                          <div class="card card-orange">
-                              {% if obj.new %}
-                              <div class="ribbon-wrapper">
-                                  <div class="ribbon bg-primary"> New </div>
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="card card-orange">
+                                {% if obj.new %}
+                                <div class="ribbon-wrapper">
+                                    <div class="ribbon bg-primary"> New </div>
+                                  </div>
+                                  {% endif %}
+                                <!-- /.card-header -->
+                                <div class="card-body text-center bg-light">
+                                  <img src="{{obj.photo.url}}" style="width: 100%; height:100%;"  alt="">
+                                  <h3>{{obj.name|title}}</h3>
+                                  <p >{{obj.description}}</p>
                                 </div>
-                                {% endif %}
-                              <!-- /.card-header -->
-                              <div class="card-body text-center bg-light">
-                                <img src="{{obj.photo.url}}" style="width: 100%; height:100%;"  alt="">
-                                <h3>{{obj.name|title}}</h3>
-                                <p >{{obj.description}}</p>
-                              </div>
-                              <!-- /.card-body -->
-                              <div class="card-footer">
-                                {{obj.price}} AED
-                                {% if perms.dashboard.change_menu or perms.dashboard.delete_menu %}
-                                  {% if perms.dashboard.delete_menu %}
-                                  <a href="{% url 'dashboard:delete_menu' obj.id %}" class=" float-right pt-0 pb-0 text-danger" 
-                                    title="Remove the Record."><i class="fas fa-trash"></i>
-                                  </a>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                  {{obj.price}} AED
+                                  {% if perms.dashboard.change_menu or perms.dashboard.delete_menu %}
+                                    {% if perms.dashboard.delete_menu %}
+                                    <a href="{% url 'dashboard:delete_menu' obj.id %}" class=" float-right pt-0 pb-0 text-danger" 
+                                      title="Remove the Record."><i class="fas fa-trash"></i>
+                                    </a>
+                                    {%endif%}
+                                    {% if perms.dashboard.change_menu %}
+                                    <a href="{% url 'dashboard:update_menu' obj.id %}" class=" float-right mr-3 pt-0 pb-0 text-orange" title="make changes">
+                                      <i class="fas fa-edit"></i>
+                                    </a> 
+                                    {%endif%}
                                   {%endif%}
-                                  {% if perms.dashboard.change_menu %}
-                                  <a href="{% url 'dashboard:update_menu' obj.id %}" class=" float-right mr-3 pt-0 pb-0 text-orange" title="make changes">
-                                    <i class="fas fa-edit"></i>
-                                  </a> 
-                                  {%endif%}
-                                {%endif%}
 
-                              </div>
-                              <!-- /.card-footer -->
-                          </div>
-                          <!-- /.card -->
-                      </div>
-                    {% endfor %}
+                                </div>
+                                <!-- /.card-footer -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                      {% endfor %}
                     </div>
                   </div>
                   {% endfor %}

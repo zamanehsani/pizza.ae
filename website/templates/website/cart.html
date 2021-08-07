@@ -1,0 +1,64 @@
+
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+           
+            <div class="col-lg-6 col-sm-12">
+                <div class="card card-orange">
+                    {% if object.new %}
+                    <!-- <div class="ribbon-wrapper">
+                        <div class="ribbon bg-primary"> New </div>
+                    </div> -->
+                    {% endif %}
+
+                    <!-- /.card-header -->
+                    <div class="card-body text-center bg-light">
+                        <img src="{{object.photo.url}}" style="width: 300;" alt="">
+                        <h3>{{object.name|title}}</h3>
+                        <p >{{object.description}}</p>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col">
+                                {{object.price}} AED
+                            </div>
+                            <div class="col text-end">
+                                <div class="col-sm-7">
+                                    <label class="visually-hidden" for="specificSizeInputGroupUsername"></label>
+                                    <div class="input-group">
+                                      <div class="input-group-text">quantity</div>
+                                      <input type="number" min="1" max="100" value="1" class="form-control" id="specificSizeInputGroupUsername" placeholder="">
+                                    </div>
+                                  </div>
+                                <!-- <a href="" class=" text-end pt-0 pb-0 text-success" 
+                                    title="Remove the Record."><i class="fa fa-trash"></i> Order 
+                                </a> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+       
+        </div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+
+{% endblock js %}
