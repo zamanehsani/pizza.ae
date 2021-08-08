@@ -2,78 +2,29 @@
 {% load static %}
 
 {% block css %}
+<!-- leaflet css file -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
+
 <style>
     /* Set the size of the div element that contains the map */
 #map {
-  height: 600px;
+  height: 70vh;
   /* The height is 400 pixels */
   width: 100%;
   /* The width is the width of the web page */
 }
+
+p {
+font-family: 'Open Sans';
+margin: 0;
+font-size: 13px;
+}
+
 </style>
-
-<script>
-    // Initialize and add the map
-    function initMap() {
-      // The location of Uluru
-      const pizza = { lat: 25.156433, lng: 55.2045668 };
-      var mapOptions ={ center: pizza, zoom:12, }
-
-      // show map
-      const map = new google.maps.Map(document.getElementById("map"),mapOptions);
-
-    //   drawing polygons
-      var destinations = new google.maps.MVCArray();
-      destinations.push(new google.maps.LatLng(25.146, 55.2145));
-      destinations.push(new google.maps.LatLng(25.106, 55.2945));
-      destinations.push(new google.maps.LatLng(25.156433, 55.2045778));
-
-      var polygonOptions = {path, destinations};
-      var polygon = new google.maps.Polygon(polygonOptions);
-      polygon.setMap(map);
-
-    //   const marker = new google.maps.Marker({
-    //     position: pizza,
-    //     map: map,
-    //   });
-    }
-
-    // this is from google itself
-//     function initMap() {
-//   const map = new google.maps.Map(document.getElementById("map"), {
-//     center: { lat: -34.397, lng: 150.644 },
-//     zoom: 8,
-//   });
-//   const drawingManager = new google.maps.drawing.DrawingManager({
-//     drawingMode: google.maps.drawing.OverlayType.MARKER,
-//     drawingControl: true,
-//     drawingControlOptions: {
-//       position: google.maps.ControlPosition.TOP_CENTER,
-//       drawingModes: [
-//         google.maps.drawing.OverlayType.MARKER,
-//         google.maps.drawing.OverlayType.CIRCLE,
-//         google.maps.drawing.OverlayType.POLYGON,
-//         google.maps.drawing.OverlayType.POLYLINE,
-//         google.maps.drawing.OverlayType.RECTANGLE,
-//       ],
-//     },
-//     markerOptions: {
-//       icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-//     },
-//     circleOptions: {
-//       fillColor: "#ffff00",
-//       fillOpacity: 1,
-//       strokeWeight: 5,
-//       clickable: false,
-//       editable: true,
-//       zIndex: 1,
-//     },
-//   });
-//   drawingManager.setMap(map);
-// }
-
-
-  </script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css">
 
 {% endblock css %}
 
@@ -102,10 +53,49 @@
         <div class="container">
           <!-- Small boxes (Stat box) -->
           <div class="row">
-          <h2>PIZZA.AE location</h2>
+          <!-- <h2>PIZZA.AE location</h2> -->
           
             <div id="map"></div>
        
+            <div class="row mt-3">
+              <form method="POST"> {% csrf_token %}
+                <input type="hidden" name="geojson" id="geojson">
+
+                <div class="row mb-2">
+                  <div class="col">
+                    <div class="">
+                      <!-- <label  class="form-label">Name</label> -->
+                      <input class="form-control" required placeholder="name of area" type="text" name="name">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="">
+                      <!-- <label  class="form-label">minimum order</label> -->
+                      <input class="form-control" required placeholder="minimum order" type="number" name="min_order">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="">
+                      <!-- <label class="form-label">Charge</label> -->
+                      <input class="form-control" required placeholder="delivery charge" type="number" name="charge">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="">
+                      <input type="submit" class="btn btn-primary form-control" value="Add">
+                      
+                    </div>
+                    
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- <div class="calculation-box">
+              <p>Click the map to draw a polygon.</p>
+              <div id="calculated-area"></div>
+              </div> -->
+
           </div>
         </div><!-- /.container -->
       </div>
@@ -118,9 +108,166 @@
 
 {% block js %}
 
+<!-- leaflet js file -->
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css">
+
  <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
- <script
- src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2hMp2NUANTFXPhBCNJ2nHQB_yj1MPKbY&callback=initMap&libraries=&v=weekly" async>
+ <script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
+  const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      // style: 'mapbox://styles/mapbox/satellite-v9', 
+      style:"mapbox://styles/mapbox/streets-v11",
+      center: [55.2023781,25.1564378], // starting position [lng, lat]
+      zoom: 12 
+    });
+ 
+  const draw = new MapboxDraw({
+    displayControlsDefault: false,
+    // Select which mapbox-gl-draw control buttons to add to the map.
+    controls: {
+      polygon: true,
+      trash: true,
+    },
+    // Set mapbox-gl-draw to draw by default.
+    // The user does not have to click the polygon control button first.
+    defaultMode: 'draw_polygon'
+  });
+
+map.on('load', function(){
+  map.addControl(draw);
+  map.on('draw.create', updateArea);
+  map.on('draw.delete', updateArea);
+  map.on('draw.update', updateArea);
+});
+
+
+function updateArea(e) {
+  // the data variable is a geojson format
+  const data = draw.getAll();
+
+  const answer = document.getElementById('calculated-area');
+  const geojson_id = document.getElementById('geojson'); 
+
+  if (data.features.length > 0) {
+    // get the geojson of pylogon and set the form
+    $('#geojson').val(String(JSON.stringify(data.features[0].geometry)));
+
+    // below is calculating the area via turf which we do not need
+    // const area = turf.area(data);
+    // Restrict the area to 2 decimal points.
+    // const rounded_area = Math.round(area * 100) / 100;
+    // here send the geojson format to server via ajax
+
+    // answer.innerHTML = jso;
+    
+  } else {
+    answer.innerHTML = '';
+    if (e.type !== 'draw.delete')
+    alert('Click the map to draw a polygon.');
+  }
+}
+
+
+
+
+  //  apikey of mapbox
+//  const apiKey = "pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA"
+// //  googlemapapikeey="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgHueCAXFtslQE1riwlgiwZsbxglhOB04&callback=initMap&libraries=&v=weekly";\
+
+// // load the mapbox map loader
+// var mymap = L.map('map').setView([25.1564378,55.2023781], 12);
+
+// // add map 
+// L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+//     maxZoom: 18,
+//     id: 'mapbox/streets-v11',
+//     tileSize: 512,
+//     zoomOffset: -1,
+//     accessToken: apiKey
+// }).addTo(mymap);
+
+// // make the pizza marker shop
+// const pizzaShop = L.marker([25.156442505771384, 55.20456662639172]).addTo(mymap);
+// pizzCard = `
+//   <div style="padding:0px; margin:0px;"> 
+//     <img src="../../static/img/pizzashop.jpg" style="width:100%;margin:0px;">
+//     <span>We have the best pizza in Dubai.</span>
+//     <a href="https:pizza.ae">Order here</a>
+//   </div>
+// `;
+
+// pizzaShop.bindPopup(pizzCard);
+
+// // pizzaShop.openPopup();
+
+
+// // make the circles
+// // const area_one = L.circle([25.156442505771384, 55.20456662639172],{
+// //   radius:1900,
+// //   color:'green',
+// // }).addTo(mymap);
+// // area_one.bindPopup("this is the area one. delivery is free");
+
+// // area two
+// // const area_two = L.circle([25.156442505771384, 55.20456662639172],{
+// //   radius:5000,
+// //   // color:'green',
+// // }).addTo(mymap);
+// // area_two.bindPopup("this is the area two. delivery charge is 10 AED");
+
+// // area three
+// // const area_three = L.circle([25.156442505771384, 55.20456662639172],{
+// //   radius:10000,
+// //   color:'orange',
+// // }).addTo(mymap);
+// // area_three.bindPopup("this is the area three. delivery charge is 20 AED");
+
+
+// // area four
+// // const area_four = L.circle([25.156442505771384, 55.20456662639172],{
+// //   radius:16000,
+// //   color:'red',
+// // }).addTo(mymap);
+// // area_four.bindPopup("this is the area four. delivery charge is 30 AED");
+
+
+// const area_one_polygon = L.polygon([
+//   [25.156442505771384, 55.20456662639172],
+//   [25.1713658,55.2166653],
+//   [25.1545398,55.2126203]
+// ], {
+//   color:'green',
+// }).addTo(mymap);
+
+
+// const area_two = L.polygon(
+//   [
+//     [25.20287224975643, 55.27279994236228],
+//     [25.202432937123955, 55.27413515443226],
+//   [25.19403077798066, 55.29009700781427],
+//   [25.184859132148368, 55.28251057559849],
+//   [25.183540994563536, 55.2788690881349],
+//   [25.184090220290155, 55.27619866399495],
+//   [25.187110917533825, 55.268672923236885],
+//   [25.185353430066318, 55.270615049884135],
+//   [25.18293684340498, 55.26478866994241],
+//   [25.18634201988625, 55.255927717114375],
+//   [25.20100516012051, 55.26897638052553],
+//   [25.20265259363836, 55.271404038834575],
+//   // [25.19729566401786, 55.27071219917276],
+//   // [25.198860774103252, 55.273026061173056],
+//   // [25.199293235175773, 55.275188194354556],
+//   ],
+// ).addTo(mymap);
+
+
+
 </script>
 
 {% endblock js %}

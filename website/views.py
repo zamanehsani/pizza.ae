@@ -21,3 +21,4 @@ class Cart(DetailView):
         data = super(Cart, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'your order'
         return data
+

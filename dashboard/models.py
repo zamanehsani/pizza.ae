@@ -137,7 +137,6 @@ class Stock(models.Model):
         return reverse('dashboard:stock')
 
 
-
 # what the store member eat
 class Staff_Salary(models.Model):
     months = (('January', 'January'),('February', 'February'),('March', 'March'),('April', ' April'), 
@@ -159,3 +158,20 @@ class Staff_Salary(models.Model):
     
     def get_absolute_url(self):
         return reverse('dashboard:salary')
+
+
+class Areas(models.Model):
+    name = models.CharField(max_length=150)
+    color = models.CharField(max_length=150, null=True, blank=True)
+    charge = models.DecimalField(max_digits=10, decimal_places=3)
+    min_order = models.SmallIntegerField(null=True, blank=True)
+    geojson = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Area"
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('dashboard:area')

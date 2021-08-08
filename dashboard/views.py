@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 
 
+
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
     template_name = "dashboard/index.html"
@@ -180,8 +181,42 @@ class Delete_Menu_category(LoginRequiredMixin, DeleteView):
 # coverage area section
 class Area(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/Area.html'
+
+    def post(self, request):
+        print(request.POST)
+        form = forms.AreaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'your area has been added.', fail_silently=True)
+            return redirect('dashboard:area')
+
+        messages.error(request, 'something went wrong.', fail_silently=True)
+        return redirect('dashboard:area',)
+
     def get_context_data(self, *args, **kwargs):
         data = super(Area, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Area'
+        return data
+
+
+class Area_Add(TemplateView):
+    model = models.Areas
+    template_name = "dashboard/Area.html"
+    
+    def post(self, request):
+        print(request.POST)
+        form = forms.AreaForm
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'your area has been added.', fail_silently=True)
+            return redirect('dashboard:area')
+
+        messages.error(request, 'something went wrong.', fail_silently=True)
+        return redirect('dashboard:area',)
+
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Area_Add, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Area'
         return data
 
@@ -294,3 +329,4 @@ class Delete_Salary(LoginRequiredMixin, DeleteView):
     #     if self.request.pay_by == salary.pay_by:
     #         return True
     #     return False
+

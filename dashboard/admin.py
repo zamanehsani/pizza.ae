@@ -45,3 +45,8 @@ admin.site.register(models.Staff_Salary, Staff_salary)
 class Profile(admin.ModelAdmin):
     list_display = ('user', 'phone', 'address', 'about')
 admin.site.register(models.Profile, Profile)
+
+class Area(admin.ModelAdmin):
+    list_display = ('id', 'name', 'min_order', 'charge')
+    list_filter = ('min_order', 'charge')
+admin.site.register(models.Areas, Area)
