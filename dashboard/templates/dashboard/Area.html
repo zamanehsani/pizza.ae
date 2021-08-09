@@ -50,7 +50,7 @@ crossorigin=""/>
           <!-- Small boxes (Stat box) -->
           <div class="card card-orange card-outline">
             <div class="card-header">
-              <h3 class="card-title d-none d-lg-inline"> <i class="fas fa-edit"></i>  Coverage Areas</h3>
+              <h3 class="card-title d-none d-lg-inline" onclick="text(2)" > <i class="fas fa-edit"></i>  Coverage Areas</h3>
               {% if perms.dashboard.add_area %}
               <a href="{% url 'dashboard:add_area'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add Area</a>
               {% endif %}
@@ -60,11 +60,42 @@ crossorigin=""/>
                 <!-- <h2>PIZZA.AE location</h2> -->
                 
                   <div id="map"></div>
-                 
+                 <div class="row">
+                   <div class="col mt-3">
+                     <div id="listOfArea">
+                        
+                     </div>
+                   </div>
+                 </div>
                 </div>
             </div>
           </div>
         </div><!-- /.container -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form action="" id="areaname">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>are your sure you want to delete? </p>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="reset" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">YES, Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
       <!-- /.content -->
 
@@ -87,7 +118,6 @@ crossorigin=""/>
  <script>
 
  const apiKey = "pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA"
-
 //  googlemapapikeey="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgHueCAXFtslQE1riwlgiwZsbxglhOB04&callback=initMap&libraries=&v=weekly";\
 
 // load the mapbox map loader
@@ -120,6 +150,7 @@ $(document).ready(function(){
   xhttp.onload = function() {
  
     var demo = document.getElementById("demo");
+    var listOfArea = document.getElementById("listOfArea");
     // do the calculation
     const object = JSON.parse(this.responseText);
     
@@ -128,10 +159,7 @@ $(document).ready(function(){
         var obj = object[key];
         // loop through object of json
         var geojson_data = JSON.parse(obj.geojson);
-        console.log("this is geojson parsed: "+ obj.name);
         // adding to the map
-
-
         var popup_context = `Area: ${obj.name}. <br> minumam order: ${obj.min_order} AED. <br> Delivery charge: ${obj.charge} AED.`;
 
         L.geoJSON(geojson_data, {
@@ -140,16 +168,59 @@ $(document).ready(function(){
           }
         }).bindPopup(popup_context).addTo(mymap);
 
+        // create belete btn
+        var del_btn = document.createElement("p");
+          del_btn.classList.add('btn');
+          del_btn.classList.add('btn-danger');
+          del_btn.classList.add('mr-2');
+          del_btn.classList.add('deletebtn');
+        var data_url = document.createAttribute('data-url');
+          data_url.value = obj.url;
+          del_btn.setAttributeNode(data_url);
+        var text = document.createTextNode("Delete "+ obj.name);
+
+        del_btn.appendChild(text);
+
+        var ele = document.getElementById('listOfArea');
+        ele.appendChild(del_btn);
+
+        // add eventlister to btn
+        del_btn.addEventListener("click", show);
+        
       }else{
         demo.append("doen not");
-      }
-      
+      } 
     }
-    
   }
   xhttp.open("GET", "../api/areas");
   xhttp.send();
 });
+
+// show delete model
+function show(){
+  $(".deletebtn").each(function(){
+    $(this).click(function(){
+      var url = $(this).attr('data-url');
+      $('#areaname').attr('action', url);
+      $('#deleteModal').modal('show');
+    });
+  });
+}
+
+
+// sending the delete request
+$('#areaname').submit(function(e){
+  e.preventDefault();
+  var formaction = $(this).attr('action');
+  $.ajax({
+    url:formaction,
+    type:'DELETE',
+    success:function(respnse){
+      console.log(respnse);
+    }
+  });
+});
+
 </script>
 
 {% endblock js %}
