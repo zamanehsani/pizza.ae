@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls), 
     path("dashboard/", include('dashboard.urls')),
     path("", include("website.urls")),
-
+    path("api/", include("api.urls")),
      # path('lockscreen', dashboard_views.Lockscreen, name='index'),
     path('login', auth_views.LoginView.as_view(template_name="dashboard/login.html"), name="login"),
     path('logout', auth_views.LogoutView.as_view(template_name="dashboard/index.html"), name="logout"),

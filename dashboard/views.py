@@ -179,8 +179,8 @@ class Delete_Menu_category(LoginRequiredMixin, DeleteView):
 
 # order section
 # coverage area section
-class Area(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/Area.html'
+class Area_add(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/Area_add.html'
 
     def post(self, request):
         print(request.POST)
@@ -194,15 +194,13 @@ class Area(LoginRequiredMixin, TemplateView):
         return redirect('dashboard:area',)
 
     def get_context_data(self, *args, **kwargs):
-        data = super(Area, self).get_context_data(*args, **kwargs)
+        data = super(Area_add, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Area'
         return data
 
 
-class Area_Add(TemplateView):
-    model = models.Areas
+class Area(TemplateView):
     template_name = "dashboard/Area.html"
-    
     def post(self, request):
         print(request.POST)
         form = forms.AreaForm
@@ -216,7 +214,7 @@ class Area_Add(TemplateView):
 
 
     def get_context_data(self, *args, **kwargs):
-        data = super(Area_Add, self).get_context_data(*args, **kwargs)
+        data = super(Area, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Area'
         return data
 
