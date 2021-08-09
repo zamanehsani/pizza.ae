@@ -51,52 +51,66 @@ font-size: 13px;
       <!-- Main content -->
       <div class="content">
         <div class="container">
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-          <!-- <h2>PIZZA.AE location</h2> -->
-          
-            <div id="map"></div>
-       
-            <div class="row mt-3">
-              <form method="POST"> {% csrf_token %}
-                <input type="hidden" name="geojson" id="geojson">
-
-                <div class="row mb-2">
-                  <div class="col">
-                    <div class="">
-                      <!-- <label  class="form-label">Name</label> -->
-                      <input class="form-control" required placeholder="name of area" type="text" name="name">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <!-- <label  class="form-label">minimum order</label> -->
-                      <input class="form-control" required placeholder="minimum order" type="number" name="min_order">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <!-- <label class="form-label">Charge</label> -->
-                      <input class="form-control" required placeholder="delivery charge" type="number" name="charge">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <input type="submit" class="btn btn-primary form-control" value="Add">
-                      
-                    </div>
-                    
-                  </div>
-                </div>
-              </form>
+          <div class="card card-orange card-outline">
+            <div class="card-header">
+              <h3 class="card-title d-none d-lg-inline">add an area with clicking on the map area. double-click to finished your area.</h3>
             </div>
-
-            <!-- <div class="calculation-box">
-              <p>Click the map to draw a polygon.</p>
-              <div id="calculated-area"></div>
-              </div> -->
-
+            <div class="card-body">
+              <div class="row">
+                <!-- <h2>PIZZA.AE location</h2> -->
+                
+                  <div id="map"></div>
+             
+                  <div class="row mt-3">
+                    <form method="POST"> {% csrf_token %}
+                      <input type="hidden" name="geojson" id="geojson">
+      
+                      <div class="row mb-2">
+                        <div class="col">
+                          <div class="">
+                            <!-- <label  class="form-label">Name</label> -->
+                            <input class="form-control" required placeholder="name of area" type="text" name="name">
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="">
+                            <!-- <label  class="form-label">minimum order</label> -->
+                            <input class="form-control" required placeholder="minimum order" type="number" name="min_order">
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="">
+                            <!-- <label class="form-label">Charge</label> -->
+                            <input class="form-control" required placeholder="delivery charge" type="number" name="charge">
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="">
+                            <!-- <label class="form-label">Charge</label> -->
+                            <input class="form-control" required placeholder="color of area" type="text" name="color">
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="">
+                            <input type="submit" class="btn btn-primary form-control" value="Add">
+                            
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+      
+                  <!-- <div class="calculation-box">
+                    <p>Click the map to draw a polygon.</p>
+                    <div id="calculated-area"></div>
+                    </div> -->
+      
+                </div>
+            </div>
           </div>
+          <!-- Small boxes (Stat box) -->
+        
         </div><!-- /.container -->
       </div>
       <!-- /.content -->
@@ -156,7 +170,7 @@ function updateArea(e) {
 
   if (data.features.length > 0) {
     // get the geojson of pylogon and set the form
-    $('#geojson').val(String(JSON.stringify(data.features[0].geometry)));
+    $('#geojson').val(String(JSON.stringify(data)));
 
     // below is calculating the area via turf which we do not need
     // const area = turf.area(data);

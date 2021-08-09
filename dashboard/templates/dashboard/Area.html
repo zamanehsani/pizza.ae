@@ -48,39 +48,21 @@ crossorigin=""/>
       <div class="content">
         <div class="container">
           <!-- Small boxes (Stat box) -->
-          <div class="row">
-          <!-- <h2>PIZZA.AE location</h2> -->
-          
-            <div id="map"></div>
-       
-            <div class="row mt-3">
-              <!-- <form method="POST"> {% csrf_token %}
-                <input type="hidden" name="geojson" id="geojson">
-                <div class="row mb-2">
-                  <div class="col">
-                    <div class="">
-                      <input class="form-control" required placeholder="name of area" type="text" name="name">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <input class="form-control" required placeholder="minimum order" type="number" name="min_order">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <input class="form-control" required placeholder="delivery charge" type="number" name="charge">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="">
-                      <input type="submit" class="btn btn-primary form-control" value="Add">
-                    </div>
-                  </div>
-                </div>
-              </form> -->
+          <div class="card card-orange card-outline">
+            <div class="card-header">
+              <h3 class="card-title d-none d-lg-inline"> <i class="fas fa-edit"></i>  Coverage Areas</h3>
+              {% if perms.dashboard.add_area %}
+              <a href="{% url 'dashboard:add_area'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add Area</a>
+              {% endif %}
             </div>
-
+            <div class="card-body">
+              <div class="row">
+                <!-- <h2>PIZZA.AE location</h2> -->
+                
+                  <div id="map"></div>
+                 
+                </div>
+            </div>
           </div>
         </div><!-- /.container -->
       </div>
@@ -133,18 +115,41 @@ pizzCard = `
 pizzaShop.bindPopup(pizzCard);
 // pizzaShop.openPopup();
 
+$(document).ready(function(){
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+ 
+    var demo = document.getElementById("demo");
+    // do the calculation
+    const object = JSON.parse(this.responseText);
+    
+    for(var key in object){
+      if(object.hasOwnProperty(key)){
+        var obj = object[key];
+        // loop through object of json
+        var geojson_data = JSON.parse(obj.geojson);
+        console.log("this is geojson parsed: "+ obj.name);
+        // adding to the map
 
-// request to area coverage url and get all the geojson of areas via ajax
 
-const area_one_polygon = L.polygon([
-  [25.156442505771384, 55.20456662639172],
-  [25.1713658,55.2166653],
-  [25.1545398,55.2126203]
-], {
-  color:'green',
-}).addTo(mymap);
+        var popup_context = `Area: ${obj.name}. <br> minumam order: ${obj.min_order} AED. <br> Delivery charge: ${obj.charge} AED.`;
 
+        L.geoJSON(geojson_data, {
+          style:function(){
+             return {color:obj.color};
+          }
+        }).bindPopup(popup_context).addTo(mymap);
 
+      }else{
+        demo.append("doen not");
+      }
+      
+    }
+    
+  }
+  xhttp.open("GET", "../api/areas");
+  xhttp.send();
+});
 </script>
 
 {% endblock js %}

@@ -37,5 +37,5 @@ urlpatterns = [
 
     # area
     path('area', dashboard_views.Area.as_view(), name="area"),
-    path('area/add', dashboard_views.Area_add.as_view(), name="area_add"),
+    path('area/add', dashboard_views.Area_add.as_view(), name="add_area"),
 ]
