@@ -199,7 +199,7 @@ class Area_add(LoginRequiredMixin, TemplateView):
         return data
 
 
-class Area(TemplateView):
+class Area(LoginRequiredMixin,TemplateView):
     template_name = "dashboard/Area.html"
     def post(self, request):
         print(request.POST)

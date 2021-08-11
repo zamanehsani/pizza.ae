@@ -207,65 +207,45 @@ function show(){
   });
 }
 
+var auth_access;
+var auth_refresh;
 
 // sending the delete request
 $('#areaname').submit(function(e){
   e.preventDefault();
   var formaction = $(this).attr('action');
-  console.log(formaction);
-
-  // this shall not be needed.
-  const csrftoken = getCookie('csrftoken')
   $.ajax({
     url:formaction,
     type:'DELETE',
-    data: {csrfmiddlewaretoken:csrftoken},
-    success:function(respnse){
-      console.log(respnse);
-    }
+    headers: {Authorization: 'Bearer '+auth_access},
+    success:function(response){
+      location.reload();
+    },
   });
 
 });
 
 
-
-  // formaction data is: http://192.168.0.142:8000/api/areas/18/ 
-  // which works in postman and api view dashboard
-  // only not here via ajax
-
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("DELETE", formaction);
-    // xhr.send();
-
-    // xhr.onload = function() {
-    //   console.log(xhr.status);
-    //     if (xhr.status != 200) {
-    //         console.log('ERROR');
-    //     } else {
-    //         console.log('DELETED!');
-    //     }
-    // };
-    // xhr.onerror = function() {
-    //     console.log('NO CONNECTION');
-    // };
-
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
+// for testing and authentication of user login.
+// this function authenticate the user and sets thee access and refresh token
+$(document).ready(function worker(){
+  data = { username: "admin", password: "Z123123z" };
+// send an ajax post to api/token to authenticate user and get the auth credential. access and refresh
+  $.ajax({
+    url : '{% url "token_obtain_pair" %}',
+    type: "POST",
+    data: data,
+    success: function(data){
+      auth_refresh = data.refresh;
+      auth_access = data.access;
+      console.log("this refresh: "+data.refresh);
+      console.log("this access: "+ data.access)
+    }, //end of success function
+    complete: function(){
+      setTimeout(worker, 290,000);
     }
-    return cookieValue;
-}
-console.log(getCookie('csrftoken'));
+  });
+});
 
 </script>
 
