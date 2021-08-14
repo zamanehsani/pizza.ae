@@ -94,9 +94,9 @@ class Order(models.Model):
     date        = models.DateTimeField(auto_now=False, auto_now_add=True)
     location    = models.TextField(null=True, blank=True)
     number      = models.IntegerField(null=True, blank=True)
-    menu_items  = models.ManyToManyField(Menu)
-    status      = models.CharField(max_length=100, null=True, blank=True, choices=st, default=1)
-    deliverer   = models.ForeignKey(User, on_delete=models.CASCADE)
+    menu_items  = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True, blank=True)
+    status      = models.CharField(max_length=100, choices=st,null=True,blank=True, default=1)
+    deliverer   = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     description     = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:

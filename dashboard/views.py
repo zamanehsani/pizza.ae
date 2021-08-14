@@ -12,6 +12,25 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 
 
+class Order(LoginRequiredMixin, ListView):
+    model = models.Order
+    template_name = "dashboard/order.html"
+
+    def post(self, request, *args, **kwargs):
+        form = forms.OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'An order has been placed.', fail_silently=True)
+            return redirect('dashboard:order')
+        print(form.errors)
+        messages.error(request, 'something went wrong.', fail_silently=True)
+        return redirect('website:cart', pk=request.POST.get('menu_items'))
+    
+    
+    def get_context_data(self, *args, **kwargs):
+        data = super(Order, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Order'
+        return data
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"

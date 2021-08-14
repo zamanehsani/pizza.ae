@@ -23,3 +23,8 @@ class AreaForm(forms.ModelForm):
     class Meta:
         model = models.Areas
         fields = "__all__"
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = "__all__"

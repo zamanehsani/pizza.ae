@@ -139,7 +139,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
           {% if perms.dashboard.view_order %}
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link {% if page_title == 'Order'  %} active {% endif %}">
               <i class="nav-icon fas fa-shopping-bag"></i>
               <p>Orders</p>
             </a>

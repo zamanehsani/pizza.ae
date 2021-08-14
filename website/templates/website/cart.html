@@ -29,27 +29,46 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <div class="row">
-                            <div class="col">
-                                {{object.price}} AED
-                            </div>
-                            <div class="col text-end">
-                                <div class="col-sm-7">
-                                    <label class="visually-hidden" for="specificSizeInputGroupUsername"></label>
-                                    <div class="input-group">
-                                      <div class="input-group-text">quantity</div>
-                                      <input type="number" min="1" max="100" value="1" class="form-control" id="specificSizeInputGroupUsername" placeholder="">
+                        <form method="POST" action="{% url 'dashboard:order' %}"> {% csrf_token %}
+                            <input type="text" name="menu_items" id="item_id" value="{{object.pk}}">
+                            <input type="text" name="status">
+                            <div class="row">
+                                <div class="col">
+                                    {{object.price}} AED
+                                </div>
+                                <div class="col text-end">
+                                    <div class="col-sm-7">
+                                        <label class="visually-hidden" for="specificSizeInputGroupUsername"></label>
+                                        <div class="input-group">
+                                        <div class="input-group-text">quantity</div>
+                                        <input type="number" min="1" max="100" name="quantity" value="1" class="form-control" 
+                                               id="specificSizeInputGroupUsername" placeholder="">
+                                        </div>
                                     </div>
-                                  </div>
-                                <!-- <a href="" class=" text-end pt-0 pb-0 text-success" 
-                                    title="Remove the Record."><i class="fa fa-trash"></i> Order 
-                                </a> -->
+                                    
+                                </div>
                             </div>
-                        </div>
+                            <div class="row">
+                                <input type="text" name="location" placeholder=" your location" id="id_location">
+                                <input type="text" placeholder="your name" name="name">
+                                <input type="number" name="number" placeholder="your phone">
+                            </div>
+                            <button type="submit">place order</button>
+                        </form>
                     </div>
                     <!-- /.card-footer -->
                 </div>
                 <!-- /.card -->
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form action="" method="POST">
+                        <p>this is form</p>
+                        {% csrf_token %}
+                        {{form}}
+                    </form>
+                </div>
             </div>
        
         </div>
