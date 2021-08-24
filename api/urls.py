@@ -14,6 +14,7 @@ router.register("menu-categories", views.MenuCategoryView)
 router.register("orders", views.OrderView)
 router.register("profiles", views.ProfileView)
 router.register("users", views.UserView)
+router.register("new-order", views.NewOrderView)
 
 urlpatterns = [
     path('', include(router.urls)),

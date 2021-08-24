@@ -37,15 +37,14 @@
               {% endif %}
             </div>
             <div class="card-body">
-              <div class="card text-center bg-orange">
+              <div class="card new_order_card d-none text-center bg-orange">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-12 col-md-4">
-                      <p>ID: 124325324</p>
-                      <p>name of order</p>
-                      <p>subtitle: number of order</p>
-                      <p>phone number</p>
-                      <p>status of order: order, procesing...</p>
+                    <div class="col-sm-12 col-md-4 order">
+                    <p id="order_id">Id:</p>
+                    <p id="order_date">date: </p>
+                    <p class="order_name"></p>
+                    <p class="order_location"></p>
                     </div>
                     <div class="col-sm-12 col-md-4 border-right border-left border-light">
                       <p>this is second</p>
@@ -71,4 +70,26 @@
 
 {% block js %}
 
+<script>
+
+// read the new order only
+$( document ).ready(function() {
+  var origin   = window.location.origin
+  console.log(origin);
+  $.ajax({
+    url: origin+"/api/new-order",
+    method:"get",
+    success: function(data){
+      // show new order card and add data to it. make a new sound as well.
+      // this show check every five second for new order.
+      $(".new_order_card").removeClass("d-none");
+      // $("#order_id").text(data[0].id);
+      $("#order_date").text(data[0].date);
+      $(".order_location").text(data[0].location);
+      $(".order_name").text(data[0].name);
+      
+    },
+  });
+});
+</script>
 {% endblock js %}

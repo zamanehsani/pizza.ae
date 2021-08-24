@@ -23,6 +23,10 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Order
         fields = "__all__"
 
+# class NewOrderSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Order
+#         fields = "__all__"
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
