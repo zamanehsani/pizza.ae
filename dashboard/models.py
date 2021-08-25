@@ -97,8 +97,8 @@ class Order(models.Model):
     menu_items  = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True, blank=True)
     status      = models.CharField(max_length=100, null=True, blank=True)
     deliverer   = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    description     = models.TextField(null=True, blank=True)
-
+    description     = models.TextField(null=True, blank=True) 
+    
     def __str__(self) -> str:
         return  self.name
 

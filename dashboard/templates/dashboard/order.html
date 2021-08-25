@@ -5,7 +5,6 @@
 
 {% endblock css %}
 
-
 {% block content %}
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -41,32 +40,32 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-4 order">
-                    <p id="order_id">Id:</p>
-                    <p id="order_date">date: </p>
-                    <p class="order_name"></p>
-                    <p class="order_location"></p>
+                    <p>Id: <span  id="order_id"></span></p>
+                    <p >date: <span id="order_date"></span></p>
+                    <p > location: <span class="order_location"></span></p>
+                    <p >order name: <span class="order_name"></span></p>
+                    <p > status <span class="status"></span></p>
+                    <p > note: <span class="description"></span></p>
+                    <p >menu items: <span class="menu_item"></span></p>
+                    <p >deliverer <span class="deliverer"></span></p>
+                    <p>number: <span class="number"></span></p>
                     </div>
                     <div class="col-sm-12 col-md-4 border-right border-left border-light">
-                      <p>this is second</p>
+                      <p>dfg</p>
                     </div>
                     <div class="col-sm-12 col-md-4">
                       <p>this is thrid</p>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div><!-- /.container -->
-
       </div>
       <!-- /.content -->
 
-
-
 {% endblock content %}
-
 
 {% block js %}
 
@@ -75,7 +74,6 @@
 // read the new order only
 $( document ).ready(function() {
   var origin   = window.location.origin
-  console.log(origin);
   $.ajax({
     url: origin+"/api/new-order",
     method:"get",
@@ -83,11 +81,15 @@ $( document ).ready(function() {
       // show new order card and add data to it. make a new sound as well.
       // this show check every five second for new order.
       $(".new_order_card").removeClass("d-none");
-      // $("#order_id").text(data[0].id);
+      $("#order_id").text(data[0].id);
       $("#order_date").text(data[0].date);
       $(".order_location").text(data[0].location);
       $(".order_name").text(data[0].name);
-      
+      $(".status").text(data[0].status);
+      $(".description").text(data[0].description);
+      $(".deliverer").text(data[0].deliverer);
+      $(".menu_item").text(data[0].menu_items);
+      $(".number").text(data[0].number);
     },
   });
 });
