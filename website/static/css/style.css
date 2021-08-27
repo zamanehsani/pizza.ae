@@ -1,16 +1,19 @@
-@font-face {
+/* @font-face {
     font-family: "provicali";
     src: url("../fonts/Provicali.otf") format("opentype");
-}
+} */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); */
+
 
 /* this is provicali but it is bold and is not good */
 /* p{
-    font-family: "provicali";
+    font-family: "mons";
 } */
 
-*{
-    font-family: 'provicali', sans-serif;
-}
+/* *{
+    font-family: 'Montserrat', sans-serif;
+} */
 
 .logo-whatsapp{
     width: 8em;
@@ -85,4 +88,12 @@
        display: none;
     }
 
+}
+
+.content {
+    background-image: url("../img/makhsos.png");
+    background-color: #240606;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
 }

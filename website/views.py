@@ -22,3 +22,10 @@ class Cart(DetailView):
         data['page_title'] = 'your order'
         return data
 
+class LandingPage(TemplateView):
+    template_name = "website/LandingPage.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(LandingPage, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'PIZZA.AE'
+        return data

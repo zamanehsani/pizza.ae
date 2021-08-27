@@ -1,0 +1,146 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+
+.shadow-lg{
+  box-shadow: 0px 16px 86px 20px rgba(0,0,0,1)!important;
+-webkit-box-shadow: 0px 16px 86px 20px rgba(0,0,0,1);
+-moz-box-shadow: 0px 16px 86px 20px rgba(0,0,0,1);
+}
+
+
+   html, body {
+    height: 100%;
+    margin: 0;
+    }
+
+    .box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    }
+
+    .box .header {
+    flex: 0 1 auto;
+    /* The above is shorthand for:
+    flex-grow: 0,
+    flex-shrink: 1,
+    flex-basis: auto
+    */
+    }
+
+    .box .content {
+    flex: 1 1 auto;
+    }
+    .box .footer {
+    flex: 0 1 40px;
+    }
+
+  .store_icon{
+    /* position: absolute; */
+    bottom: 2em;
+    left: 5em;
+    width: 20em; 
+  }
+
+  .call_24_7{
+    /* position: absolute; */
+    bottom: 2em;
+    right: 3em;
+    width: 10em; 
+  }
+  @media screen and (max-width: 900px) {
+    .call_24_7{
+      position: absolute;
+      bottom: 6em;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%)
+    } 
+  }
+
+  /* .pizza-background{
+    z-index: -2;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: 70vh;
+  } */
+
+
+
+</style>
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="box">
+    <div class="header">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-lg z-index-3">
+            <div class="container-fluid">
+              <a class="navbar-brand d-block d-sm-block d-md-block d-lg-none" href="#"> <h1>PIZZA.AE</h1></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
+                  <li class="nav-item">
+                    <a class="nav-link fw-bold active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fw-bold" href="#">Menu</a>
+                  </li>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link fw-bold" href="#" tabindex="-1" aria-disabled="true">About Us</a>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link fw-bold" href="#" tabindex="-1" aria-disabled="true">Track Order</a>
+                  </li>
+                </ul>
+                <a class="navbar-brand me-auto d-sm-none d-none d-lg-block">
+                    <h1 class="fw-bold">PIZZA.AE</h1>
+                </a>
+                <ul class="navbar-nav my-2 my-lg-0">
+                    <li class="me-4 text-center">
+                        <button class="btn px-4 fw-bold rounded-pill" style="background-color: #F05A23; color: white;">Login</button>
+                    </li>
+                    <li class="me-5 text-center">
+                        <button class="btn px-4 fw-bold btn-success rounded-pill" style="background-color: #219653;">Sign Up</button>
+                    </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </div>
+    <div class="content" >
+      <div class="container">
+        <!-- <div class="pizza-background img-thumbnail">
+          <img src="{% static 'img/makhsos.png' %}" class="img-fluid ">
+        </div> -->
+        <div class="row justify-content-center">
+            <div class="col z-index-1 position-absolute top-50 start-50 translate-middle">
+                <button class="mx-auto py-3 fw-bold btn btn-success px-5 fs-4 rounded-pill d-block mb-3">Order From Menu</button>
+                <button class="mx-auto py-3 fw-bold btn btn-warning px-5 rounded-pill fs-4 d-block mb-3" style="border:none;background-color: #F05A23; color: white;">Make Your Own</button>
+                <button class="mx-auto py-3 fw-bold btn btn-success px-5  fs-4 rounded-pill d-block mb-3">Made By You</button>
+            </div>
+        </div>
+      </div>
+        <img class=" store_icon position-absolute bottom-5"   src="{% static 'img/store.png' %}" alt="">
+
+        <a href="https://wa.me/message/GYU3UVTPAADHM1" class="call_24_7 position-absolute bottom-5 end-0 translate-middle fw-bold fs-5 text-decoration-none text-white">
+          Live Chat 24/7
+        </a>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+
+{% endblock js %}

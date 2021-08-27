@@ -7,5 +7,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="website/index.html")),
     path('menu',views.Menu.as_view(), name="menu"),
     path('cart/<int:pk>', views.Cart.as_view(), name="cart"),
-   
+    path('landing/', views.LandingPage.as_view(), name="landingpage"),
 ]

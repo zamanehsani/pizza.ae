@@ -30,7 +30,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name_plural = "Profile"
 
-        
+
 class About_company(models.Model):
     name = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
