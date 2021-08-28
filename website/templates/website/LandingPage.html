@@ -4,12 +4,22 @@
 {% block css %}
 <style>
 
-.shadow-lg{
-  box-shadow: 0px 16px 86px 20px rgba(0,0,0,1)!important;
--webkit-box-shadow: 0px 16px 86px 20px rgba(0,0,0,1);
--moz-box-shadow: 0px 16px 86px 20px rgba(0,0,0,1);
+.shadow-me{
+  box-shadow: 0px 16px 80px 20px rgba(0,0,0,1);
+-webkit-box-shadow: 0px 16px 80px 20px rgba(0,0,0,1);
+-moz-box-shadow: 0px 16px 80px 20px rgba(0,0,0,1);
+}
+.shadow-left {
+  box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
+-webkit-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
+-moz-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
 }
 
+.shadow-right {
+  box-shadow: -25px 30px 80px 20px rgba(0,0,0,1);
+-webkit-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
+-moz-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
+}
 
    html, body {
     height: 100%;
@@ -32,34 +42,52 @@
     }
 
     .box .content {
-    flex: 1 1 auto;
+    /* flex: 1 1 auto; */
+    height: 100%;
     }
     .box .footer {
     flex: 0 1 40px;
     }
 
-  .store_icon{
+ 
+    /* for mobile */
+  @media screen and (max-width: 900px) {
+    .call_24_7{
+      position: absolute;
+      bottom: 4em;
+      left: 55%;
+      /* width: 20em; */
+      /* -webkit-transform: translateX(-50%);
+      transform: translateX(-50%) */
+    } 
+    .store_icon{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 20em; 
+  }
+  .my-margin-top{margin-top: 35%;}
+
+  }
+
+  /* for big screen */
+  @media screen and (min-width: 901px) {
+    .store_icon{
     /* position: absolute; */
     bottom: 2em;
-    left: 5em;
+    left: 15em;
     width: 20em; 
   }
 
   .call_24_7{
     /* position: absolute; */
     bottom: 2em;
-    right: 3em;
+    right: 2em;
     width: 10em; 
   }
-  @media screen and (max-width: 900px) {
-    .call_24_7{
-      position: absolute;
-      bottom: 6em;
-      left: 50%;
-      -webkit-transform: translateX(-50%);
-      transform: translateX(-50%)
-    } 
+  .my-margin-top{margin-top: 20%;}
   }
+
 
   /* .pizza-background{
     z-index: -2;
@@ -68,7 +96,9 @@
     height: 70vh;
   } */
 
-
+.active{
+  color: #F05A23!important;
+}
 
 </style>
 
@@ -79,16 +109,19 @@
 
 <div class="box">
     <div class="header">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-lg z-index-3">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark  z-index-3">
             <div class="container-fluid">
-              <a class="navbar-brand d-block d-sm-block d-md-block d-lg-none" href="#"> <h1>PIZZA.AE</h1></a>
+              <a class="navbar-brand d-block d-sm-block d-md-block d-lg-none" href="{% url 'website:landingpage' %}"> 
+                <img src="{% static 'img/PizzaLogo.png' %}" height="40" alt="">
+                <!-- <h1 class="logo" style="color: #F05A23;">PIZZA.AE</h1> -->
+              </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                   <li class="nav-item">
-                    <a class="nav-link fw-bold active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link fw-bold orange-text active" aria-current="page" href="#">Home</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link fw-bold" href="#">Menu</a>
@@ -98,11 +131,12 @@
                     <a class="nav-link fw-bold" href="#" tabindex="-1" aria-disabled="true">About Us</a>
                   </li>
                   <li class="nav-item ">
-                    <a class="nav-link fw-bold" href="#" tabindex="-1" aria-disabled="true">Track Order</a>
+                    <a class="nav-link fw-bold"  href="#" tabindex="-1" aria-disabled="true">Track Order</a>
                   </li>
                 </ul>
-                <a class="navbar-brand me-auto d-sm-none d-none d-lg-block">
-                    <h1 class="fw-bold">PIZZA.AE</h1>
+                <a class="navbar-brand me-auto d-sm-none d-none d-lg-block pb-0 pt-0" href="{% url 'website:landingpage' %}">
+                  <img src="{% static 'img/PizzaLogo.png' %}" height="60" alt="">
+                    <!-- <h1 class=" logo" style="color: #F05A23; font-size: 70px;">PIZZA.AE</h1> -->
                 </a>
                 <ul class="navbar-nav my-2 my-lg-0">
                     <li class="me-4 text-center">
@@ -116,20 +150,26 @@
             </div>
         </nav>
     </div>
-    <div class="content" >
+    <div class="content">
+    
       <div class="container">
         <!-- <div class="pizza-background img-thumbnail">
           <img src="{% static 'img/makhsos.png' %}" class="img-fluid ">
         </div> -->
-        <div class="row justify-content-center">
-            <div class="col z-index-1 position-absolute top-50 start-50 translate-middle">
+        <div class="container my-margin-top">
+         
+          <div class="row align-self-center ">
+            <div class="col" >
                 <button class="mx-auto py-3 fw-bold btn btn-success px-5 fs-4 rounded-pill d-block mb-3">Order From Menu</button>
                 <button class="mx-auto py-3 fw-bold btn btn-warning px-5 rounded-pill fs-4 d-block mb-3" style="border:none;background-color: #F05A23; color: white;">Make Your Own</button>
                 <button class="mx-auto py-3 fw-bold btn btn-success px-5  fs-4 rounded-pill d-block mb-3">Made By You</button>
             </div>
         </div>
+        
+        </div>
+        
       </div>
-        <img class=" store_icon position-absolute bottom-5"   src="{% static 'img/store.png' %}" alt="">
+        <img class=" store_icon position-absolute bottom-5 start-10 translate-middle bottom-5 "   src="{% static 'img/store.png' %}" alt="">
 
         <a href="https://wa.me/message/GYU3UVTPAADHM1" class="call_24_7 position-absolute bottom-5 end-0 translate-middle fw-bold fs-5 text-decoration-none text-white">
           Live Chat 24/7
