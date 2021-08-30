@@ -14,6 +14,11 @@ class UserProfileform(forms.ModelForm):
         model = models.Profile
         fields = ['about', 'phone', 'address','photo']     
 
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = models.Customer
+        fields = "__all__"
+
 class PassChange(PasswordChangeForm):
     class Meta:
         model  = User

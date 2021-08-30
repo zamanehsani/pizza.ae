@@ -50,3 +50,7 @@ class Area(admin.ModelAdmin):
     list_display = ('id', 'name', 'min_order', 'charge')
     list_filter = ('min_order', 'charge')
 admin.site.register(models.Areas, Area)
+
+class Customer(admin.ModelAdmin):
+    list_display = ("id","user", "date", "phone")
+admin.site.register(models.Customer, Customer)

@@ -347,3 +347,45 @@ class Delete_Salary(LoginRequiredMixin, DeleteView):
     #         return True
     #     return False
 
+# the customer, 
+class Customer(LoginRequiredMixin, ListView):
+    model = models.Customer
+    template_name = "dashboard/Customer.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Customer, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Customer'
+        return data
+
+class Add_Customer(LoginRequiredMixin,CreateView):
+    # login_url = '/login'
+    model = models.Customer
+    template_name = 'dashboard/Customer_form.html'
+    fields = "__all__"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Add_Customer, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Customer'
+        return data
+
+class Update_Customer(LoginRequiredMixin, UpdateView):
+    # login_url = '/login'
+    model = models.Customer
+    template_name = 'dashboard/Customer_form.html'
+    fields = "__all__"
+    
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
+
+
+class Delete_Customer(LoginRequiredMixin, DeleteView):
+    model = models.Stock
+    # login_url ="/login"
+    template_name = "dashboard/delete_Customer.html"
+    success_url = '/dashboard/customer'
+    def get_context_data(self, *args, **kwargs):
+        data = super(Delete_Customer, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Customer'
+        return data
+

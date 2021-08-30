@@ -1,3 +1,4 @@
+from django.forms.widgets import Select
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from dashboard import models
@@ -37,3 +38,7 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()    
     serializer_class = serializers.UserSerializer
 
+class CustomerView(viewsets.ModelViewSet):
+    queryset = models.Customer.objects.all()
+    serializer_class = serializers.CustomerSerializer
+    

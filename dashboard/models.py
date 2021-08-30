@@ -2,6 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+def customer_profile_location(instance, filename):
+    return '/profiles/customer/{0}/{1}'.format(instance.user.username, filename)
+
+class Customer(models.Model):
+    user        = models.OneToOneField(User, on_delete=models.CASCADE)
+    date        = models.DateTimeField(auto_now_add=True)
+    email_confirmed = models.BooleanField(default=False)
+    phone       = models.PositiveIntegerField("what is your phone?",null=True, blank=True)
+    address     = models.CharField("where do you live?",max_length=500,null=True, blank=True)
+    photo       = models.ImageField("Upload a square picture of yourself.",default='default.png', upload_to = customer_profile_location, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.email
+    
+    def get_absolute_url(self):
+        return reverse('dashboard:customer')
+
+    class Meta:
+        verbose_name_plural = "Customer"
+
+
 def profile_location(instance, filename):
     return 'profiles/{0}/{1}'.format(instance.user.username, filename)
 

@@ -48,3 +48,9 @@ class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = models.Areas
 #         fields = "__all__"
+
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+    class Meta:
+        model = models.Customer
+        fields = "__all__"

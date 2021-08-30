@@ -1,5 +1,5 @@
 from collections import UserList
-from dashboard.models import Order
+from dashboard.models import Customer, Order
 from django.urls import path
 # from django.views.generic import TemplateView
 
@@ -27,7 +27,11 @@ urlpatterns = [
 
     path("order", dashboard_views.Order.as_view(),name="order"),
 
-    
+    path("customer", dashboard_views.Customer.as_view(), name="customer"),
+    path('add-customer/', dashboard_views.Add_Customer.as_view(), name="add_customer"),
+    path('customer/<int:pk>/update', dashboard_views.Update_Customer.as_view(), name="update_customer"),
+    path('customer/<int:pk>/delete', dashboard_views.Delete_Customer.as_view(), name="delete_customer"),
+
     path("stock/", dashboard_views.Stock.as_view(), name="stock"),
     path('add-stock/', dashboard_views.Add_Stock.as_view(), name="add_stock"),
     path('stock/<int:pk>/update', dashboard_views.Update_Stock.as_view(), name="update_stock"),

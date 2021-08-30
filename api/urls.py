@@ -15,7 +15,7 @@ router.register("orders", views.OrderView)
 router.register("profiles", views.ProfileView)
 router.register("users", views.UserView)
 router.register("new-order", views.NewOrderView)
-
+router.register("customer", views.CustomerView)
 urlpatterns = [
     path('', include(router.urls)),
     # token of jwt 
