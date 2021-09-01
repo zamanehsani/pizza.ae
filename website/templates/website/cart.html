@@ -10,67 +10,18 @@
 
 {% block content %}
 
+{% include 'website/navbar.html' %}
+
 <div class="container mt-4">
     <div class="row">
            
             <div class="col-lg-6 col-sm-12">
                 <div class="card card-orange">
-                    {% if object.new %}
-                    <!-- <div class="ribbon-wrapper">
-                        <div class="ribbon bg-primary"> New </div>
-                    </div> -->
-                    {% endif %}
-
-                    <!-- /.card-header -->
-                    <div class="card-body text-center bg-light">
-                        <img src="{{object.photo.url}}" style="width: 300;" alt="">
-                        <h3>{{object.name|title}}</h3>
-                        <p >{{object.description}}</p>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        <form method="POST" action="{% url 'dashboard:order' %}"> {% csrf_token %}
-                            <input type="text" name="menu_items" id="item_id" value="{{object.pk}}">
-                            <input type="hidden" name="status" value="ordered">
-                            <div class="row">
-                                <div class="col">
-                                    {{object.price}} AED
-                                </div>
-                                <div class="col text-end">
-                                    <div class="col-sm-7">
-                                        <label class="visually-hidden" for="specificSizeInputGroupUsername"></label>
-                                        <div class="input-group">
-                                        <div class="input-group-text">quantity</div>
-                                        <input type="number" min="1" max="100" name="quantity" value="1" class="form-control" 
-                                               id="specificSizeInputGroupUsername" placeholder="">
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <input type="text" name="location" placeholder=" your location" id="id_location">
-                                <input type="text" placeholder="your name" name="name">
-                                <input type="number" name="number" placeholder="your phone">
-                            </div>
-                            <button type="submit">place order</button>
-                        </form>
-                    </div>
-                    <!-- /.card-footer -->
+                    
                 </div>
                 <!-- /.card -->
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <form action="" method="POST">
-                        <p>this is form</p>
-                        {% csrf_token %}
-                        {{form}}
-                    </form>
-                </div>
-            </div>
-       
         </div>
 </div>
 

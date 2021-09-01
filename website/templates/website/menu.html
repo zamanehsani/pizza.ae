@@ -4,11 +4,10 @@
 {% block css %}
 <style>
 
-
-    .text-on-line {
+.text-on-line {
    width: 100%; 
    text-align: center; 
-   border-bottom: 1px solid #000; 
+   border-bottom: 1px solid #F05A23; 
    line-height: 0.1em;
    margin: 20px 0 30px; 
 } 
@@ -17,6 +16,7 @@
 .text-on-line span { 
     background:#fff; 
     padding:0 10px; 
+    color: #F05A23;
 }
 
 
@@ -28,7 +28,7 @@
 
 
 .menu_item_hover:hover{
-    border-radius: 6px;
+    border-radius: 4px;
     /* border: 1px solid green; */
     box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
     -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
@@ -36,12 +36,13 @@
 }
 .menu_item_hover:hover .btn_order{
     visibility: visible;
-    box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
-    -webkit-box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
-    -moz-box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
+    color: #F05A23;
+    background-color: wheat;
+    border: 1px solid #F05A23;
+    /* box-shadow:         0px 5px 5px 2px #F05A23;
+    -webkit-box-shadow: 0px 5px 5px 2px #F05A23;
+    -moz-box-shadow:    0px 5px 5px 2px #F05A23; */
 } 
-
-
 
 /* for fab btn */
 .btn-group-fab {
@@ -70,6 +71,7 @@
 }
 
 
+
 </style>
 
 {% endblock css %}
@@ -89,10 +91,11 @@
                         <img class="mx-auto d-block" src="{{obj.photo.url}}" style="width: 70%;" alt="">
                         <h4 class="text-center">{{obj.name|title}}</h4>
                         <p class="text-center " style="padding: 0 40px;">{{obj.description|capfirst}}</p>
-                        <p class="text-center"><b> {{obj.price}} AED </b></p>
+                        <p class="text-center price"><b> {{obj.price}} AED </b></p>
                         <p></p>
-                        <button class="btn btn-success rounded-pill px-3 mx-auto d-block btn_order "> Add To Cart  
-                          <span class="iconify pl-3 " data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="30"></span>                       
+                        <button data-id="{{obj.pk}}" class="btn px-5 rounded-pill mx-auto d-block btn_order "> Add To Cart  
+                          <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="30"></span>     -->
+                                          
                         </button>
                         <p></p>
                     </div>
@@ -101,57 +104,70 @@
             {% endfor %}
         {% endfor %}
 
-
         <div class="btn-group-fab" role="group" aria-label="FAB Menu">
             <div>
+                
               <a href="{% url 'website:cart_view' %}">
+                  
                 <button class="btn btn-main btn-success px-auto" title="Cart"> 
-                  <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span>
+                   <span id="order_counter">0</span>
+                  <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
                 </button>
               </a>
             </div>
-          </div>
-
-
-        <!-- {% for category in object_list %}
-        <div class="row">
-                
-            {% for obj in category.menu_set.all %}
-            <div class="col-lg-4 col-sm-12 mb-4">
-                <div class="card card-orange">
-                    {% if obj.new %}
-              
-                    {% endif %}
-                    <div class="card-body text-center bg-light">
-                        <img src="{{obj.photo.url}}" style="width: 100%; height:100%;"  alt="">
-                        <h3>{{obj.name|title}}</h3>
-                        <p >{{obj.description}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col">
-                                {{obj.price}} AED
-                            </div>
-                            <div class="col text-end">
-                                <a href="{% url 'website:cart' obj.id %}" class=" text-end pt-0 pb-0 text-success" 
-                                    title="Remove the Record."><i class="fa fa-trash"></i> Order 
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
         </div>
-        {% endfor %} -->
+
     </div>
 </div>
 
 {% endblock content %}
 
-
 {% block js %}
 <script src="https://code.iconify.design/2/2.0.4/iconify.min.js"></script>
 
+<script>
 
+$(document).ready(function(){
+    $('.btn_order').each(function(){
+        $(this).click(function(){
+            var obj_id = $(this).attr("data-id");
+            var obj_name = $(this).parent('.menu_item_hover').children('h4').text();
+            var obj_price = $(this).parent('.menu_item_hover').children('.price').children().text();
+            var obj_order = {id:obj_id,name:obj_name, price:obj_price}
+            Tolocal(obj_order);
+        }); // end of click
+    }); //end of each function
+});
+
+
+
+function Tolocal(obj){
+// check if we localstorage has got order already. 
+    if(localStorage.getItem("order")){
+        // get orders from localstorage and append to it.
+        var obj_local = localStorage.getItem("order");
+        obj_local += ";"+JSON.stringify(obj);
+        localStorage.setItem("order", obj_local);
+
+        // update the counter of order on btn
+        Order_counter();
+    }else{
+        // set new order to localstorage
+    localStorage.setItem("order", JSON.stringify(obj));
+    Order_counter();
+    }
+}
+
+function Order_counter(){
+    let order_counter = localStorage.getItem("order").split(";");
+    $("#order_counter").text(order_counter.length)
+}
+
+// load the order counter on load
+$(document).ready(function(){
+    let order_counter = localStorage.getItem("order").split(";");
+    $("#order_counter").text(order_counter.length)
+});
+
+</script>
 {% endblock js %}
