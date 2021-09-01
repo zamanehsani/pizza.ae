@@ -4,6 +4,7 @@
 {% block css %}
 <style>
 
+
 .shadow-me{
   box-shadow: 0px 16px 80px 20px rgba(0,0,0,1);
 -webkit-box-shadow: 0px 16px 80px 20px rgba(0,0,0,1);
@@ -109,46 +110,7 @@
 
 <div class="box">
     <div class="header">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark  z-index-3">
-            <div class="container-fluid">
-              <a class="navbar-brand d-block d-sm-block d-md-block d-lg-none" href="{% url 'website:landingpage' %}"> 
-                <img src="{% static 'img/PizzaLogo.png' %}" height="40" alt="">
-                <!-- <h1 class="logo" style="color: #F05A23;">PIZZA.AE</h1> -->
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
-                  <li class="nav-item">
-                    <a class="nav-link fw-bold orange-text active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link fw-bold" href="#">Menu</a>
-                  </li>
-                  </li>
-                  <li class="nav-item ">
-                    <a class="nav-link fw-bold" href="#" tabindex="-1" aria-disabled="true">About Us</a>
-                  </li>
-                  <li class="nav-item ">
-                    <a class="nav-link fw-bold"  href="#" tabindex="-1" aria-disabled="true">Track Order</a>
-                  </li>
-                </ul>
-                <a class="navbar-brand me-auto d-sm-none d-none d-lg-block pb-0 pt-0" href="{% url 'website:landingpage' %}">
-                  <img src="{% static 'img/PizzaLogo.png' %}" height="60" alt="">
-                    <!-- <h1 class=" logo" style="color: #F05A23; font-size: 70px;">PIZZA.AE</h1> -->
-                </a>
-                <ul class="navbar-nav my-2 my-lg-0">
-                    <li class="me-4 text-center">
-                        <button class="btn px-4 fw-bold rounded-pill" style="background-color: #F05A23; color: white;">Login</button>
-                    </li>
-                    <li class="me-5 text-center">
-                        <button class="btn px-4 fw-bold btn-success rounded-pill" style="background-color: #219653;">Sign Up</button>
-                    </li>
-                </ul>
-              </div>
-            </div>
-        </nav>
+       {% include 'website/navbar.html' %}
     </div>
     <div class="content rotated-background-image">
     
@@ -157,10 +119,11 @@
           <img src="{% static 'img/makhsos.png' %}" class="img-fluid ">
         </div> -->
         <div class="container my-margin-top">
-         
           <div class="row align-self-center ">
             <div class="col" >
+              <a href="{% url 'website:menu' %}" class="text-decoration-none">
                 <button class="mx-auto py-3 fw-bold btn btn-success px-5 fs-4 rounded-pill d-block mb-3">Order From Menu</button>
+              </a>
                 <button class="mx-auto py-3 fw-bold btn btn-warning px-5 rounded-pill fs-4 d-block mb-3" style="border:none;background-color: #F05A23; color: white;">Make Your Own</button>
                 <button class="mx-auto py-3 fw-bold btn btn-success px-5  fs-4 rounded-pill d-block mb-3">Made By You</button>
             </div>
