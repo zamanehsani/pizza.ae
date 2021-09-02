@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-p$kk^ylq11+utti@skppm%4!ozxfos*fbpgxi#t8_kv@8l^xeu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','www.pizza.ae','pizza.ae', '192.168.0.142','pizza-ae.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','www.pizza.ae','pizza.ae', '192.168.0.143','pizza-ae.herokuapp.com']
 
 
 # Application definition

@@ -25,7 +25,9 @@
 .menu_item_hover .btn_order{
     visibility: hidden;
 }
-
+.btn_order:focus{
+    background-color: yellowgreen;
+}
 
 .menu_item_hover:hover{
     border-radius: 4px;
@@ -34,15 +36,24 @@
     -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
     -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
 }
+
 .menu_item_hover:hover .btn_order{
     visibility: visible;
     color: #F05A23;
     background-color: wheat;
     border: 1px solid #F05A23;
-    /* box-shadow:         0px 5px 5px 2px #F05A23;
-    -webkit-box-shadow: 0px 5px 5px 2px #F05A23;
-    -moz-box-shadow:    0px 5px 5px 2px #F05A23; */
 } 
+
+
+.menu_item_hover:hover .btn_order:focus{
+   /* for clicking btn */
+
+}
+
+.menu_item_hover:hover .btn_order:hover{
+    background-color: tomato;
+    color:white;
+}
 
 /* for fab btn */
 .btn-group-fab {
@@ -123,7 +134,7 @@
 {% endblock content %}
 
 {% block js %}
-<script src="https://code.iconify.design/2/2.0.4/iconify.min.js"></script>
+
 
 <script>
 

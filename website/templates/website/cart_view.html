@@ -3,91 +3,132 @@
 
 {% block css %}
 <style>
-    .text-on-line {
-   width: 100%; 
-   text-align: center; 
-   border-bottom: 1px solid #000; 
-   line-height: 0.1em;
-   margin: 20px 0 30px; 
-} 
+  
+  .md-stepper-horizontal {
+    display:table;
+    width:100%;
+    margin:0 auto;
+    /* background-color:#FFFFFF; */
+    /* box-shadow: 0 3px 8px -6px rgba(0,0,0,.50); */
+  }
+  .md-stepper-horizontal .md-step {
+    display:table-cell;
+    position:relative;
+    /* this is padding of each stepp */
+    /* padding:24px; */
+  }
+  .md-stepper-horizontal .md-step:hover,
+  .md-stepper-horizontal .md-step:active {
+    /* uncoment this if you want hover eeffect*/
+    /* background-color:rgba(0,0,0,0.04); */
+  }
+  .md-stepper-horizontal .md-step:active {
+    border-radius: 15% / 75%;
+  }
+  .md-stepper-horizontal .md-step:first-child:active {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .md-stepper-horizontal .md-step:last-child:active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .md-stepper-horizontal .md-step:hover .md-step-circle {
+    background-color:#757575;
+  }
+  .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+  .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+    display:none;
+  }
+  .md-stepper-horizontal .md-step .md-step-circle {
+    width:30px;
+    height:30px;
+    margin:0 auto;
+    background-color:#999999;
+    border-radius: 50%;
+    text-align: center;
+    line-height:30px;
+    font-size: 16px;
+    font-weight: 600;
+    color:#FFFFFF;
+  }
+  .md-stepper-horizontal.green .md-step.active .md-step-circle {
+    background-color:#198754;
+  }
+  .md-stepper-horizontal.orange .md-step.active .md-step-circle {
+    background-color:#F96302;
+  }
+  .md-stepper-horizontal .md-step.active .md-step-circle {
+    background-color: rgb(33,150,243);
+  }
+  .md-stepper-horizontal .md-step.done .md-step-circle:before {
+    font-family:'FontAwesome';
+    font-weight:100;
+    content: "\f00c";
+  }
+  .md-stepper-horizontal .md-step.done .md-step-circle *,
+  .md-stepper-horizontal .md-step.editable .md-step-circle * {
+    display:none;
+  }
+  .md-stepper-horizontal .md-step.editable .md-step-circle {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+  .md-stepper-horizontal .md-step.editable .md-step-circle:before {
+    font-family:'FontAwesome';
+    font-weight:100;
+    content: "\f040";
+  }
+  .md-stepper-horizontal .md-step .md-step-title {
+    /* this is for the title of each step to be cloes to the circle */
+    margin-top:5px;
+    font-size:16px;
+    font-weight:600;
+  }
+  .md-stepper-horizontal .md-step .md-step-title,
+  .md-stepper-horizontal .md-step .md-step-optional {
+    text-align: center;
+    color:rgba(0,0,0,.26);
+  }
+  .md-stepper-horizontal .md-step.active .md-step-title {
+    font-weight: 600;
+    color:rgba(0,0,0,.87);
+  }
+  .md-stepper-horizontal .md-step.active.done .md-step-title,
+  .md-stepper-horizontal .md-step.active.editable .md-step-title {
+    font-weight:600;
+  }
+  .md-stepper-horizontal .md-step .md-step-optional {
+    font-size:12px;
+  }
+  .md-stepper-horizontal .md-step.active .md-step-optional {
+    color:rgba(0,0,0,.54);
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-left,
+  .md-stepper-horizontal .md-step .md-step-bar-right {
+    position:absolute;
+    /* this is the space of the line */
+    top:15px;
+    height:1px;
+    border-top:1px solid #DDDDDD;
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-right {
+    right:0;
+    left:50%;
+    margin-left:20px;
+  }
+  .md-stepper-horizontal .md-step .md-step-bar-left {
+    left:0;
+    right:50%;
+    margin-right:20px;
+  }
 
-/* for the heading line with text on it for category */
-.text-on-line span { 
-    background:#fff; 
-    padding:0 10px; 
+  .table td , th {
+   text-align: center;   
 }
-
-
-
-/*  hovering effects */
-.menu_item_hover .btn_order{
-    visibility: hidden;
-}
-
-
-.menu_item_hover:hover{
-    border-radius: 6px;
-    /* border: 1px solid green; */
-    box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-    -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-    -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-}
-.menu_item_hover:hover .btn_order{
-    visibility: visible;
-    box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
-    -webkit-box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
-    -moz-box-shadow: 0px 5px 5px 2px rgba(11, 129, 11, 0.48);
-} 
-
-
-
-/* for fab btn */
-.btn-group-fab {
-  position: fixed;
-  width: 50px;
-  height: auto;
-  right: 20px; bottom: 20px;
-}
-.btn-group-fab div {
-  position: relative; width: 100%;
-  height: auto;
-}
-.btn-group-fab .btn {
-  position: absolute;
-  bottom: 0;
-  border-radius: 50%;
-  display: block;
-  margin-bottom: 4px;
-  width: 40px; height: 40px;
-  margin: 4px auto;
-}
-.btn-group-fab .btn-main {
-  width: 50px; height: 50px;
-  right: 50%; margin-right: -25px;
-  z-index: 9;
-}
-.btn-group-fab .btn-sub {
-  bottom: 0; z-index: 8;
-  right: 50%;
-  margin-right: -20px;
-  -webkit-transition: all 2s;
-  transition: all 0.5s;
-}
-.btn-group-fab.active .btn-sub:nth-child(2) {
-  bottom: 60px;
-}
-.btn-group-fab.active .btn-sub:nth-child(3) {
-  bottom: 110px;
-}
-.btn-group-fab.active .btn-sub:nth-child(4) {
-  bottom: 160px;
-}
-.btn-group-fab .btn-sub:nth-child(5) {
-  bottom: 210px;
-}
-
 </style>
-
 {% endblock css %}
 
 
@@ -97,14 +138,139 @@
 
 <div class="container mt-4">
     <div class="row">
-      <p>this is cart view</p>
+      <div class="card pt-2">
+        <div class="md-stepper-horizontal green">
+          <div class="md-step active done">
+            <div class="md-step-circle"><span>1</span></div>
+            <div class="md-step-title">your order</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+          </div>
+          <div class="md-step active done">
+            <div class="md-step-circle"><span>2</span></div>
+            <div class="md-step-title">your details</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+          </div>
+          <div class="md-step active">
+            <div class="md-step-circle"><span>3</span></div>
+            <div class="md-step-title">address</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+          </div>
+          <div class="md-step">
+            <div class="md-step-circle"><span>4</span></div>
+            <div class="md-step-title">payment</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+          </div>
+          <div class="md-step">
+            <div class="md-step-circle"><span>4</span></div>
+            <div class="md-step-title">confirm</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
+    <div class="row mt-3">
+      <div class="card">
+        <div class="table-responsive">
+          <p class="fw-bold">your order details</p>
+          <table class="table table-striped">
+            <caption style="text-align: end; padding-right: 8%;" class="">Total: 200 AED</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">item</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>name</td>
+                <td>60 AED</td>
+                <td>@2</td>
+                <td>120 AED</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>name</td>
+                <td>60 AED</td>
+                <td>@2</td>
+                <td>120 AED</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>  
+        <!-- end of table -->
+
+        <div class="row" style="background-color: seashell;">
+          <div class="col">
+            <div id="map" style="height:300px; width:auto"></div>
+          </div>
+          <div class="col">
+            here the address is
+          </div>
+        </div>
+        <div class="row pt-4" style="background-color: palegoldenrod;">
+          <div class="col">
+            <div class="form-group">
+              <label>Optional</label>
+              <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
+            </div>
+          </div>
+          <div class="col mb-3 ">
+            <p class="">total payment: 120 AED</p>
+            <hr>
+            <p>total payable: 120 AED</p>
+
+            <button class="btn btn-outline-success rounded-pill d-block mx-auto px-5 py-3">Confirm and Preceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 {% endblock content %}
 
 
 {% block js %}
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
+ 
+const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      // style: 'mapbox://styles/mapbox/satellite-v9', 
+      style:"mapbox://styles/mapbox/streets-v11",
+      center: [55.2023781,25.1564378], // starting position [lng, lat]
+      zoom: 12 
+    });
+ 
+
+  // Add geolocate control to the map.
+  map.addControl(
+    new mapboxgl.GeolocateControl({
+      positionOptions: {
+      enableHighAccuracy: true
+      },
+      // When active the map will receive updates to the device's location as it changes.
+      trackUserLocation: true,
+      // Draw an arrow next to the location dot to indicate which direction the device is heading.
+      showUserHeading: true
+    })
+  );
+</script>
 
 
 {% endblock js %}
