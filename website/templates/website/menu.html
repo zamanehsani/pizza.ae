@@ -99,7 +99,7 @@
             {% for obj in category.menu_set.all %}
                 <div class="col-sm-4 col-md-4 px-3 py-3">
                     <div class="menu_item_hover mb-3 pb-2">
-                        <img class="mx-auto d-block" src="{{obj.photo.url}}" style="width: 70%;" alt="">
+                        <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
                         <h4 class="text-center">{{obj.name|title}}</h4>
                         <p class="text-center " style="padding: 0 40px;">{{obj.description|capfirst}}</p>
                         <p class="text-center price"><b> {{obj.price}} AED </b></p>
@@ -141,30 +141,48 @@
 $(document).ready(function(){
     $('.btn_order').each(function(){
         $(this).click(function(){
+
             var obj_id = $(this).attr("data-id");
+            var img = document.getElementById(obj_id);
+
+            // change thee image to text
+            // imgData = getBase64Image(img);
             var obj_name = $(this).parent('.menu_item_hover').children('h4').text();
             var obj_price = $(this).parent('.menu_item_hover').children('.price').children().text();
-            var obj_order = {id:obj_id,name:obj_name, price:obj_price}
-            Tolocal(obj_order);
+            var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
+
+            // put to local storage function
+            To_local_Storage(obj_order);
+
         }); // end of click
     }); //end of each function
 });
 
+// img to textDATA
+function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
 
 
-function Tolocal(obj){
+function To_local_Storage(obj){
 // check if we localstorage has got order already. 
-    if(localStorage.getItem("order")){
-        // get orders from localstorage and append to it.
-        var obj_local = localStorage.getItem("order");
-        obj_local += ";"+JSON.stringify(obj);
-        localStorage.setItem("order", obj_local);
 
-        // update the counter of order on btn
+    if(localStorage.getItem("order")){
+        // append to it
+        var obj_local = localStorage.getItem("order");
+        obj_local += JSON.stringify(obj) + ";";
+        localStorage.setItem("order", obj_local);
         Order_counter();
     }else{
+
         // set new order to localstorage
-    localStorage.setItem("order", JSON.stringify(obj));
+    localStorage.setItem("order", JSON.stringify(obj) +";");
     Order_counter();
     }
 }
@@ -182,3 +200,26 @@ $(document).ready(function(){
 
 </script>
 {% endblock js %}
+
+
+
+<!-- 
+    for(let x in obj_arr){
+            var order = JSON.parse(obj_arr[x]);
+            // check ids
+            if(order.id == obj.id){
+               order.quantity +=1;
+               obj_arr[x] = JSON.stringify(order);
+               
+               break;
+            }else{
+                // obj_local
+                obj_local += ";"+JSON.stringify(obj);
+                
+            }
+            obj_local += ";"+JSON.stringify(obj_arr);
+            console.log(obj_local);
+            
+        } //end of for
+
+ -->

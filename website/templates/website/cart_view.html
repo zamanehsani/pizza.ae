@@ -128,6 +128,58 @@
   .table td , th {
    text-align: center;   
 }
+
+
+.counter {
+    width: 150px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.counter input {
+    width: 50px;
+    border: 0;
+    display: block;
+    line-height: 30px;
+    font-size: 25px;
+    text-align: center;
+    background: #F96302;
+    color: #fff;
+    appearance: none;
+    outline: 0;
+    border-radius: 0px;
+}
+.counter .down {
+    display: block;
+    display: block;
+    line-height: 30px;
+    font-size: 25px;
+    text-align: center;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #F96302;
+    user-select: none;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px ;
+    border: 2px solid #F96302;
+}
+
+.counter .up {
+    display: block;
+    font-size: 25px;
+    padding: 0 10px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #F96302;
+    user-select: none;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius:25px ;
+    border: 2px solid #F96302;
+}
+
+
 </style>
 {% endblock css %}
 
@@ -180,7 +232,7 @@
         <div class="table-responsive">
           <p class="fw-bold">your order details</p>
           <table class="table table-striped">
-            <caption style="text-align: end; padding-right: 8%;" class="">Total: 200 AED</caption>
+            <caption style="text-align: end; padding-right: 5%;" class="">Total: 200 AED</caption>
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -190,21 +242,7 @@
                 <th scope="col">Total price</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>name</td>
-                <td>60 AED</td>
-                <td>@2</td>
-                <td>120 AED</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>name</td>
-                <td>60 AED</td>
-                <td>@2</td>
-                <td>120 AED</td>
-              </tr>
+            <tbody id="order-table-body"> 
 
             </tbody>
           </table>
@@ -212,21 +250,69 @@
         <!-- end of table -->
 
         <div class="row" style="background-color: seashell;">
-          <div class="col">
+          <div class="col-sm-12 col-md-6">
             <div id="map" style="height:300px; width:auto"></div>
           </div>
-          <div class="col">
-            here the address is
+          <div class="col-sm-12 col-md-6 pt-3 mb-3">
+            <form>
+              <div class="form-row">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="number">Number</label>
+                    <input type="tel" class="form-control" id="number" placeholder="phone number">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+              </div>
+              <div class="form-group">
+                <label for="inputAddress2">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+              </div>
+              <!-- <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputCity">City</label>
+                  <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputState">State</label>
+                  <select id="inputState" class="form-control">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="inputZip">Zip</label>
+                  <input type="text" class="form-control" id="inputZip">
+                </div>
+              </div> -->
+              <div class="form-group">
+                <!-- <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck">
+                  <label class="form-check-label" for="gridCheck">
+                    Check me out
+                  </label>
+                </div> -->
+              </div>
+              <!-- <button type="submit" class="btn btn-primary">Sign in</button> -->
+            </form>
           </div>
         </div>
+
         <div class="row pt-4" style="background-color: palegoldenrod;">
-          <div class="col">
+          <div class="col-sm-12 col-md-6">
             <div class="form-group">
               <label>Optional</label>
               <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
             </div>
           </div>
-          <div class="col mb-3 ">
+          <div class="col-sm-12 col-md-6 mb-3 mt-3 ">
             <p class="">total payment: 120 AED</p>
             <hr>
             <p>total payable: 120 AED</p>
@@ -247,6 +333,52 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
 
 <script>
+
+// load the orders into table
+$(document).ready(function(){
+
+  // check if their is an order key in localstorage
+  if(localStorage.getItem("order")){
+    
+    // split the orders string to array by ;
+    let order_arr = localStorage.getItem("order").split(";");
+    var total_of_total = 0;
+    for(let x in order_arr){
+      let ord = JSON.parse(order_arr[x]);
+      var html = `
+      <tr>
+        <th class="align-middle" scope="row">
+          <span class="iconify" data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
+        </th>
+        <td class="align-middle td-name">${ord.name}</td>
+        <td class="align-middle td-price">${ord.price}</td>
+        <td class="align-middle td-quantity">
+          <div class="counter td-counter">
+            <span class="down" onClick='decreaseCount(event, this)'>-</span>
+            <input type="text" value="${ord.id}">
+            <span class="up"  onClick='increaseCount(event, this)'>+</span>
+          </div>
+        </td>
+        <td class="align-middle td-total-price">${parseFloat(ord.id) * parseFloat(ord.price) } AED</td>
+      </tr>
+      `;
+
+      $("#order-table-body").append(html);
+      total_of_total +=parseFloat(ord.id) * parseFloat(ord.price);
+    }
+
+    $("table caption").text("Total:" + total_of_total + " AED" );
+
+  }else{
+    // make the table empty
+    console.log("your order is empty");
+  }
+
+});
+
+
+
+
 	mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
  
 const map = new mapboxgl.Map({
@@ -270,6 +402,26 @@ const map = new mapboxgl.Map({
       showUserHeading: true
     })
   );
+
+
+  function increaseCount(a, b) {
+        var input = b.previousElementSibling;
+        var value = parseInt(input.value, 10); 
+        value = isNaN(value)? 0 : value;
+        value ++;
+        input.value = value;
+      }
+      function decreaseCount(a, b) {
+        var input = b.nextElementSibling;
+        var value = parseInt(input.value, 10); 
+        if (value > 1) {
+          value = isNaN(value)? 0 : value;
+          value --;
+          input.value = value;
+        }
+      }
+
+
 </script>
 
 
