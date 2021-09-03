@@ -230,9 +230,9 @@
     <div class="row mt-3">
       <div class="card">
         <div class="table-responsive">
-          <p class="fw-bold">your order details</p>
+          <!-- <p class="fw-bold">your order details</p> -->
           <table class="table table-striped">
-            <caption style="text-align: end; padding-right: 5%;" class="">Total: 200 AED</caption>
+            <caption style="text-align: end; padding-right: 5%;" class="" style="color: #F96302;">Total: 200 AED</caption>
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -243,10 +243,19 @@
               </tr>
             </thead>
             <tbody id="order-table-body"> 
-
             </tbody>
           </table>
-        </div>  
+        </div> 
+
+        <div id="empty-card" class=" row mb-3 pt-3">
+          <div class="col-sm-12 col-md-6 text-center">
+            <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+          </div>
+          <div class="col-sm-12 col-md-6 text-center pt-3">
+            <p>Your cart is empty.</p>
+            <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
+          </div>
+        </div> 
         <!-- end of table -->
 
         <div class="row" style="background-color: seashell;">
@@ -304,7 +313,6 @@
             </form>
           </div>
         </div>
-
         <div class="row pt-4" style="background-color: palegoldenrod;">
           <div class="col-sm-12 col-md-6">
             <div class="form-group">
@@ -333,49 +341,49 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
 
 <script>
+  // call the load 
+load_order()
 
-// load the orders into table
-$(document).ready(function(){
+function load_order(){
+  // load the orders into table
+  $(document).ready(function(){
+    // check if their is an order key in localstorage
+    if(localStorage.getItem("order")){
+      $("#empty-card").hide();
+      // split the orders string to array by ;
+      let order_arr = localStorage.getItem("order").split(";");
+      var total_of_total = 0;
+      for(let x in order_arr){
+        let ord = JSON.parse(order_arr[x]);
+        var html = `
+        <tr>
+          <th class="align-middle" scope="row">
+            <span class="iconify" data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
+          </th>
+          <td class="align-middle td-name">${ord.name}</td>
+          <td class="align-middle td-price">${ord.price}</td>
+          <td class="align-middle td-quantity">
+            <div class="counter td-counter">
+              <span class="down" onClick='decreaseCount(event, this)'>-</span>
+              <input type="text" data-id="${ord.id}" value="${ord.quantity}">
+              <span class="up"  onClick='increaseCount(event, this)'>+</span>
+            </div>
+          </td>
+          <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
+        </tr>
+        `;
 
-  // check if their is an order key in localstorage
-  if(localStorage.getItem("order")){
-    
-    // split the orders string to array by ;
-    let order_arr = localStorage.getItem("order").split(";");
-    var total_of_total = 0;
-    for(let x in order_arr){
-      let ord = JSON.parse(order_arr[x]);
-      var html = `
-      <tr>
-        <th class="align-middle" scope="row">
-          <span class="iconify" data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
-        </th>
-        <td class="align-middle td-name">${ord.name}</td>
-        <td class="align-middle td-price">${ord.price}</td>
-        <td class="align-middle td-quantity">
-          <div class="counter td-counter">
-            <span class="down" onClick='decreaseCount(event, this)'>-</span>
-            <input type="text" value="${ord.quantity}">
-            <span class="up"  onClick='increaseCount(event, this)'>+</span>
-          </div>
-        </td>
-        <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
-      </tr>
-      `;
-
-      $("#order-table-body").append(html);
-      total_of_total +=parseFloat(ord.id) * parseFloat(ord.price);
+        $("#order-table-body").append(html);
+        total_of_total +=parseFloat(ord.id) * parseFloat(ord.price);
+      }
+      $("table caption").text("Total:" + total_of_total + " AED" );
+    }else{
+      $('.table-responsive').hide();
+      $("#empty-card").show();
     }
 
-    $("table caption").text("Total:" + total_of_total + " AED" );
-
-  }else{
-    // make the table empty
-    console.log("your order is empty");
-  }
-
-});
-
+  });
+}
 
 
 
@@ -404,23 +412,78 @@ const map = new mapboxgl.Map({
   );
 
 
-  function increaseCount(a, b) {
-        var input = b.previousElementSibling;
-        var value = parseInt(input.value, 10); 
-        value = isNaN(value)? 0 : value;
-        value ++;
-        input.value = value;
+function increaseCount(a, b) {
+  var input = b.previousElementSibling;
+  var value = parseInt(input.value, 10); 
+  value = isNaN(value)? 0 : value;
+  value ++;
+  var id_of_order = input.getAttribute('data-id');
+  update_order_quantity(id_of_order, value);
+  input.value = value;
+}
+
+function decreaseCount(a, b) {
+  var input = b.nextElementSibling;
+  var value = parseInt(input.value, 10); 
+  if (value > 1) {
+    value = isNaN(value)? 0 : value;
+    value --;
+    var id_of_order = input.getAttribute('data-id');
+    update_order_quantity(id_of_order, value);
+    input.value = value;
+  }
+}
+
+
+function update_order_quantity(order_id, quantity){
+  if(localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      // not ; that means one order
+      var obj_one = JSON.parse(orders);
+      // now cheeck the ids
+      if(obj_one.id == order_id){
+        var one = obj_one.quantity = quantity;
+        console.log(one);
+        Update_order(obj_one, 0, one);
+        return ;
       }
-      function decreaseCount(a, b) {
-        var input = b.nextElementSibling;
-        var value = parseInt(input.value, 10); 
-        if (value > 1) {
-          value = isNaN(value)? 0 : value;
-          value --;
-          input.value = value;
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = orders.split(";");
+      for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == order_id){
+          one.quantity  = quantity;
+          Update_order(obj_arr, i, one);
+          return
         }
       }
+    }
+  }
+}
 
+function Update_order(obj_all, index, update){
+  var on='';
+  for(var i in obj_all){
+    if(i == index){
+      if(i ==0){
+      on +=JSON.stringify(update);
+      }else{
+        on +=";"+JSON.stringify(update);
+      }
+    }else{
+      if(i ==0){
+        on += obj_all[i];
+      }else{
+        on += ";"+obj_all[i];
+      }
+    }
+  }
+  localStorage.removeItem("order");
+  localStorage.setItem("order", on);
+}
 
 </script>
 
