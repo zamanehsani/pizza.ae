@@ -355,11 +355,11 @@ $(document).ready(function(){
         <td class="align-middle td-quantity">
           <div class="counter td-counter">
             <span class="down" onClick='decreaseCount(event, this)'>-</span>
-            <input type="text" value="${ord.id}">
+            <input type="text" value="${ord.quantity}">
             <span class="up"  onClick='increaseCount(event, this)'>+</span>
           </div>
         </td>
-        <td class="align-middle td-total-price">${parseFloat(ord.id) * parseFloat(ord.price) } AED</td>
+        <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
       </tr>
       `;
 

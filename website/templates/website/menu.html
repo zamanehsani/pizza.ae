@@ -172,30 +172,96 @@ function getBase64Image(img) {
 
 function To_local_Storage(obj){
 // check if we localstorage has got order already. 
-
     if(localStorage.getItem("order")){
-        // append to it
-        var obj_local = localStorage.getItem("order");
-        obj_local += JSON.stringify(obj) + ";";
-        localStorage.setItem("order", obj_local);
-        Order_counter();
+    
+var orders = localStorage.getItem("order");
+// check if it have ";"
+if(orders.search(";") == -1){
+    // no match is found that means that order is one
+    // change it to obj
+    var obj_one = JSON.parse(orders);
+    // now cheeck the ids
+    if(obj_one.id == obj.id){
+        Update_order(obj_arr, i, one);
+        return ;
     }else{
-
-        // set new order to localstorage
-    localStorage.setItem("order", JSON.stringify(obj) +";");
-    Order_counter();
+        add_order(obj);
     }
+}else{
+    // so the order is more then one and we split and check
+    var obj_arr = orders.split(";");
+    for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == obj.id){
+            one.quantity += 1;
+            Update_order(obj_arr, i, one);
+            return
+        }
+    }
+    add_order(obj);
+
+}  // end of ";" search
+    }else{
+        one_order(obj);
+        Order_counter();
+    } // end of else for if of local storage
+} // eend of function
+
+function Update_order(obj_all, index, update){
+    var on='';
+    for(var i in obj_all){
+        if(i == index){
+            if(i ==0){
+            on +=JSON.stringify(update);
+            }else{
+                on +=";"+JSON.stringify(update);
+            }
+        }else{
+            if(i ==0){
+                on += obj_all[i];
+            }else{
+                on += ";"+obj_all[i];
+            }
+        }
+    }
+    localStorage.setItem("order", on);
+    Order_counter();   
 }
+
+
+function add_order(obj){
+    // localStorage
+    var local_storagee_orders = localStorage.getItem("order");
+    local_storagee_orders += ";"+JSON.stringify(obj); 
+
+    localStorage.setItem("order", local_storagee_orders);
+    // console.log("appeandeed to orders");
+    Order_counter();
+    console.log(localStorage.getItem("order"));
+}
+
+function one_order(obj){
+     var obj_local = JSON.stringify(obj);
+    localStorage.setItem("order", obj_local);
+    console.log("added: ", obj_local);
+    Order_counter();
+}
+
 
 function Order_counter(){
-    let order_counter = localStorage.getItem("order").split(";");
-    $("#order_counter").text(order_counter.length)
+    if(localStorage.getItem("order")){
+        let order_counter = localStorage.getItem("order").split(";");
+        $("#order_counter").text(order_counter.length)
+    }
 }
-
 // load the order counter on load
 $(document).ready(function(){
-    let order_counter = localStorage.getItem("order").split(";");
-    $("#order_counter").text(order_counter.length)
+    if(localStorage.getItem("order")){
+        console.log(localStorage.getItem("order"));
+        let order_counter = localStorage.getItem("order").split(";");
+        $("#order_counter").text(order_counter.length)
+    }
 });
 
 </script>
@@ -223,3 +289,17 @@ $(document).ready(function(){
         } //end of for
 
  -->
+
+ <!-- // for(var i in order_array){
+    //     var order = JSON.parse(order_array[i]);
+    //     if(obj.id == order.id ){
+    //         console.log("match found on " + i + " : " + order_array[i]);
+    //         order.quantity += 1;
+    //         order_array[i] = JSON.stringify(order);
+    //         localStorage.setItem("order", order_array);
+    //         break;
+    //     } //end if 
+    // } // end for
+    // obj_local += JSON.stringify(obj) + ";";
+    // localStorage.setItem("order", obj_local);
+    // Order_counter(); -->
