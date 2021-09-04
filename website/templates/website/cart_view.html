@@ -353,12 +353,13 @@ function load_order(){
       // split the orders string to array by ;
       let order_arr = localStorage.getItem("order").split(";");
       var total_of_total = 0;
+      $("#order-table-body").text("");
       for(let x in order_arr){
         let ord = JSON.parse(order_arr[x]);
         var html = `
         <tr>
           <th class="align-middle" scope="row">
-            <span class="iconify" data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
+            <span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
           </th>
           <td class="align-middle td-name">${ord.name}</td>
           <td class="align-middle td-price">${ord.price}</td>
@@ -372,11 +373,12 @@ function load_order(){
           <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
         </tr>
         `;
-
+        
         $("#order-table-body").append(html);
-        total_of_total +=parseFloat(ord.id) * parseFloat(ord.price);
+        total_of_total +=parseFloat(ord.quantity) * parseFloat(ord.price);
+
       }
-      $("table caption").text("Total:" + total_of_total + " AED" );
+      $("table caption").text("Total: " + total_of_total + " AED" );
     }else{
       $('.table-responsive').hide();
       $("#empty-card").show();
@@ -384,8 +386,6 @@ function load_order(){
 
   });
 }
-
-
 
 	mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
  
@@ -411,7 +411,6 @@ const map = new mapboxgl.Map({
     })
   );
 
-
 function increaseCount(a, b) {
   var input = b.previousElementSibling;
   var value = parseInt(input.value, 10); 
@@ -420,6 +419,7 @@ function increaseCount(a, b) {
   var id_of_order = input.getAttribute('data-id');
   update_order_quantity(id_of_order, value);
   input.value = value;
+  load_order();
 }
 
 function decreaseCount(a, b) {
@@ -431,9 +431,42 @@ function decreaseCount(a, b) {
     var id_of_order = input.getAttribute('data-id');
     update_order_quantity(id_of_order, value);
     input.value = value;
+    load_order();
   }
 }
 
+function delete_order(event, id){
+  if (localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      var obj_order = JSON.parse(orders);
+      if( obj_order.id == id){
+        // ids are matched, remove order
+        localStorage.removeItem("order");
+        // reload the orders
+        load_order();
+      }
+    }else{
+    // more then one order
+      var obj_order_arr = orders.split(";");
+      var new_order ='';
+      for(var i in obj_order_arr){
+        // check the orders
+        var one = JSON.parse(obj_order_arr[i]);
+        if(one.id == id){
+          continue;
+        }else{
+            obh += ";"+JSON.stringify(one);
+        }
+      }
+      new_order = new_order.substring(1)
+      localStorage.removeItem("order");
+      localStorage.setItem("order", new_order);
+      load_order();
+    }
+  }
+  
+}
 
 function update_order_quantity(order_id, quantity){
   if(localStorage.getItem("order")){
@@ -443,9 +476,8 @@ function update_order_quantity(order_id, quantity){
       var obj_one = JSON.parse(orders);
       // now cheeck the ids
       if(obj_one.id == order_id){
-        var one = obj_one.quantity = quantity;
-        console.log(one);
-        Update_order(obj_one, 0, one);
+        obj_one.quantity = quantity;
+        Update_order(orders, 0, obj_one, true);
         return ;
       }
     }else{
@@ -464,26 +496,34 @@ function update_order_quantity(order_id, quantity){
   }
 }
 
-function Update_order(obj_all, index, update){
+function Update_order(obj_all, index, update, one_item=false){
   var on='';
-  for(var i in obj_all){
-    if(i == index){
-      if(i ==0){
-      on +=JSON.stringify(update);
+  var size  = Object.keys(obj_all).length;
+    for(var i in obj_all){
+      if(i == index){
+        if(i ==0){
+          on +=JSON.stringify(update);
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on +=";"+JSON.stringify(update);
+        }
       }else{
-        on +=";"+JSON.stringify(update);
-      }
-    }else{
-      if(i ==0){
-        on += obj_all[i];
-      }else{
-        on += ";"+obj_all[i];
+        if(i ==0){
+          on += obj_all[i];
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on += ";"+obj_all[i];
+        }
       }
     }
-  }
   localStorage.removeItem("order");
   localStorage.setItem("order", on);
 }
+
 
 </script>
 
