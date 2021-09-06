@@ -198,33 +198,21 @@
             <div class="md-step-bar-left"></div>
             <div class="md-step-bar-right"></div>
           </div>
-          <div class="md-step active done">
-            <div class="md-step-circle"><span>2</span></div>
-            <div class="md-step-title">your details</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-          </div>
-          <div class="md-step active">
-            <div class="md-step-circle"><span>3</span></div>
-            <div class="md-step-title">address</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-          </div>
+          
           <div class="md-step">
-            <div class="md-step-circle"><span>4</span></div>
+            <div class="md-step-circle"><span>2</span></div>
             <div class="md-step-title">payment</div>
             <div class="md-step-bar-left"></div>
             <div class="md-step-bar-right"></div>
           </div>
           <div class="md-step">
-            <div class="md-step-circle"><span>4</span></div>
+            <div class="md-step-circle"><span>3</span></div>
             <div class="md-step-title">confirm</div>
             <div class="md-step-bar-left"></div>
             <div class="md-step-bar-right"></div>
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="row mt-3">
@@ -260,7 +248,7 @@
 
         <div class="row" style="background-color: seashell;">
           <div class="col-sm-12 col-md-6">
-            <div id="map" style="height:300px; width:auto"></div>
+            <div id="map" style="height:400px; width:auto"></div>
           </div>
           <div class="col-sm-12 col-md-6 pt-3 mb-3">
             <form>
@@ -321,10 +309,9 @@
             </div>
           </div>
           <div class="col-sm-12 col-md-6 mb-3 mt-3 ">
-            <p class="">total payment: 120 AED</p>
+            <p class="">total payment: <span class="total-payment"></span> AED</p>
             <hr>
-            <p>total payable: 120 AED</p>
-
+            <p>total payable: <span class="total-payable"> </span> AED</p>
             <button class="btn btn-outline-success rounded-pill d-block mx-auto px-5 py-3">Confirm and Preceed</button>
           </div>
         </div>
@@ -339,6 +326,12 @@
 {% block js %}
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<!-- <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css"> -->
 
 <script>
   // call the load 
@@ -378,7 +371,11 @@ function load_order(){
         total_of_total +=parseFloat(ord.quantity) * parseFloat(ord.price);
 
       }
+      
       $("table caption").text("Total: " + total_of_total + " AED" );
+      // 
+      totals(total_of_total);
+      
     }else{
       $('.table-responsive').hide();
       $("#empty-card").show();
@@ -387,7 +384,15 @@ function load_order(){
   });
 }
 
-	mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
+
+function totals(total_of_total){
+  $('.total-payable').text(total_of_total);
+  $('.total-payment').text(total_of_total);
+}
+
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiemFtYW5laHNhbmkiLCJhIjoiY2tzMngweHBoMDR6bDJwbGxwemdtcWdlYyJ9.In0ho8b2jje9pF86SKSUVA';
  
 const map = new mapboxgl.Map({
       container: 'map', // container ID
@@ -410,6 +415,37 @@ const map = new mapboxgl.Map({
       showUserHeading: true
     })
   );
+
+
+// adding the areas to the map
+$(document).ready(function(){
+  $.ajax({
+    url:"../api/areas",
+    type:'GET',
+    success:function(data){
+      for(var i in data){
+        var gjson = JSON.parse(data[i].geojson);
+        map.addSource(data[i].id+"", {
+          'type': 'geojson',
+          'data': gjson
+          });
+          
+          // Add a layer showing the state polygons.
+          map.addLayer({
+          'id': data[i].id+"",
+          'type': 'fill',
+          'source': data[i].id+"",
+          'paint': {
+          'fill-color': 'rgba(200, 100, 240, 0.4)',
+          'fill-outline-color': 'rgba(200, 100, 240, 1)'
+          }
+          });
+          // end of adding areas
+      } //end of for loop
+    } //end of success
+  }) //end of ajax
+});
+
 
 function increaseCount(a, b) {
   var input = b.previousElementSibling;
@@ -529,3 +565,36 @@ function Update_order(obj_all, index, update, one_item=false){
 
 
 {% endblock js %}
+
+
+// get the geojson data from db
+// map.on('load', () => {
+//   map.addSource('route', {
+//     'type': 'geojson',
+//     'data': {
+//       'type': 'Feature',
+//       'properties': {},
+//         'geometry': {
+//           'type': 'LineString',
+//           'coordinates': [[-122.487516, 37.831683], [-122.488031, 37.832158],
+//                           [-122.488889, 37.832971], [-122.489876, 37.832632],
+//                           [-122.490434, 37.832937], [-122.49125, 37.832429],
+//                           [-122.491636, 37.832564], [-122.492237, 37.833378],
+//                           [-122.493782, 37.833683]]
+//         }
+//     }
+//   });
+//   map.addLayer({
+//     'id': 'route',
+//     'type': 'line',
+//     'source': 'route',
+//     'layout': {
+//       'line-join': 'round',
+//       'line-cap': 'round'
+//     },
+//     'paint': {
+//     'line-color': '#888',
+//     'line-width': 8
+//     }
+//   });
+// });
