@@ -1,186 +1,271 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
+<style>
+  .md-stepper-horizontal {
+  display:table;
+  width:100%;
+  margin:0 auto;
+  /* background-color:#FFFFFF; */
+  /* box-shadow: 0 3px 8px -6px rgba(0,0,0,.50); */
+}
+.md-stepper-horizontal .md-step {
+  display:table-cell;
+  position:relative;
+  /* this is padding of each stepp */
+  /* padding:24px; */
+}
+.md-stepper-horizontal .md-step:hover,
+.md-stepper-horizontal .md-step:active {
+  /* uncoment this if you want hover eeffect*/
+  /* background-color:rgba(0,0,0,0.04); */
+}
+.md-stepper-horizontal .md-step:active {
+  border-radius: 15% / 75%;
+}
+.md-stepper-horizontal .md-step:first-child:active {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.md-stepper-horizontal .md-step:last-child:active {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.md-stepper-horizontal .md-step:hover .md-step-circle {
+  background-color:#757575;
+}
+.md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+.md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+  display:none;
+}
+.md-stepper-horizontal .md-step .md-step-circle {
+  width:30px;
+  height:30px;
+  margin:0 auto;
+  background-color:#999999;
+  border-radius: 50%;
+  text-align: center;
+  line-height:30px;
+  font-size: 16px;
+  font-weight: 600;
+  color:#FFFFFF;
+}
+.md-stepper-horizontal.green .md-step.active .md-step-circle {
+  background-color:#198754;
+}
+.md-stepper-horizontal.orange .md-step.active .md-step-circle {
+  background-color:#F96302;
+}
+.md-stepper-horizontal .md-step.active .md-step-circle {
+  background-color: rgb(33,150,243);
+}
+.md-stepper-horizontal .md-step.done .md-step-circle:before {
+  font-family:'FontAwesome';
+  font-weight:100;
+  content: "\f00c";
+}
+.md-stepper-horizontal .md-step.done .md-step-circle *,
+.md-stepper-horizontal .md-step.editable .md-step-circle * {
+  display:none;
+}
+.md-stepper-horizontal .md-step.editable .md-step-circle {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+.md-stepper-horizontal .md-step.editable .md-step-circle:before {
+  font-family:'FontAwesome';
+  font-weight:100;
+  content: "\f040";
+}
+.md-stepper-horizontal .md-step .md-step-title {
+  /* this is for the title of each step to be cloes to the circle */
+  margin-top:5px;
+  font-size:16px;
+  font-weight:600;
+}
+.md-stepper-horizontal .md-step .md-step-title,
+.md-stepper-horizontal .md-step .md-step-optional {
+  text-align: center;
+  color:rgba(0,0,0,.26);
+}
+.md-stepper-horizontal .md-step.active .md-step-title {
+  font-weight: 600;
+  color:rgba(0,0,0,.87);
+}
+.md-stepper-horizontal .md-step.active.done .md-step-title,
+.md-stepper-horizontal .md-step.active.editable .md-step-title {
+  font-weight:600;
+}
+.md-stepper-horizontal .md-step .md-step-optional {
+  font-size:12px;
+}
+.md-stepper-horizontal .md-step.active .md-step-optional {
+  color:rgba(0,0,0,.54);
+}
+.md-stepper-horizontal .md-step .md-step-bar-left,
+.md-stepper-horizontal .md-step .md-step-bar-right {
+  position:absolute;
+  /* this is the space of the line */
+  top:15px;
+  height:1px;
+  border-top:1px solid #DDDDDD;
+}
+.md-stepper-horizontal .md-step .md-step-bar-right {
+  right:0;
+  left:50%;
+  margin-left:20px;
+}
+.md-stepper-horizontal .md-step .md-step-bar-left {
+  left:0;
+  right:50%;
+  margin-right:20px;
+}
+
+</style>
+
 {% block css %}
+<!-- <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css"> -->
 <style>
   
-  .md-stepper-horizontal {
-    display:table;
-    width:100%;
-    margin:0 auto;
-    /* background-color:#FFFFFF; */
-    /* box-shadow: 0 3px 8px -6px rgba(0,0,0,.50); */
-  }
-  .md-stepper-horizontal .md-step {
-    display:table-cell;
-    position:relative;
-    /* this is padding of each stepp */
-    /* padding:24px; */
-  }
-  .md-stepper-horizontal .md-step:hover,
-  .md-stepper-horizontal .md-step:active {
-    /* uncoment this if you want hover eeffect*/
-    /* background-color:rgba(0,0,0,0.04); */
-  }
-  .md-stepper-horizontal .md-step:active {
-    border-radius: 15% / 75%;
-  }
-  .md-stepper-horizontal .md-step:first-child:active {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .md-stepper-horizontal .md-step:last-child:active {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .md-stepper-horizontal .md-step:hover .md-step-circle {
-    background-color:#757575;
-  }
-  .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
-  .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
-    display:none;
-  }
-  .md-stepper-horizontal .md-step .md-step-circle {
-    width:30px;
-    height:30px;
-    margin:0 auto;
-    background-color:#999999;
-    border-radius: 50%;
-    text-align: center;
-    line-height:30px;
-    font-size: 16px;
-    font-weight: 600;
-    color:#FFFFFF;
-  }
-  .md-stepper-horizontal.green .md-step.active .md-step-circle {
-    background-color:#198754;
-  }
-  .md-stepper-horizontal.orange .md-step.active .md-step-circle {
-    background-color:#F96302;
-  }
-  .md-stepper-horizontal .md-step.active .md-step-circle {
-    background-color: rgb(33,150,243);
-  }
-  .md-stepper-horizontal .md-step.done .md-step-circle:before {
-    font-family:'FontAwesome';
-    font-weight:100;
-    content: "\f00c";
-  }
-  .md-stepper-horizontal .md-step.done .md-step-circle *,
-  .md-stepper-horizontal .md-step.editable .md-step-circle * {
-    display:none;
-  }
-  .md-stepper-horizontal .md-step.editable .md-step-circle {
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-  }
-  .md-stepper-horizontal .md-step.editable .md-step-circle:before {
-    font-family:'FontAwesome';
-    font-weight:100;
-    content: "\f040";
-  }
-  .md-stepper-horizontal .md-step .md-step-title {
-    /* this is for the title of each step to be cloes to the circle */
-    margin-top:5px;
-    font-size:16px;
-    font-weight:600;
-  }
-  .md-stepper-horizontal .md-step .md-step-title,
-  .md-stepper-horizontal .md-step .md-step-optional {
-    text-align: center;
-    color:rgba(0,0,0,.26);
-  }
-  .md-stepper-horizontal .md-step.active .md-step-title {
-    font-weight: 600;
-    color:rgba(0,0,0,.87);
-  }
-  .md-stepper-horizontal .md-step.active.done .md-step-title,
-  .md-stepper-horizontal .md-step.active.editable .md-step-title {
-    font-weight:600;
-  }
-  .md-stepper-horizontal .md-step .md-step-optional {
-    font-size:12px;
-  }
-  .md-stepper-horizontal .md-step.active .md-step-optional {
-    color:rgba(0,0,0,.54);
-  }
-  .md-stepper-horizontal .md-step .md-step-bar-left,
-  .md-stepper-horizontal .md-step .md-step-bar-right {
-    position:absolute;
-    /* this is the space of the line */
-    top:15px;
-    height:1px;
-    border-top:1px solid #DDDDDD;
-  }
-  .md-stepper-horizontal .md-step .md-step-bar-right {
-    right:0;
-    left:50%;
-    margin-left:20px;
-  }
-  .md-stepper-horizontal .md-step .md-step-bar-left {
-    left:0;
-    right:50%;
-    margin-right:20px;
-  }
-
-  .table td , th {
-   text-align: center;   
+.table td , th {
+ text-align: center;   
 }
 
 
 .counter {
-    width: 150px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+  width: 150px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
 .counter input {
-    width: 50px;
-    border: 0;
-    display: block;
-    line-height: 30px;
-    font-size: 25px;
-    text-align: center;
-    background: #F96302;
-    color: #fff;
-    appearance: none;
-    outline: 0;
-    border-radius: 0px;
+  width: 50px;
+  border: 0;
+  display: block;
+  line-height: 30px;
+  font-size: 25px;
+  text-align: center;
+  background: #F96302;
+  color: #fff;
+  appearance: none;
+  outline: 0;
+  border-radius: 0px;
 }
 .counter .down {
-    display: block;
-    display: block;
-    line-height: 30px;
-    font-size: 25px;
-    text-align: center;
-    padding: 0 10px;
-    cursor: pointer;
-    color: #F96302;
-    user-select: none;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px ;
-    border: 2px solid #F96302;
+  display: block;
+  display: block;
+  line-height: 30px;
+  font-size: 25px;
+  text-align: center;
+  padding: 0 10px;
+  cursor: pointer;
+  color: #F96302;
+  user-select: none;
+ 
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px ;
+  border: 2px solid #F96302;
+  border-right: none;
 }
 
 .counter .up {
-    display: block;
-    font-size: 25px;
-    padding: 0 10px;
-    line-height: 30px;
-    cursor: pointer;
-    color: #F96302;
-    user-select: none;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius:25px ;
-    border: 2px solid #F96302;
+  display: block;
+  font-size: 25px;
+  padding: 0 10px;
+  line-height: 30px;
+  cursor: pointer;
+  color: #F96302;
+  user-select: none;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius:25px ;
+  border: 2px solid #F96302;
+  border-left: none;
+}
+
+
+/* for stepper */
+
+#regForm {
+  /* background-color: #ffffff; */
+  /* margin: 10px auto; */
+  /* font-family: Raleway; */
+  /* padding: 40px; */
+  /* width: 70%; */
+  /* min-width: 300px; */
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  /* font-family: Raleway; */
+  border: 2px solid #c5bcbc;
+  border-radius: 5px;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+  border-color: #F96302;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+.btn-orange {
+  
+  background-color: #F96302;
+  /* border-radius: 10px; */
+  color: #fff;
+  border: none;
+  /* padding: 10px 20px; */
+  /* font-size: 17px; */
+  cursor: pointer;
+}
+
+/* button:hover {
+  opacity: 0.8;
+} */
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 40px;
+  width: 40px;
+  margin: 0 2px;
+  /* background-color: #bbbbbb; */
+  border: 2px solid #ffdddd;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.7;
+  text-align: center;
+  padding-top: 6px;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #F96302;
+  border-radius: 2px solid #F96302;
+  color: #fff;
+  font-weight: bolder;
 }
 
 
 </style>
+
 {% endblock css %}
 
 
@@ -188,136 +273,127 @@
 
 {% include 'website/navbar.html' %}
 
-<div class="container mt-4">
-    <div class="row">
-      <div class="card pt-2">
-        <div class="md-stepper-horizontal green">
-          <div class="md-step active done">
-            <div class="md-step-circle"><span>1</span></div>
-            <div class="md-step-title">your order</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-          </div>
-          
-          <div class="md-step">
-            <div class="md-step-circle"><span>2</span></div>
-            <div class="md-step-title">payment</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-          </div>
-          <div class="md-step">
-            <div class="md-step-circle"><span>3</span></div>
-            <div class="md-step-title">confirm</div>
-            <div class="md-step-bar-left"></div>
-            <div class="md-step-bar-right"></div>
-          </div>
-        </div>
+<div class="container-fluid" style="background-color: seashell;">
+  <div class="row  pt-4 ">
+    <form id="regForm" action="/action_page.php">
+      <!-- Circles which indicates the steps of the form: -->
+      <div style="text-align:center;">
+        <span class="step">1</span>
+        <span class="step">2</span>
+        <span class="step">3</span>
       </div>
-    </div>
+      <!-- <h1>Register:</h1> -->
+      <!-- One "tab" for each step in the form: -->
+      <div class="tab">
+        <div class="row mt-3">
+          <div class="" >
+            <div class="table-responsive container">
+              <!-- <p class="fw-bold">your order details</p> -->
+              <table class="table table-striped">
+                <caption style="text-align: end; padding-right: 5%;" class="" style="color: #F96302;">Total: 200 AED</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">item</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total price</th>
+                  </tr>
+                </thead>
+                <tbody id="order-table-body"> 
+                </tbody>
+              </table>
+            </div> 
+    
+            <div id="empty-card" class=" mb-3 pt-3">
+              <div class="row">
+              <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
+                <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+                <p>Your cart is empty.</p>
+                <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
+              </div>
+              
+              </div>
+            </div> 
 
-    <div class="row mt-3">
-      <div class="card">
-        <div class="table-responsive">
-          <!-- <p class="fw-bold">your order details</p> -->
-          <table class="table table-striped">
-            <caption style="text-align: end; padding-right: 5%;" class="" style="color: #F96302;">Total: 200 AED</caption>
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">item</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total price</th>
-              </tr>
-            </thead>
-            <tbody id="order-table-body"> 
-            </tbody>
-          </table>
-        </div> 
-
-        <div id="empty-card" class=" row mb-3 pt-3">
-          <div class="col-sm-12 col-md-6 text-center">
-            <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
-          </div>
-          <div class="col-sm-12 col-md-6 text-center pt-3">
-            <p>Your cart is empty.</p>
-            <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
-          </div>
-        </div> 
-        <!-- end of table -->
-
-        <div class="row" style="background-color: seashell;">
-          <div class="col-sm-12 col-md-6">
-            <div id="map" style="height:400px; width:auto"></div>
-          </div>
-          <div class="col-sm-12 col-md-6 pt-3 mb-3">
-            <form>
-              <div class="form-row">
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="name">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="number">Number</label>
-                    <input type="tel" class="form-control" id="number" placeholder="phone number">
-                  </div>
+            <!-- end of table -->
+    
+            <div class=" container" >
+              <div class="row">
+                <div class="col-sm-12 ">
+                  <div id="map" style="height:400px; width:auto"></div>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="inputAddress">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-              </div>
-              <div class="form-group">
-                <label for="inputAddress2">Address 2</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-              </div>
-              <!-- <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputCity">City</label>
-                  <input type="text" class="form-control" id="inputCity">
+              <div class="row">
+                <div class="col-sm-12 col-md-6 pt-3 mb-3">
+                  <form>
+                    <div class="form-row">
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label for="name">Name</label>
+                          <input type="text" class="form-control" id="name" placeholder="name">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="number">Number</label>
+                          <input type="tel" class="form-control" id="number" placeholder="phone number">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress">Address</label>
+                      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress2">Address 2</label>
+                      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                    </div>
+                  </form>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="inputState">State</label>
-                  <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                  </select>
+                <div class="col-sm-12 col-md-6 mb-3 mt-3 " style="background-color: palegoldenrod; border-radius: 8px;">
+                  <p class="my-0">Total Payment: <span class="total-payment"></span> AED</p>
+                  <p class="my-0">Delivery Charge: <span class="delivery-charge"></span> </p>
+                  <hr class="my-0">
+                  <p>TOTAL BILL: <span class="total-payable"> </span> AED</p>
+                  <!-- <button class="btn btn-outline-success rounded-pill d-block mx-auto px-5 py-3">Confirm and Preceed</button> -->
                 </div>
-                <div class="form-group col-md-2">
-                  <label for="inputZip">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
-              </div> -->
-              <div class="form-group">
-                <!-- <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="gridCheck">
-                  <label class="form-check-label" for="gridCheck">
-                    Check me out
-                  </label>
-                </div> -->
               </div>
-              <!-- <button type="submit" class="btn btn-primary">Sign in</button> -->
-            </form>
-          </div>
-        </div>
-        <div class="row pt-4" style="background-color: palegoldenrod;">
-          <div class="col-sm-12 col-md-6">
-            <div class="form-group">
-              <label>Optional</label>
-              <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
+              
             </div>
-          </div>
-          <div class="col-sm-12 col-md-6 mb-3 mt-3 ">
-            <p class="my-0">Total Payment: <span class="total-payment"></span> AED</p>
-            <p class="my-0">Delivery Charge: <span class="delivery-charge"></span> </p>
-            <hr class="my-0">
-            <p>TOTAL BILL: <span class="total-payable"> </span> AED</p>
-            <button class="btn btn-outline-success rounded-pill d-block mx-auto px-5 py-3">Confirm and Preceed</button>
+            <!-- <div class="row pt-4" style="background-color: palegoldenrod;">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                  <label>Optional</label>
+                  <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
+                </div>
+              </div>
+              
+            </div> -->
           </div>
         </div>
+
       </div>
-    </div>
+      <div class="tab">Contact Info:
+        <p><input placeholder="E-mail..." oninput="this.className = ''" name="email"></p>
+        <p><input placeholder="Phone..." oninput="this.className = ''" name="phone"></p>
+      </div>
+      <div class="tab">Birthday:
+        <p><input placeholder="dd" oninput="this.className = ''" name="dd"></p>
+        <p><input placeholder="mm" oninput="this.className = ''" name="nn"></p>
+        <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"></p>
+      </div>
+     
+      <div class="my-3" >
+        <div class="justify-content-center d-flex">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+          <button type="button" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+      </div>
+    </form>
+  </div>
+    
+</div>
+  
+    
 
 </div>
 
@@ -331,10 +407,12 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-<!-- <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css"> -->
+
+
 
 <script>
+
+
   // call the load 
 load_order()
 
@@ -360,7 +438,7 @@ function load_order(){
           <td class="align-middle td-quantity">
             <div class="counter td-counter">
               <span class="down" onClick='decreaseCount(event, this)'>-</span>
-              <input type="text" data-id="${ord.id}" value="${ord.quantity}">
+              <input type="text" style="padding:2px" data-id="${ord.id}" value="${ord.quantity}">
               <span class="up"  onClick='increaseCount(event, this)'>+</span>
             </div>
           </td>
@@ -594,6 +672,79 @@ function Update_order(obj_all, index, update, one_item=false){
   localStorage.setItem("order", on);
 }
 
+
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Submit";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+  }
+  //... and run a function that will display the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
 
 </script>
 
