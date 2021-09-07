@@ -253,6 +253,10 @@ input.invalid {
 
 .step.active {
   opacity: 1;
+  border: 2px solid #ffdddd;  
+  background-color: #c5aaaa;
+  color: white;
+  font-weight: bolder;
 }
 
 /* Mark the steps that are finished and valid: */
@@ -263,7 +267,40 @@ input.invalid {
   font-weight: bolder;
 }
 
+.payment-check{
+  /* height: 30px; */
+  height: auto;
+  /* width: fit-content; */
+  border-radius: 10px;
+  border:2px solid #F96302;
+  color: #F96302;
+  padding: 10px;
+}
+.payment-check input:checked{
+  background-color: #F96302;
+  border-color: #F96302;
+}
+.payment-check input{
+  border-color: #F96302;
+}
+.payment-check input:focus{
+  border-color: #F96302;
+  outline: 0;
+  box-shadow: none;
+}
 
+.card{
+  border-color: #F96302;
+  background-color:antiquewhite;
+  color: #F96302;
+}
+.card .card-header, .card-footer{
+  border-color: #f96302;
+  background-color: bisque;
+}
+.info-summary p,h5{
+  color: #F96302;
+}
 </style>
 
 {% endblock css %}
@@ -274,8 +311,9 @@ input.invalid {
 {% include 'website/navbar.html' %}
 
 <div class="container-fluid" style="background-color: seashell;">
+
   <div class="row  pt-4 ">
-    <form id="regForm" action="/action_page.php">
+    <form id="regForm" action="">
       <!-- Circles which indicates the steps of the form: -->
       <div style="text-align:center;">
         <span class="step">1</span>
@@ -350,7 +388,7 @@ input.invalid {
                   </form>
                 </div>
                 <div class="col-sm-12 col-md-6 mb-3 mt-3 " style="background-color: palegoldenrod; border-radius: 8px;">
-                  <p class="my-0">Total Payment: <span class="total-payment"></span> AED</p>
+                  <p class="my-0">Total Order: <span class="total-payment"></span> AED</p>
                   <p class="my-0">Delivery Charge: <span class="delivery-charge"></span> </p>
                   <hr class="my-0">
                   <p>TOTAL BILL: <span class="total-payable"> </span> AED</p>
@@ -372,20 +410,71 @@ input.invalid {
         </div>
 
       </div>
-      <div class="tab">Contact Info:
-        <p><input placeholder="E-mail..." oninput="this.className = ''" name="email"></p>
-        <p><input placeholder="Phone..." oninput="this.className = ''" name="phone"></p>
+      <div class="tab">
+       
+          <div class="container">
+            <div class="row mt-5 text-center">
+              <h3 class="mx-auto">PAYEMENT METHOD</h3>
+
+              <div class="col-sm-12 col-md-3"> </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="row mt-4 mb-4 ">
+                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
+                    <div class="payment-check  mb-4">
+                      <input type="radio" checked name="payment-method" class="form-check-input" id="cash">
+                      <label class="form-check-label" style="margin: auto 10px;" for="cash">Cash ON Delivery</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
+                    <div class="payment-check mb-4 ">
+                      <input type="radio" name="payment-method"  class="form-check-input" id="POS">
+                      <label class="form-check-label" style="margin: auto 10px;" for="POS">Card ON Delivery</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
+                    <div class="payment-check mb-4">
+                      <input type="radio" name="payment-method"  class="form-check-input" id="online">
+                      <label class="form-check-label" style="margin: auto 10px;" for="online">	&nbsp; Pay Online Now 	&nbsp;</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-3"> </div>
+            </div>
+            
+          </div>
+    
       </div>
-      <div class="tab">Birthday:
-        <p><input placeholder="dd" oninput="this.className = ''" name="dd"></p>
-        <p><input placeholder="mm" oninput="this.className = ''" name="nn"></p>
-        <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"></p>
+      <div class="tab">
+        <div class="container pt-4">
+          <div class="row my-3">
+            <div class="col-sm-12 col-md-6">
+             <div class="card mx-4">
+               <div class="card-header">
+                 <h5>YOUR ORDER SUMMARY</h5>
+               </div>
+               <div class="card-body order-summary">
+         
+               </div>
+               <div class="card-footer">
+                 <h5>TOTAL <span style="float: right;" class="total-summary"></span></h5>
+               </div>
+             </div>
+            </div>
+            <div class="col-sm-12 col-md-6 px-5 py-3">
+              <h5>Your Address and Information</h5>
+              <div class="info-summary">
+                
+              </div>
+           </div>
+          </div>
+        </div>
       </div>
      
       <div class="my-3" >
         <div class="justify-content-center d-flex">
           <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-          <button type="button" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
+          <button type="submit" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
         </div>
       </div>
     </form>
@@ -411,7 +500,6 @@ input.invalid {
 
 
 <script>
-
 
   // call the load 
 load_order()
@@ -495,11 +583,14 @@ var geolocate = new mapboxgl.GeolocateControl({
       showUserHeading: true
   });
 map.addControl(geolocate);
+
 // get the location data
+const user_position = '';
 geolocate.on('geolocate', function(e) {
       var lon = e.coords.longitude;
       var lat = e.coords.latitude
       var position = [lon, lat];
+      user_position = position;
       // calculate which area the user is
       user_location_calculation(position);
       
@@ -714,6 +805,7 @@ function nextPrev(n) {
   showTab(currentTab);
 }
 
+var info =[];
 function validateForm() {
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
@@ -722,7 +814,10 @@ function validateForm() {
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
+    info.push(y[i].value);
+
     if (y[i].value == "") {
+      
       // add an "invalid" class to the field:
       y[i].className += " invalid";
       // and set the current valid status to false
@@ -746,40 +841,47 @@ function fixStepIndicator(n) {
   x[n].className += " active";
 }
 
+
+
+$(document).ready(function(){
+  if(localStorage.getItem("order")){
+    var order = localStorage.getItem("order");
+    if(order.search(";") == -1){
+      // not ; that means one order
+      var obj_one = JSON.parse(order);
+      $('.order-summary').append(`<p>${obj_one.quantity} X ${obj_one.name}  <span style="float: right;">${obj_one.price}</span></p>`);
+      $('.total-summary').append(obj_one.price + "ADE");
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = order.split(";");
+      var total =0;
+      for(var i in obj_arr){
+        var one = JSON.parse(obj_arr[i]);
+        $('.order-summary').append(`<p>${one.quantity} X ${one.name}  <span style="float: right;">${one.price}</span></p>`);
+        var t = one.price.split(" ");
+      total += parseFloat(t[1]);
+
+      }
+      $('.total-summary').append(total + " AED");
+    } //eend else 
+  } // endif
+  
+
+});
+
+$('#nextBtn').on('click', function(){
+  $('.info-summary').html('');
+  for(var i in info){  
+    if(parseInt(info[i]) != 1){
+      if(info[i] != 'on'){
+        $('.info-summary').append(`<p class="m-0">${info[i]}</p>`);
+      }
+    }
+  }
+});
+
 </script>
 
 
 {% endblock js %}
 
-
-// get the geojson data from db
-// map.on('load', () => {
-//   map.addSource('route', {
-//     'type': 'geojson',
-//     'data': {
-//       'type': 'Feature',
-//       'properties': {},
-//         'geometry': {
-//           'type': 'LineString',
-//           'coordinates': [[-122.487516, 37.831683], [-122.488031, 37.832158],
-//                           [-122.488889, 37.832971], [-122.489876, 37.832632],
-//                           [-122.490434, 37.832937], [-122.49125, 37.832429],
-//                           [-122.491636, 37.832564], [-122.492237, 37.833378],
-//                           [-122.493782, 37.833683]]
-//         }
-//     }
-//   });
-//   map.addLayer({
-//     'id': 'route',
-//     'type': 'line',
-//     'source': 'route',
-//     'layout': {
-//       'line-join': 'round',
-//       'line-cap': 'round'
-//     },
-//     'paint': {
-//     'line-color': '#888',
-//     'line-width': 8
-//     }
-//   });
-// });
