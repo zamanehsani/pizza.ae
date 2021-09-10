@@ -478,12 +478,14 @@ function user_location_calculation(position){
         // which area user is located
         
         var bool = turf.booleanPointInPolygon(turf.point(position), gjson.features[0]);
+        console.log(data[i].name + " | " + bool + " from out");
         if (bool === true){
             var html =`name: ${data[i].name}, min order: ${data[i].min_order}, delivery cahrge:${data[i].charge}`;
             $('.delivery-charge').text(html + " AED");
             $('[name="delivery_charge"]').val(data[i].charge);
             // alert("area is: " + data[i].name + " charge is: " + data[i].charge);
             // check this after the hosting. 
+            console.log(data[i].name + " | " + bool);
             return ;
         }
       
