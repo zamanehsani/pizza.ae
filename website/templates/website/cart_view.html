@@ -449,8 +449,10 @@ var geolocate = new mapboxgl.GeolocateControl({
       showUserHeading: true
   });
 map.addControl(geolocate);
-
-
+// for resize and laod in full canves
+map.on('idle',function(){
+map.resize()
+})
 
 // get the location data
 const user_position = '';
@@ -461,7 +463,6 @@ geolocate.on('geolocate', function(e) {
       user_position = position;
       // calculate which area the user is
       user_location_calculation(position);
-      
 });
 
 // this is for not leaving black the delivery charge.
@@ -493,6 +494,7 @@ function user_location_calculation(position){
 
   }); //end of ajax
 }
+
 
 
 // adding the areas to the map
