@@ -1,3 +1,5 @@
+from dashboard.forms import OrderForm
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from dashboard import models
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
@@ -40,6 +42,11 @@ class Sign_up_CustomerView(TemplateView):
         data['page_title'] = 'Sign up'
         return data
 
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+@method_decorator(csrf_exempt, name='dispatch')
 class CartView(TemplateView):
     template_name = "website/cart_view.html"
 
@@ -47,3 +54,12 @@ class CartView(TemplateView):
         data = super(CartView, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Cart'
         return data
+
+    def post(self, request, *args, **kwargs):
+        import json
+        order = request.POST.get('order').split(';')
+        for i in order:
+            a = json.loads(i)
+            print(type(a), a)
+        
+        return JsonResponse(False, safe=False)

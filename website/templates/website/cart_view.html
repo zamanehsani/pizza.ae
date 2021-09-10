@@ -1,130 +1,6 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-<style>
-  .md-stepper-horizontal {
-  display:table;
-  width:100%;
-  margin:0 auto;
-  /* background-color:#FFFFFF; */
-  /* box-shadow: 0 3px 8px -6px rgba(0,0,0,.50); */
-}
-.md-stepper-horizontal .md-step {
-  display:table-cell;
-  position:relative;
-  /* this is padding of each stepp */
-  /* padding:24px; */
-}
-.md-stepper-horizontal .md-step:hover,
-.md-stepper-horizontal .md-step:active {
-  /* uncoment this if you want hover eeffect*/
-  /* background-color:rgba(0,0,0,0.04); */
-}
-.md-stepper-horizontal .md-step:active {
-  border-radius: 15% / 75%;
-}
-.md-stepper-horizontal .md-step:first-child:active {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.md-stepper-horizontal .md-step:last-child:active {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.md-stepper-horizontal .md-step:hover .md-step-circle {
-  background-color:#757575;
-}
-.md-stepper-horizontal .md-step:first-child .md-step-bar-left,
-.md-stepper-horizontal .md-step:last-child .md-step-bar-right {
-  display:none;
-}
-.md-stepper-horizontal .md-step .md-step-circle {
-  width:30px;
-  height:30px;
-  margin:0 auto;
-  background-color:#999999;
-  border-radius: 50%;
-  text-align: center;
-  line-height:30px;
-  font-size: 16px;
-  font-weight: 600;
-  color:#FFFFFF;
-}
-.md-stepper-horizontal.green .md-step.active .md-step-circle {
-  background-color:#198754;
-}
-.md-stepper-horizontal.orange .md-step.active .md-step-circle {
-  background-color:#F96302;
-}
-.md-stepper-horizontal .md-step.active .md-step-circle {
-  background-color: rgb(33,150,243);
-}
-.md-stepper-horizontal .md-step.done .md-step-circle:before {
-  font-family:'FontAwesome';
-  font-weight:100;
-  content: "\f00c";
-}
-.md-stepper-horizontal .md-step.done .md-step-circle *,
-.md-stepper-horizontal .md-step.editable .md-step-circle * {
-  display:none;
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle {
-  -moz-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle:before {
-  font-family:'FontAwesome';
-  font-weight:100;
-  content: "\f040";
-}
-.md-stepper-horizontal .md-step .md-step-title {
-  /* this is for the title of each step to be cloes to the circle */
-  margin-top:5px;
-  font-size:16px;
-  font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-title,
-.md-stepper-horizontal .md-step .md-step-optional {
-  text-align: center;
-  color:rgba(0,0,0,.26);
-}
-.md-stepper-horizontal .md-step.active .md-step-title {
-  font-weight: 600;
-  color:rgba(0,0,0,.87);
-}
-.md-stepper-horizontal .md-step.active.done .md-step-title,
-.md-stepper-horizontal .md-step.active.editable .md-step-title {
-  font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-optional {
-  font-size:12px;
-}
-.md-stepper-horizontal .md-step.active .md-step-optional {
-  color:rgba(0,0,0,.54);
-}
-.md-stepper-horizontal .md-step .md-step-bar-left,
-.md-stepper-horizontal .md-step .md-step-bar-right {
-  position:absolute;
-  /* this is the space of the line */
-  top:15px;
-  height:1px;
-  border-top:1px solid #DDDDDD;
-}
-.md-stepper-horizontal .md-step .md-step-bar-right {
-  right:0;
-  left:50%;
-  margin-left:20px;
-}
-.md-stepper-horizontal .md-step .md-step-bar-left {
-  left:0;
-  right:50%;
-  margin-right:20px;
-}
-
-</style>
-
 {% block css %}
 <!-- <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css"> -->
 <style>
@@ -188,7 +64,6 @@
 
 
 /* for stepper */
-
 #regForm {
   /* background-color: #ffffff; */
   /* margin: 10px auto; */
@@ -219,7 +94,6 @@ input.invalid {
 }
 
 .btn-orange {
-  
   background-color: #F96302;
   /* border-radius: 10px; */
   color: #fff;
@@ -228,10 +102,6 @@ input.invalid {
   /* font-size: 17px; */
   cursor: pointer;
 }
-
-/* button:hover {
-  opacity: 0.8;
-} */
 
 #prevBtn {
   background-color: #bbbbbb;
@@ -298,9 +168,10 @@ input.invalid {
   border-color: #f96302;
   background-color: bisque;
 }
-.info-summary p,h5{
+.info-summary p,h5 , .text-orange{
   color: #F96302;
 }
+
 </style>
 
 {% endblock css %}
@@ -313,7 +184,7 @@ input.invalid {
 <div class="container-fluid" style="background-color: seashell;">
 
   <div class="row  pt-4 ">
-    <form id="regForm" action="">
+    <form id="regForm" onsubmit="preventSubmit(event)">
       <!-- Circles which indicates the steps of the form: -->
       <div style="text-align:center;">
         <span class="step">1</span>
@@ -324,7 +195,7 @@ input.invalid {
       <!-- One "tab" for each step in the form: -->
       <div class="tab">
         <div class="row mt-3">
-          <div class="" >
+          <div >
             <div class="table-responsive container">
               <!-- <p class="fw-bold">your order details</p> -->
               <table class="table table-striped">
@@ -342,7 +213,6 @@ input.invalid {
                 </tbody>
               </table>
             </div> 
-    
             <div id="empty-card" class=" mb-3 pt-3">
               <div class="row">
               <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
@@ -363,39 +233,39 @@ input.invalid {
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-12 col-md-6 pt-3 mb-3">
-                  <form>
+                <form id="regForm1">
+                  
+                  <div class="col-sm-12 col-md-6 pt-3 mb-3">
                     <div class="form-row">
                       <div class="row">
                         <div class="form-group col-md-6">
                           <label for="name">Name</label>
-                          <input type="text" class="form-control" id="name" placeholder="name">
+                          <input type="text" name="name" class="form-control" id="name" placeholder="name">
                         </div>
                         <div class="form-group col-md-6">
                           <label for="number">Number</label>
-                          <input type="tel" class="form-control" id="number" placeholder="phone number">
+                          <input type="tel" name="number" class="form-control" id="number" placeholder="phone number">
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="inputAddress">Address</label>
-                      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                      <input type="text" name="address" class="form-control" id="inputAddress" placeholder="1234 Main St">
                     </div>
                     <div class="form-group">
                       <label for="inputAddress2">Address 2</label>
-                      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                      <input type="text" name="address2" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
                     </div>
-                  </form>
-                </div>
-                <div class="col-sm-12 col-md-6 mb-3 mt-3 " style="background-color: palegoldenrod; border-radius: 8px;">
-                  <p class="my-0">Total Order: <span class="total-payment"></span> AED</p>
-                  <p class="my-0">Delivery Charge: <span class="delivery-charge"></span> </p>
-                  <hr class="my-0">
-                  <p>TOTAL BILL: <span class="total-payable"> </span> AED</p>
-                  <!-- <button class="btn btn-outline-success rounded-pill d-block mx-auto px-5 py-3">Confirm and Preceed</button> -->
+                  </div>
+                </form>
+                <div class="col-sm-12 col-md-6 mb-3 mt-3 pt-3 pl-2" style="background-color: palegoldenrod; border-radius: 8px;">
+                  <p class="my-0 text-orange">Total Order: <span class="total-payment"></span> AED</p>
+                  <p class="my-0 text-orange">Delivery Charge: <span class="delivery-charge"></span> </p>
+                  <hr class="my-0 ">
+                  <input type="hidden" name="delivery_charge" id="" value="">
+                  <p class="text-orange">TOTAL BILL: <span class="total-payable"> </span> AED</p>
                 </div>
               </div>
-              
             </div>
             <!-- <div class="row pt-4" style="background-color: palegoldenrod;">
               <div class="col-sm-12 col-md-6">
@@ -404,36 +274,33 @@ input.invalid {
                   <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
                 </div>
               </div>
-              
             </div> -->
           </div>
         </div>
 
       </div>
       <div class="tab">
-       
           <div class="container">
             <div class="row mt-5 text-center">
               <h3 class="mx-auto">PAYEMENT METHOD</h3>
-
               <div class="col-sm-12 col-md-3"> </div>
               <div class="col-sm-12 col-md-6">
                 <div class="row mt-4 mb-4 ">
                   <div class="col-sm-12 col-md-4 justify-content-sm-center">
                     <div class="payment-check  mb-4">
-                      <input type="radio" checked name="payment-method" class="form-check-input" id="cash">
+                      <input type="radio" checked name="payment" value="payment_cash" class="form-check-input" id="cash">
                       <label class="form-check-label" style="margin: auto 10px;" for="cash">Cash ON Delivery</label>
                     </div>
                   </div>
                   <div class="col-sm-12 col-md-4 justify-content-sm-center">
                     <div class="payment-check mb-4 ">
-                      <input type="radio" name="payment-method"  class="form-check-input" id="POS">
+                      <input type="radio" name="payment" value="payment_pos"  class="form-check-input" id="POS">
                       <label class="form-check-label" style="margin: auto 10px;" for="POS">Card ON Delivery</label>
                     </div>
                   </div>
                   <div class="col-sm-12 col-md-4 justify-content-sm-center">
                     <div class="payment-check mb-4">
-                      <input type="radio" name="payment-method"  class="form-check-input" id="online">
+                      <input type="radio" name="payment" value="payment_online" class="form-check-input" id="online">
                       <label class="form-check-label" style="margin: auto 10px;" for="online">	&nbsp; Pay Online Now 	&nbsp;</label>
                     </div>
                   </div>
@@ -500,7 +367,6 @@ input.invalid {
 
 
 <script>
-
   // call the load 
 load_order()
 
@@ -519,7 +385,7 @@ function load_order(){
         var html = `
         <tr>
           <th class="align-middle" scope="row">
-            <span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="color: #f96302;" data-width="30" data-height="30"></span>
+            <span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="color: #f96302; cursor: pointer;" data-width="30" data-height="30"></span>
           </th>
           <td class="align-middle td-name">${ord.name}</td>
           <td class="align-middle td-price">${ord.price}</td>
@@ -584,6 +450,8 @@ var geolocate = new mapboxgl.GeolocateControl({
   });
 map.addControl(geolocate);
 
+
+
 // get the location data
 const user_position = '';
 geolocate.on('geolocate', function(e) {
@@ -596,6 +464,9 @@ geolocate.on('geolocate', function(e) {
       
 });
 
+// this is for not leaving black the delivery charge.
+$('[name="delivery_charge"]').val(15);
+
 function user_location_calculation(position){
   $.ajax({
     url:"../api/areas",
@@ -604,12 +475,16 @@ function user_location_calculation(position){
       for(var i in data){
         var gjson = JSON.parse(data[i].geojson);
         // which area user is located
+        
         var bool = turf.booleanPointInPolygon(turf.point(position), gjson.features[0]);
-       if (bool === true){
-         var html =`name: ${data[i].name}, min order: ${data[i].min_order}, delivery cahrge:${data[i].charge}`;
-        $('.delivery-charge').text(html + " AED");
-        break;
-       }
+        if (bool === true){
+            var html =`name: ${data[i].name}, min order: ${data[i].min_order}, delivery cahrge:${data[i].charge}`;
+            $('.delivery-charge').text(html + " AED");
+            $('[name="delivery_charge"]').val(data[i].charge);
+            // alert("area is: " + data[i].name + " charge is: " + data[i].charge);
+            // check this after the hosting. 
+            return ;
+        }
       
       } //end of for loop
       $('.delivery-charge').text("not in any areas. your order may not be accepted.");
@@ -695,7 +570,7 @@ function delete_order(event, id){
         if(one.id == id){
           continue;
         }else{
-            obh += ";"+JSON.stringify(one);
+            new_order += ";"+JSON.stringify(one);
         }
       }
       new_order = new_order.substring(1)
@@ -798,7 +673,8 @@ function nextPrev(n) {
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
-    document.getElementById("regForm").submit();
+    
+    $("#regForm").submit();
     return false;
   }
   // Otherwise, display the correct tab:
@@ -843,6 +719,7 @@ function fixStepIndicator(n) {
 
 
 
+
 $(document).ready(function(){
   if(localStorage.getItem("order")){
     var order = localStorage.getItem("order");
@@ -850,7 +727,7 @@ $(document).ready(function(){
       // not ; that means one order
       var obj_one = JSON.parse(order);
       $('.order-summary').append(`<p>${obj_one.quantity} X ${obj_one.name}  <span style="float: right;">${obj_one.price}</span></p>`);
-      $('.total-summary').append(obj_one.price + "ADE");
+      $('.total-summary').append(obj_one.price + "AED");
     }else{
       // found a ; that means two order or more
       var obj_arr = order.split(";");
@@ -879,6 +756,36 @@ $('#nextBtn').on('click', function(){
     }
   }
 });
+
+
+// submit the order form
+function preventSubmit(event){
+    event.preventDefault();
+    data = {};
+    data['name'] = $('[name="name"]').val();
+    data['number'] = $('[name="number"]').val();
+    data['address'] = $('[name="address"]').val();
+    data['address2'] = $('[name="address2"]').val();
+    data['note']    = $('[name="note"]').val();
+    $("input[type=radio]")
+      .each(function() {
+        if($(this).is(":checked") && (typeof $(this).is(":checked")) !== 'undefined'){ 
+          data['payment'] = $(this).val();
+        }
+      });
+
+    data['order'] = localStorage.getItem('order');
+ 
+    $.ajax({
+      url: "{% url 'website:cart_view' %}",
+      method: 'POST',
+      data : data,
+      success:function(response){
+        alert(response );
+      }
+    })
+  };
+
 
 </script>
 
