@@ -61,15 +61,7 @@ class CartView(TemplateView):
         location_order = request.POST.get('location')
         address_order = request.POST.get('address') +" - " +request.POST.get('address2')
         payment_order = request.POST.get('payment')
-        note_order = request.POST.get('note')
-
-        if request.POST.get('area') == 'false':
-            print("area is false, make the first area by default")
-            area_order = models.Areas.objects.first()
-        else:
-            print("area is not false, geting the area of tha area number")
-            area_order = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
-
+        note_order = request.POST.get('description')
 
         order_obj = models.Order(
                 name = name_order, 
@@ -77,13 +69,16 @@ class CartView(TemplateView):
                 location = location_order, 
                 status = 'ordered',
                 address = address_order,
-                area = area_order,
                 payment_method = payment_order,
                 description = note_order)
 
         order_obj.save()
 
-        print("daved")
+        # update the order it no area
+        if request.POST.get('area') != 'false':
+            print("area has been selected", request.POST.get('area'))
+            order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
+            order_obj.save()
         
         import json
         order = request.POST.get('order').split(';')
@@ -92,6 +87,5 @@ class CartView(TemplateView):
             menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
             order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
             order_item.save()
-            print(order_item, order_item.quantity)
 
         return JsonResponse(order_obj.pk, safe=False)

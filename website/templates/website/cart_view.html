@@ -232,6 +232,11 @@ input.invalid {
                   <div id="map" style="height:400px; width:auto"></div>
                 </div>
               </div>
+              <div class="row my-3 mx-1">
+                
+                  <button type="button" onclick="locate_me()" class="btn btn-outline-primary rounded-pill btn-lg btn-block">Locate me</button>
+           
+              </div>
               <div class="row">
                 <form id="regForm1">
                   
@@ -267,14 +272,7 @@ input.invalid {
                 </div>
               </div>
             </div>
-            <!-- <div class="row pt-4" style="background-color: palegoldenrod;">
-              <div class="col-sm-12 col-md-6">
-                <div class="form-group">
-                  <label>Optional</label>
-                  <textarea class="form-control" placeholder="add any note to your order here ..." rows="3"></textarea>
-                </div>
-              </div>
-            </div> -->
+           
           </div>
         </div>
 
@@ -335,6 +333,14 @@ input.invalid {
               </div>
            </div>
           </div>
+           <div class="row py-4" style="background-color: palegoldenrod;">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Optional</label>
+                  <textarea class="form-control" id="note" placeholder="add any note to your order here ..." rows="3"></textarea>
+                </div>
+              </div>
+            </div> 
         </div>
       </div>
      
@@ -435,8 +441,7 @@ const map = new mapboxgl.Map({
       zoom: 12 
     });
 
-
-    map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.FullscreenControl());
 
   // Add geolocate control to the map.
 var geolocate = new mapboxgl.GeolocateControl({
@@ -444,11 +449,12 @@ var geolocate = new mapboxgl.GeolocateControl({
       enableHighAccuracy: true
       },
       // When active the map will receive updates to the device's location as it changes.
-      trackUserLocation: true,
+      // trackUserLocation: true,
       // Draw an arrow next to the location dot to indicate which direction the device is heading.
       showUserHeading: true
   });
 map.addControl(geolocate);
+
 // for resize and laod in full canves
 map.on('idle',function(){
 map.resize()
@@ -464,6 +470,13 @@ geolocate.on('geolocate', function(e) {
       // calculate which area the user is
       user_location_calculation(position);
 });
+
+// this is the locate me btn function
+function locate_me(){
+  map.on('idle', function() {
+    geolocate.trigger(); //<- Automatically activates geolocation
+  });
+}
 
 // this is for not leaving black the delivery charge.
 // $('[name="delivery_charge"]').val(15);
@@ -482,7 +495,7 @@ function user_location_calculation(position){
         if (bool === true){
             var html =`delivery charge:${data[i].charge}`;
             $('.delivery-charge').text(html + " AED");
-            $('[name="delivery_charge"]').val(data[i].charge);
+            $('[name="delivery_charge"]').val(data[i].id);
             // alert("area is: " + data[i].name + " charge is: " + data[i].charge);
             // check this after the hosting. 
             return ;
@@ -710,6 +723,7 @@ function validateForm() {
   return valid; // return the valid status
 }
 
+// this adds the inputs to array
 function ADD_TO(a){
   if(a.type == "radio"){
       if(a.checked == true){
@@ -720,6 +734,8 @@ function ADD_TO(a){
     info.push(a.value);
     }
 }
+
+
 function fixStepIndicator(n) {
   // This function removes the "active" class of all steps...
   var i, x = document.getElementsByClassName("step");
@@ -729,8 +745,6 @@ function fixStepIndicator(n) {
   //... and adds the "active" class on the current step:
   x[n].className += " active";
 }
-
-
 
 
 $(document).ready(function(){
@@ -780,16 +794,20 @@ function preventSubmit(event){
     data['address'] = $('[name="address"]').val();
     data['address2'] = $('[name="address2"]').val();
     data['area']    = $('[name="delivery_charge"]').val();
-    data['location'] = user_position;
+    data['location'] = user_position +"";
+    data['description'] = $('#note').val();
     $("input[type=radio]")
       .each(function() {
         if($(this).is(":checked") && (typeof $(this).is(":checked")) !== 'undefined'){ 
           data['payment'] = $(this).val();
         }
       });
-
+    if(!localStorage.getItem("order")){
+      alert("please select menu item from the menu.")
+      window.location.reload();
+    }
     data['order'] = localStorage.getItem('order');
- 
+      
     $.ajax({
       url: "{% url 'website:cart_view' %}",
       method: 'POST',
