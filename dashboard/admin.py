@@ -24,6 +24,9 @@ class Order(admin.ModelAdmin):
     list_filter = ("deliverer", "status")
 admin.site.register(models.Order, Order)
 
+class Order_item(admin.ModelAdmin):
+    list_display = ('order', 'menu_item', 'quantity')
+admin.site.register(models.Order_items, Order_item)
 
 # stock list
 class Stock(admin.ModelAdmin):

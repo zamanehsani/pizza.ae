@@ -1,3 +1,4 @@
+from os import truncate
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -90,6 +91,23 @@ class Menu_category(models.Model):
         verbose_name_plural = "Menu Category"
         
 
+class Areas(models.Model):
+    name = models.CharField(max_length=150)
+    color = models.CharField(max_length=150, null=True, blank=True)
+    charge = models.DecimalField(max_digits=10, decimal_places=3)
+    min_order = models.SmallIntegerField(null=True, blank=True)
+    geojson = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Area"
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('dashboard:area')
+
+
 # this is the menu item and can be added to a category of menu
 class Menu(models.Model):
     name            = models.CharField(max_length=150, null=True, blank=True)
@@ -115,11 +133,14 @@ class Order(models.Model):
     date        = models.DateTimeField(auto_now=False, auto_now_add=True)
     location    = models.TextField(null=True, blank=True)
     number      = models.IntegerField(null=True, blank=True)
-    menu_items  = models.ManyToManyField(Menu, null=True, blank=True)
     status      = models.CharField(max_length=100, null=True, blank=True)
     deliverer   = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     description     = models.TextField(null=True, blank=True) 
-    
+    address     = models.TextField(blank=True, null=True)
+    payment     = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    area        = models.ForeignKey(Areas, on_delete=models.CASCADE, null=True, blank=True)
+    payment_method = models.CharField(max_length=100, blank=True, null=True)
+
     def __str__(self) -> str:
         return  self.name
 
@@ -128,6 +149,19 @@ class Order(models.Model):
 
     class Meta:
         verbose_name_plural = "Order"
+
+class Order_items(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    quantity = models.SmallIntegerField(default=1)
+    def __str__(self) -> str:
+        return  str(self.order)
+
+    def get_absolute_url(self):
+        return reverse('dashboard:order')
+
+    class Meta:
+        verbose_name_plural = "Order Items"
 
 def stock_file(filename):
     # file will be uploaded to MEDIA_ROOT/stock/<m-Y>/<filename>
@@ -180,19 +214,3 @@ class Staff_Salary(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:salary')
 
-
-class Areas(models.Model):
-    name = models.CharField(max_length=150)
-    color = models.CharField(max_length=150, null=True, blank=True)
-    charge = models.DecimalField(max_digits=10, decimal_places=3)
-    min_order = models.SmallIntegerField(null=True, blank=True)
-    geojson = models.TextField(null=True, blank=True)
-
-    class Meta:
-        verbose_name_plural = "Area"
-    
-    def __str__(self):
-        return self.name
-    
-    def get_absolute_url(self):
-        return reverse('dashboard:area')

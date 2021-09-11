@@ -262,7 +262,7 @@ input.invalid {
                   <p class="my-0 text-orange">Total Order: <span class="total-payment"></span> AED</p>
                   <p class="my-0 text-orange">Delivery Charge: <span class="delivery-charge"></span> </p>
                   <hr class="my-0 ">
-                  <input type="hidden" name="delivery_charge" id="" value="">
+                  <input type="hidden" name="delivery_charge" id="" value="false">
                   <p class="text-orange">TOTAL BILL: <span class="total-payable"> </span> AED</p>
                 </div>
               </div>
@@ -466,7 +466,7 @@ geolocate.on('geolocate', function(e) {
 });
 
 // this is for not leaving black the delivery charge.
-$('[name="delivery_charge"]').val(15);
+// $('[name="delivery_charge"]').val(15);
 
 function user_location_calculation(position){
   $.ajax({
@@ -480,12 +480,11 @@ function user_location_calculation(position){
         var bool = turf.booleanPointInPolygon(turf.point(position), gjson.features[0]);
         // console.log(data[i].name + " | " + bool + " from out");
         if (bool === true){
-            var html =`name: ${data[i].name}, min order: ${data[i].min_order}, delivery cahrge:${data[i].charge}`;
+            var html =`delivery charge:${data[i].charge}`;
             $('.delivery-charge').text(html + " AED");
             $('[name="delivery_charge"]').val(data[i].charge);
             // alert("area is: " + data[i].name + " charge is: " + data[i].charge);
             // check this after the hosting. 
-            console.log(data[i].name + " | " + bool);
             return ;
         }
       
@@ -694,7 +693,7 @@ function validateForm() {
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
-    info.push(y[i].value);
+    ADD_TO(y[i]);
 
     if (y[i].value == "") {
       
@@ -711,6 +710,16 @@ function validateForm() {
   return valid; // return the valid status
 }
 
+function ADD_TO(a){
+  if(a.type == "radio"){
+      if(a.checked == true){
+        info.push(a.value);
+        return;
+      }
+    }else{
+    info.push(a.value);
+    }
+}
 function fixStepIndicator(n) {
   // This function removes the "active" class of all steps...
   var i, x = document.getElementsByClassName("step");
@@ -770,7 +779,8 @@ function preventSubmit(event){
     data['number'] = $('[name="number"]').val();
     data['address'] = $('[name="address"]').val();
     data['address2'] = $('[name="address2"]').val();
-    data['note']    = $('[name="note"]').val();
+    data['area']    = $('[name="delivery_charge"]').val();
+    data['location'] = user_position;
     $("input[type=radio]")
       .each(function() {
         if($(this).is(":checked") && (typeof $(this).is(":checked")) !== 'undefined'){ 
@@ -785,7 +795,10 @@ function preventSubmit(event){
       method: 'POST',
       data : data,
       success:function(response){
-        alert(response );
+        alert("your order with ID of "+ response + " has been recieved." );
+        localStorage.clear();
+        window.location.reload();
+
       }
     })
   };
