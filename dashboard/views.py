@@ -1,4 +1,5 @@
 
+from django.http.response import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 from dashboard import models
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -22,7 +23,8 @@ class Order(LoginRequiredMixin, ListView):
             form.save()
             messages.success(request, 'An order has been placed.', fail_silently=True)
             return redirect('dashboard:order')
-        print(form.errors)
+        
+
         messages.error(request, 'something went wrong.', fail_silently=True)
         return redirect('website:cart', pk=request.POST.get('menu_items'))
     
@@ -389,3 +391,8 @@ class Delete_Customer(LoginRequiredMixin, DeleteView):
         data['page_title'] = 'Customer'
         return data
 
+from django.core import serializers
+def New_order(request):
+    if request.method == "GET":
+        data = serializers.serialize("json", models.Order.objects.filter(status = 'ordered'))
+        return JsonResponse (data, safe=False)
