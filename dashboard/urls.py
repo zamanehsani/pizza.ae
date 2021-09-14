@@ -48,4 +48,5 @@ urlpatterns = [
     
     path('new-order', dashboard_views.New_order, name="new_order"),
     path('new-order-item', dashboard_views.New_order_item, name="new_order_iteme"),
+    path('accept-order', dashboard_views.Accept_order, name="accept_order"),
 ]

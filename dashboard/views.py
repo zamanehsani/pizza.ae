@@ -1,4 +1,6 @@
 
+from dashboard.requests import sendsms
+from json.encoder import JSONEncoder
 from django.db.models import fields
 from django.http.response import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
@@ -8,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from dashboard import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -22,6 +24,7 @@ class Order(LoginRequiredMixin, ListView):
         form = forms.OrderForm(request.POST)
         if form.is_valid():
             form.save()
+            
             messages.success(request, 'An order has been placed.', fail_silently=True)
             return redirect('dashboard:order')
         
@@ -405,3 +408,13 @@ def New_order_item(request):
         obj = models.Order_items.objects.filter(order = request.GET.get('order_id'))
         data = serializers.serialize("json", obj)
         return JsonResponse (data, safe=False)
+
+
+def Accept_order(request):
+    if request.method == "GET":
+        obj = get_object_or_404(models.Order, pk = request.GET.get('id'))
+        obj.status = request.GET.get('st')
+        obj.save()
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(["not processed"], safe=False)

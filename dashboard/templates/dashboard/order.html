@@ -50,26 +50,26 @@
            
             <div class="card-body" style="background-color: antiquewhite;" id="card-body">
               {% for order in object_list %}
-                {% if order.status == 'ordered' %}
+                {% if order.status != 'ordered' %}
               <div class="card new_order_card">
+                <!-- play a sound on new order controls is removed to hide -->
                 <audio  autoplay>
                   <source src="{% static 'sound/notification_sound.wav' %}" type="audio/wav">
-                  Your browser does not support the audio element.
+                  not supporting audio element.
                 </audio>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-4 order">
                       <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
                       <hr>
-                      <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
+                      <p class="">NAME: <span class="fw-bold" id="order_name">{{order.nl;lame}}</span> </p>
                       <hr>
                       <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
                       <hr>
                       <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
                     </div>
-                    <div class="col-sm-12 col-md-4 border-right border-left border-light my-auto">
+                    <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
                       {% for item in order.order_item_list.all %}
-                     
                       <p class="fs-5 my-0">{{item.quantity}}
                         <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
                         {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
@@ -80,8 +80,9 @@
                         <span class="small text-success ">{{order.payment_method}}</span> 
                         <span class="float-right">{{order.get_totol}} AED </span></p>
                       <hr>
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-success" type="button">Accept</button>
+                      <div class="text-center">
+                        <button class="btn btn-success px-5 mx-3 btn-accept"  data-id="{{order.id}}"  type="button">Accept</button>
+                        <button class="btn btn-outline-danger px-5 mx-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-4 my-auto">
@@ -120,6 +121,41 @@ setTimeout(function(){
    window.location.reload(1);
 }, 10000);
 
+// for accept
+$(document).ready(function(){
+  $(".btn-accept").each(function(){
+    $(this).click(function(){
+      var order_id = $(this).attr('data-id');
+      $.ajax({
+        url:'{% url "dashboard:accept_order" %}',
+        method: 'get',
+        data:{id:order_id, st: "accepted"},
+        success: function(res){
+          // alert(res);
+          $(this).parents('.new_order_card').fadeOut();
+        }, //endof success
+      });//end of ajax
+    });
+  });
+});
+
+$(document).ready(function(){
+  $(".btn-reject").each(function(){
+    $(this).click(function(){
+      var order_id = $(this).attr('data-id');
+      
+      $.ajax({
+        url:'{% url "dashboard:accept_order" %}',
+        method: 'get',
+        data:{id:order_id, st:"rejected"},
+        success: function(res){
+          // alert(res);
+          // $(this).hide('slow');
+        }, //endof success
+      });//end of ajax
+    });
+  });
+});
 
 
 </script>

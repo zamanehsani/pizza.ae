@@ -74,6 +74,12 @@ class CartView(TemplateView):
 
         order_obj.save()
 
+        # send sms here
+        from dashboard.requests import sendsms
+        # send a notification to the owner
+        text = f'a new order from:{order_obj.name} with ID of {order_obj.pk} had been placed.'
+        sendsms(text, '971566652534')
+
         # update the order it no area
         if request.POST.get('area') != 'false':
             print("area has been selected", request.POST.get('area'))

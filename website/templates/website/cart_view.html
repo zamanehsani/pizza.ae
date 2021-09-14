@@ -9,7 +9,6 @@
  text-align: center;   
 }
 
-
 .counter {
   width: 150px;
   margin: auto;
@@ -182,8 +181,8 @@ input.invalid {
 {% include 'website/navbar.html' %}
 
 <div class="container-fluid" style="background-color: seashell;">
-
   <div class="row  pt-4 ">
+ 
     <form id="regForm" onsubmit="preventSubmit(event)">
       <!-- Circles which indicates the steps of the form: -->
       <div style="text-align:center;">
@@ -306,9 +305,7 @@ input.invalid {
               </div>
               <div class="col-sm-12 col-md-3"> </div>
             </div>
-            
           </div>
-    
       </div>
       <div class="tab">
         <div class="container pt-4">
@@ -352,10 +349,7 @@ input.invalid {
       </div>
     </form>
   </div>
-    
 </div>
-  
-    
 
 </div>
 
@@ -363,6 +357,9 @@ input.invalid {
 
 
 {% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
 <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
@@ -373,6 +370,8 @@ input.invalid {
 
 
 <script>
+
+
   // call the load 
 load_order()
 
@@ -707,13 +706,25 @@ function validateForm() {
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
     ADD_TO(y[i]);
-
+    if(!localStorage.getItem("order")){
+        Swal.fire({
+            title: 'Error!',
+            text: 'your order cart is empty',
+            icon: 'error',
+            confirmButtonText: 'add item'
+          })
+        valid = false;
+      }
+      
     if (y[i].value == "") {
       
       // add an "invalid" class to the field:
       y[i].className += " invalid";
       // and set the current valid status to false
+
       valid = false;
+      // alert that the order is empty
+     
     }
   }
   // If the valid status is true, mark the step as finished and valid:
@@ -804,19 +815,23 @@ function preventSubmit(event){
       });
     if(!localStorage.getItem("order")){
       alert("please select menu item from the menu.")
+      return;
       window.location.reload();
     }
     data['order'] = localStorage.getItem('order');
-      
     $.ajax({
       url: "{% url 'website:cart_view' %}",
       method: 'POST',
       data : data,
       success:function(response){
-        alert("your order with ID of "+ response + " has been recieved." );
-        localStorage.clear();
-        window.location.reload();
+        Swal.fire({
+          title: 'Error!',
+          text: 'Do you want to continue',
+          icon: 'error',
+          confirmButtonText: 'Cool' });
 
+        localStorage.clear();
+        // window.location.reload();
       }
     })
   };
