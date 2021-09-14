@@ -47,4 +47,5 @@ urlpatterns = [
     path('area/add', dashboard_views.Area_add.as_view(), name="add_area"),
     
     path('new-order', dashboard_views.New_order, name="new_order"),
+    path('new-order-item', dashboard_views.New_order_item, name="new_order_iteme"),
 ]

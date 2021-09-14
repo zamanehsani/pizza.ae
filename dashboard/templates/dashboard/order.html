@@ -6,285 +6,107 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <style>
   
-.md-stepper-horizontal {
-	display:table;
-	width:100%;
-	margin:0 auto;
-	/* background-color:#FFFFFF; */
-	/* box-shadow: 0 3px 8px -6px rgba(0,0,0,.50); */
-}
-.md-stepper-horizontal .md-step {
-	display:table-cell;
-	position:relative;
-  /* this is padding of each stepp */
-	/* padding:24px; */
-}
-.md-stepper-horizontal .md-step:hover,
-.md-stepper-horizontal .md-step:active {
-  /* uncoment this if you want hover eeffect*/
-	/* background-color:rgba(0,0,0,0.04); */
-}
-.md-stepper-horizontal .md-step:active {
-	border-radius: 15% / 75%;
-}
-.md-stepper-horizontal .md-step:first-child:active {
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-.md-stepper-horizontal .md-step:last-child:active {
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-.md-stepper-horizontal .md-step:hover .md-step-circle {
-	background-color:#757575;
-}
-.md-stepper-horizontal .md-step:first-child .md-step-bar-left,
-.md-stepper-horizontal .md-step:last-child .md-step-bar-right {
-	display:none;
-}
-.md-stepper-horizontal .md-step .md-step-circle {
-	width:30px;
-	height:30px;
-	margin:0 auto;
-	background-color:#999999;
-	border-radius: 50%;
-	text-align: center;
-	line-height:30px;
-	font-size: 16px;
-	font-weight: 600;
-	color:#FFFFFF;
-}
-.md-stepper-horizontal.green .md-step.active .md-step-circle {
-	background-color:#198754;
-}
-.md-stepper-horizontal.orange .md-step.active .md-step-circle {
-	background-color:#F96302;
-}
-.md-stepper-horizontal .md-step.active .md-step-circle {
-	background-color: rgb(33,150,243);
-}
-.md-stepper-horizontal .md-step.done .md-step-circle:before {
-	font-family:'FontAwesome';
-	font-weight:100;
-	content: "\f00c";
-}
-.md-stepper-horizontal .md-step.done .md-step-circle *,
-.md-stepper-horizontal .md-step.editable .md-step-circle * {
-	display:none;
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle {
-	-moz-transform: scaleX(-1);
-	-o-transform: scaleX(-1);
-	-webkit-transform: scaleX(-1);
-	transform: scaleX(-1);
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle:before {
-	font-family:'FontAwesome';
-	font-weight:100;
-	content: "\f040";
-}
-.md-stepper-horizontal .md-step .md-step-title {
-  /* this is for the title of each step to be cloes to the circle */
-	margin-top:5px;
-	font-size:16px;
-	font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-title,
-.md-stepper-horizontal .md-step .md-step-optional {
-	text-align: center;
-	color:rgba(0,0,0,.26);
-}
-.md-stepper-horizontal .md-step.active .md-step-title {
-	font-weight: 600;
-	color:rgba(0,0,0,.87);
-}
-.md-stepper-horizontal .md-step.active.done .md-step-title,
-.md-stepper-horizontal .md-step.active.editable .md-step-title {
-	font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-optional {
-	font-size:12px;
-}
-.md-stepper-horizontal .md-step.active .md-step-optional {
-	color:rgba(0,0,0,.54);
-}
-.md-stepper-horizontal .md-step .md-step-bar-left,
-.md-stepper-horizontal .md-step .md-step-bar-right {
-	position:absolute;
-  /* this is the space of the line */
-	top:15px;
-	height:1px;
-	border-top:1px solid #DDDDDD;
-}
-.md-stepper-horizontal .md-step .md-step-bar-right {
-	right:0;
-	left:50%;
-	margin-left:20px;
-}
-.md-stepper-horizontal .md-step .md-step-bar-left {
-	left:0;
-	right:50%;
-	margin-right:20px;
-}
+  p {
+    color:#F96302;
+  }
+
 </style>
+
+<script src="https://code.iconify.design/2/2.0.4/iconify.min.js"></script>
 {% endblock css %}
 
 {% block content %}
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0"> Dashboard <small> Order</small></h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
-                <li class="breadcrumb-item active"> Order</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+          <div class="container">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0"> Dashboard <small> Order</small></h1>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
+                  <li class="breadcrumb-item active"> Order</li>
+                </ol>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.container-fluid -->
       </div>
       <!-- /.content-header -->
   
       <!-- Main content -->
-      <div class="content">
+      <div class="content" style="padding-bottom: 10px;">
         <div class="container">
-          <div class="card pt-2">
-            <div class="md-stepper-horizontal green">
-              <div class="md-step active done">
-                <div class="md-step-circle"><span>1</span></div>
-                <div class="md-step-title">placed</div>
-                <div class="md-step-bar-left"></div>
-                <div class="md-step-bar-right"></div>
-              </div>
-              <div class="md-step active done">
-                <div class="md-step-circle"><span>2</span></div>
-                <div class="md-step-title">Accepted</div>
-                <div class="md-step-bar-left"></div>
-                <div class="md-step-bar-right"></div>
-              </div>
-              <div class="md-step active">
-                <div class="md-step-circle"><span>3</span></div>
-                <div class="md-step-title">marked ready</div>
-                <div class="md-step-bar-left"></div>
-                <div class="md-step-bar-right"></div>
-              </div>
-              <div class="md-step">
-                <div class="md-step-circle"><span>4</span></div>
-                <div class="md-step-title">Done</div>
-                <div class="md-step-bar-left"></div>
-                <div class="md-step-bar-right"></div>
-              </div>
-            </div>
-          </div>
+          
           <!-- Small boxes (Stat box) -->
           <div class="card card-orange card-outline">
          
             <div class="card-header">
               <h3 class="card-title d-none d-lg-inline" onclick="text(2)" > <i class="fas fa-edit"></i>  Orders</h3>
-              {% if perms.dashboard.add_area %}
+              {% if perms.dashboard.add_order %}
               <a href="{% url 'dashboard:dashboard'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add order</a>
               {% endif %}
             </div>
-            <div class="card-body">
-              <div class="card new_order_card d-none ">
-              
+           
+            <div class="card-body" style="background-color: antiquewhite;" id="card-body">
+              {% for order in object_list %}
+                {% if order.status == 'ordered' %}
+              <div class="card new_order_card">
+                <audio  autoplay>
+                  <source src="{% static 'sound/notification_sound.wav' %}" type="audio/wav">
+                  Your browser does not support the audio element.
+                </audio>
                 <div class="card-body">
                   <div class="row">
-
                     <div class="col-sm-12 col-md-4 order">
-                      <br>
-                      <!-- <p class="text-success d-block rounded" style="background-color: rgb(116, 245, 180);">SELF DELIVERY </p> -->
-                      <p class="fw-bold">ID: 
-                        <span  id="order_id"></span> 
-                        <a href="#" class="text-decoration-none float-right">
-                          <i class="fas fa-print"></i> print
-                        </a>
-                      </p>
+                      <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
                       <hr>
-                      <p class="fw-bold">
-                        <span class="order_name"></span>
-                        <span class="number float-right mx-2"></span>
-                        <a href="#" class="text-decoration-none float-right">
-                          <i class="fas fa-phone-alt"></i>
-                        </a>
-                      </p>
+                      <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
                       <hr>
-
-                      <div class="md-stepper-horizontal green">
-                        <div class="md-step active done">
-                          <div class="md-step-circle"><span>1</span></div>
-                          <div class="md-step-title">placed</div>
-                          <div class="md-step-bar-left"></div>
-                          <div class="md-step-bar-right"></div>
-                        </div>
-                        <div class="md-step active done">
-                          <div class="md-step-circle"><span>2</span></div>
-                          <div class="md-step-title">Accepted</div>
-                          <div class="md-step-bar-left"></div>
-                          <div class="md-step-bar-right"></div>
-                        </div>
-                        <div class="md-step active">
-                          <div class="md-step-circle"><span>3</span></div>
-                          <div class="md-step-title">marked ready</div>
-                          <div class="md-step-bar-left"></div>
-                          <div class="md-step-bar-right"></div>
-                        </div>
-                     
-                      </div>
-                      
-                      <!-- 
-                      <p >date: <span id="order_date"></span></p>
-                      <p > location: <span class="order_location"></span></p>
-                      <p >order name:</p>
-                      <p > status <span class="status"></span></p>
-                      <p > note: <span class="description"></span></p>
-                      <p >menu items: <span class="menu_item"></span></p>
-                      <p >deliverer <span class="deliverer"></span></p> -->
+                      <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
+                      <hr>
+                      <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
                     </div>
-
-                    <div class="col-sm-12 col-md-4 border-right border-left border-light">
-                      <p class="fs-5">1 x Mortal Pizza [7 inches] <span class="float-right">AED 70</span></p>
-                      <p class="fs-5">1 x Spicy Fries <span class="float-right">AED 20</span> </p>
+                    <div class="col-sm-12 col-md-4 border-right border-left border-light my-auto">
+                      {% for item in order.order_item_list.all %}
+                     
+                      <p class="fs-5 my-0">{{item.quantity}}
+                        <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
+                        {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
+                      </p>
+                      {% endfor %}
                       <hr>
-                      <p class="fs-5">Total Bill <span>PAID</span> <span class="float-right">AED 90</span></p>
+                      <p class="fs-5">TOTAL BIll 
+                        <span class="small text-success ">{{order.payment_method}}</span> 
+                        <span class="float-right">{{order.get_totol}} AED </span></p>
                       <hr>
                       <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button">Picked up</button>
-                        
+                        <button class="btn btn-success" type="button">Accept</button>
                       </div>
-
                     </div>
-
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-4 my-auto">
                       <div class="card" style="box-shadow: none; border-radius: 7px;">
                         <div class="card-header" style="background-color: transparent;">
-                          Delivered by your outlet's staff
+                          <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
                         </div>
-                        <div class="card-body">
-                          <p class="fw-bold">Customer address</p>
-                          <p>404, south Ridge 5, Downtown, Downtown Dubai</p>
-                          <i class="fas fa-copy mx-2"></i> 
-                          <i class="fas fa-map-marker-alt mx-2"></i>
-                          
-                          <p class="mb-0 mt-3">Deeliver in 54:58 mins</p>
-                          <div class="progress" style="height: 3px;">
-                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
+                        <div class="card-body text-center">
+                          <p class="address">{{order.address}}</p>
+                          <span class="iconify" data-icon="fluent:document-copy-16-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
+                          <span class="mx-2"></span>
+                          <span data-location="${json_obj[i].fields.location}" class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
                         </div>
                       </div>
                     </div>
-                    
                   </div>
                 </div>
-              </div>
+              </div> 
+              {% endif %}
+              {% empty %}
+              <p>no order now.</p>
+              {% endfor %}
             </div>
           </div>
-          <div class="row mt-3 " id="thisthis">
-
-          </div>
+          
         </div><!-- /.container -->
       </div>
       <!-- /.content -->
@@ -294,47 +116,11 @@
 {% block js %}
 
 <script>
+setTimeout(function(){
+   window.location.reload(1);
+}, 10000);
 
-  $(document).ready(function(){
-    $.ajax({
-      url: "{% url 'dashboard:new_order' %}",
-      method: "get",
-      success:function(data){
-        var json_obj = JSON.parse(data);
-        for (var i in json_obj){
-          var html = `<p class = "order_now">${json_obj[i].pk} - ${json_obj[i].fields.name}  -  ${ json_obj[i].fields.date}</p>`;
-          $("#thisthis").append(html).on('click', '.order_now', function () {
-            console.log($(this).text());
-        });
 
-        } // end of for
-        
-      }, //end of success function
-    }) // end of ajax function
-  }); //end of function ready
 
-  
-// read the new order only
-$( document ).ready(function() {
-  var origin   = window.location.origin
-  $.ajax({
-    url: origin+"/api/new-order",
-    method:"get",
-    success: function(data){
-      // show new order card and add data to it. make a new sound as well.
-      // this show check every five second for new order.
-      $(".new_order_card").removeClass("d-none");
-      $("#order_id").text(data[0].id);
-      $("#order_date").text(data[0].date);
-      $(".order_location").text(data[0].location);
-      $(".order_name").text(data[0].name);
-      $(".status").text(data[0].status);
-      $(".description").text(data[0].description);
-      $(".deliverer").text(data[0].deliverer);
-      $(".menu_item").text(data[0].menu_items);
-      $(".number").text(data[0].number);
-    },
-  });
-});
 </script>
 {% endblock js %}

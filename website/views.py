@@ -59,7 +59,7 @@ class CartView(TemplateView):
         name_order = request.POST.get('name')
         number_order = request.POST.get('number')
         location_order = request.POST.get('location')
-        address_order = request.POST.get('address') +" - " +request.POST.get('address2')
+        address_order = request.POST.get('address') +" , " +request.POST.get('address2')
         payment_order = request.POST.get('payment')
         note_order = request.POST.get('description')
 

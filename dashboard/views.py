@@ -1,4 +1,5 @@
 
+from django.db.models import fields
 from django.http.response import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 from dashboard import models
@@ -24,13 +25,13 @@ class Order(LoginRequiredMixin, ListView):
             messages.success(request, 'An order has been placed.', fail_silently=True)
             return redirect('dashboard:order')
         
-
         messages.error(request, 'something went wrong.', fail_silently=True)
         return redirect('website:cart', pk=request.POST.get('menu_items'))
     
     
     def get_context_data(self, *args, **kwargs):
         data = super(Order, self).get_context_data(*args, **kwargs)
+        # data['new']
         data['page_title'] = 'Order'
         return data
 
@@ -391,8 +392,16 @@ class Delete_Customer(LoginRequiredMixin, DeleteView):
         data['page_title'] = 'Customer'
         return data
 
+
 from django.core import serializers
 def New_order(request):
     if request.method == "GET":
-        data = serializers.serialize("json", models.Order.objects.filter(status = 'ordered'))
+        obj = models.Order.objects.filter(status = 'ordered')
+        data = serializers.serialize("json", obj)
+        return JsonResponse (data, safe=False)
+
+def New_order_item(request):
+    if request.method == "GET":
+        obj = models.Order_items.objects.filter(order = request.GET.get('order_id'))
+        data = serializers.serialize("json", obj)
         return JsonResponse (data, safe=False)

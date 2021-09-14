@@ -29,6 +29,10 @@ class NewOrderView(viewsets.ModelViewSet):
     queryset = models.Order.objects.filter(status = "ordered")
     serializer_class = serializers.OrderSerializer
     
+class OrderItemView(viewsets.ModelViewSet):
+    queryset = models.Order_items.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+    
 
 class ProfileView(viewsets.ModelViewSet):
     queryset = models.Profile.objects.all()    

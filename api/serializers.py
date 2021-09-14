@@ -1,5 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
+from rest_framework.fields import ReadOnlyField
 from dashboard import models
 from django.contrib.auth.models import User
 
@@ -21,16 +22,19 @@ class Menu_categorySerializer(serializers.HyperlinkedModelSerializer):
         model = models.Menu_category
         fields = "__all__"
 
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
+class OrderItemSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
+    class Meta:
+        model = models.Order_items
+        fields = "__all__"
+        depth = 2
+class OrderSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    menu_item_set = OrderItemSerializer(read_only=True,many=True)
     class Meta:
         model = models.Order
         fields = "__all__"
-
-# class NewOrderSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.Order
-#         fields = "__all__"
+        depth = 1
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()

@@ -128,14 +128,13 @@ class Menu(models.Model):
         verbose_name_plural = "Menu"
 
 class Order(models.Model):
-    # st          = (("ordered", "ordered"),("confirmed","confirmed"), ("delivering", "delivering"), ("delivered", "delivered"))
     name        = models.CharField(max_length=200, null=True, blank=True)
     date        = models.DateTimeField(auto_now=False, auto_now_add=True)
     location    = models.TextField(null=True, blank=True)
     number      = models.IntegerField(null=True, blank=True)
     status      = models.CharField(max_length=100, null=True, blank=True)
     deliverer   = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    description     = models.TextField(null=True, blank=True) 
+    description = models.TextField(null=True, blank=True) 
     address     = models.TextField(blank=True, null=True)
     payment     = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     area        = models.ForeignKey(Areas, on_delete=models.CASCADE, null=True, blank=True)
@@ -147,11 +146,20 @@ class Order(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:order')
 
+    @property
+    def get_totol(self):
+        "get the price order"
+        price = self.order_item_list.all()
+        tot = 0;
+        for i in price:
+            tot += i.quantity * i.menu_item.price    
+        return '%s' % (tot)
+
     class Meta:
         verbose_name_plural = "Order"
 
 class Order_items(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_item_list")
     menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
     quantity = models.SmallIntegerField(default=1)
     def __str__(self) -> str:
@@ -159,6 +167,7 @@ class Order_items(models.Model):
 
     def get_absolute_url(self):
         return reverse('dashboard:order')
+
 
     class Meta:
         verbose_name_plural = "Order Items"
