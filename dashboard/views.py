@@ -8,34 +8,45 @@ from dashboard import models
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from dashboard import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-
+from django.db.models import Q
 class Order(LoginRequiredMixin, ListView):
     model = models.Order
     template_name = "dashboard/order.html"
-
+    queryset = models.Order.objects.filter( Q( status = 'accepted') | Q(status = 'ordered'))
     def post(self, request, *args, **kwargs):
-        form = forms.OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
+        if 'finishing' in request.POST:
+            # save the deliverer
+            form = forms.OrderForm(request.POST, instance=get_object_or_404(models.Order, pk = request.POST.get('id')))
+            if form.is_valid():
+                form.save()
+                messages.success(request, f'the order has been finished', fail_silently=True)
+                return redirect('dashboard:order')
+        else:
+            form = forms.OrderForm(request.POST)
+            if form.is_valid():
+                form.save()
+                
+                messages.success(request, 'An order has been placed.', fail_silently=True)
+                return redirect('dashboard:order')
             
-            messages.success(request, 'An order has been placed.', fail_silently=True)
-            return redirect('dashboard:order')
+            messages.error(request, 'something went wrong.', fail_silently=True)
+            return redirect('website:cart', pk=request.POST.get('menu_items'))
         
-        messages.error(request, 'something went wrong.', fail_silently=True)
-        return redirect('website:cart', pk=request.POST.get('menu_items'))
     
-    
+
     def get_context_data(self, *args, **kwargs):
+        from django.contrib.auth.models import Group
         data = super(Order, self).get_context_data(*args, **kwargs)
-        # data['new']
+        Deliveries = Group.objects.filter(name = 'delivery').first()
         data['page_title'] = 'Order'
+        data['deliveries'] = Deliveries
         return data
 
 class Dashboard(LoginRequiredMixin, TemplateView):
@@ -414,6 +425,15 @@ def Accept_order(request):
     if request.method == "GET":
         obj = get_object_or_404(models.Order, pk = request.GET.get('id'))
         obj.status = request.GET.get('st')
+        obj.save()
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(["not processed"], safe=False)
+
+def Delivering(request):
+    if request.method == "GET":
+        obj = get_object_or_404(models.Order, pk = request.GET.get('id'))
+        obj.deliverer = request.GET.get('deliverer')
         obj.save()
         return JsonResponse(True, safe=False)
 

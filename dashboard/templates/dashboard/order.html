@@ -50,58 +50,137 @@
            
             <div class="card-body" style="background-color: antiquewhite;" id="card-body">
               {% for order in object_list %}
-                {% if order.status != 'ordered' %}
-              <div class="card new_order_card">
-                <!-- play a sound on new order controls is removed to hide -->
-                <audio  autoplay>
-                  <source src="{% static 'sound/notification_sound.wav' %}" type="audio/wav">
-                  not supporting audio element.
-                </audio>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-4 order">
-                      <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
-                      <hr>
-                      <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
-                      <hr>
-                      <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
-                      <hr>
-                      <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
-                    </div>
-                    <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
-                      {% for item in order.order_item_list.all %}
-                      <p class="fs-5 my-0">{{item.quantity}}
-                        <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
-                        {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
-                      </p>
-                      {% endfor %}
-                      <hr>
-                      <p class="fs-5">TOTAL BIll 
-                        <span class="small text-success ">{{order.payment_method}}</span> 
-                        <span class="float-right">{{order.get_totol}} AED </span></p>
-                      <hr>
-                      <div class="text-center">
-                        <button class="btn btn-success px-5 mx-3 btn-accept"  data-id="{{order.id}}"  type="button">Accept</button>
-                        <button class="btn btn-outline-danger px-5 mx-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
+            
+                {% if order.status == 'accepted' %}
+                  {% if forloop.counter == 0 %}
+                  <hr class="bg-success " style="height: 3px;">
+                  <p class="text-center text-success fw-bold"> Processing</p>
+                  {% endif %}
+                  <div class="card new_order_card">
+                    
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-4 order">
+                          <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
+                          <hr>
+                          <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
+                          <hr>
+                          <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
+                          <hr>
+                          <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
+                          {% for item in order.order_item_list.all %}
+                          <p class="fs-5 my-0">{{item.quantity}}
+                            <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
+                            {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
+                          </p>
+                          {% endfor %}
+                          <hr>
+                          <p class="fs-5">TOTAL BIll 
+                            <span class="small text-success ">{{order.payment_method}}</span> 
+                            <span class="float-right">{{order.get_totol}} AED </span></p>
+                          <hr>
+                          <div class="text-center pt-0">
+                            <!-- <p class="">ready for delivery.</p> -->
+                            <!-- list all deliverer -->
+                            <form method="POST" id="deliverer"> {% csrf_token %}
+                              <div class="row">
+                                <input type="hidden" name="id" value="{{order.pk}}">
+                                <div class="col-sm-12 col-md-6">
+                                  <select name="deliverer" class="form-select form-select-md mb-3">
+                                    <option disabled selected>select deliverer</option>
+                                    {% for u in deliveries.user_set.all %}
+                                      <option value="{{u.pk}}">{{u.get_full_name}}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                  <button class="btn btn-info px-5 mx-3 btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 my-auto">
+                          <div class="card" style="box-shadow: none; border-radius: 7px;">
+                            <div class="card-header" style="background-color: transparent;">
+                              <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
+                            </div>
+                            <div class="card-body text-center">
+                              <p class="address">{{order.address}}</p>
+                              <span class="iconify copy_address" data-icon="fluent:document-copy-16-regular"  data-address="{{order.address}}"
+                                    style="color: #f96302;" data-width="35" data-height="35"></span>
+                              <span class="mx-2"></span>
+                              <a href="#!" data-location="{{order.location|default:'unknown'}}" class="copy_location text-decoration-none">
+                                <span  class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                              </a>
+                              <span  class="mx-2"></span>
+                              <span class="iconify send_to_whatsapp" data-icon="fa-brands:whatsapp-square" style="color: #f96302;" data-width="35" data-height="35"></span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-4 my-auto">
-                      <div class="card" style="box-shadow: none; border-radius: 7px;">
-                        <div class="card-header" style="background-color: transparent;">
-                          <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
+                  </div> 
+                {% endif %}
+                {% if order.status == 'ordered' %}
+                  {% if forloop.last == 0 %}
+                  <hr class="bg-success " style="height: 3px;">
+                  <p class="text-center text-orange fw-bold"> NEW ORDER</p>
+                  {% endif %}
+                <div class="card new_order_card">
+                  <!-- play a sound on new order controls is removed to hide -->
+                  <audio  autoplay>
+                    <source src="{% static 'sound/notification_sound.wav' %}" type="audio/wav">
+                    not supporting audio element.
+                  </audio>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-4 order">
+                        <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
+                        <hr>
+                        <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
+                        <hr>
+                        <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
+                        <hr>
+                        <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
+                      </div>
+                      <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
+                        {% for item in order.order_item_list.all %}
+                        <p class="fs-5 my-0">{{item.quantity}}
+                          <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
+                          {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
+                        </p>
+                        {% endfor %}
+                        <hr>
+                        <p class="fs-5">TOTAL BIll 
+                          <span class="small text-success ">{{order.payment_method}}</span> 
+                          <span class="float-right">{{order.get_totol}} AED </span></p>
+                        <hr>
+                        <div class="text-center">
+                          <button class="btn btn-success px-5 mb-2 btn-accept"  data-id="{{order.id}}"  type="button">Accept</button>
+                          <button class="btn btn-outline-danger px-5 mb-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
                         </div>
-                        <div class="card-body text-center">
-                          <p class="address">{{order.address}}</p>
-                          <span class="iconify" data-icon="fluent:document-copy-16-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
-                          <span class="mx-2"></span>
-                          <span data-location="${json_obj[i].fields.location}" class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                      </div>
+                      <div class="col-sm-12 col-md-4 my-auto">
+                        <div class="card" style="box-shadow: none; border-radius: 7px;">
+                          <div class="card-header" style="background-color: transparent;">
+                            <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
+                          </div>
+                          <div class="card-body text-center">
+                            <p class="address">{{order.address}}</p>
+                            <span class="iconify" data-icon="fluent:document-copy-16-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
+                            <span class="mx-2"></span>
+                            <span data-location="${json_obj[i].fields.location}" class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div> 
-              {% endif %}
+                </div> 
+                {% endif %}
+
               {% empty %}
               <p>no order now.</p>
               {% endfor %}
@@ -112,14 +191,38 @@
       </div>
       <!-- /.content -->
 
+
+      <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            Hello, world! This is a toast message.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+
+
 {% endblock content %}
 
 {% block js %}
 
 <script>
-setTimeout(function(){
-   window.location.reload(1);
-}, 10000);
+// setTimeout(function(){
+//    window.location.reload(1);
+// }, 10000);
+
+// copy lcoation
+$(document).ready(function(){
+  $('.copy_location').each(function(){
+    $(this).click(function(){
+      var loc = $(this).attr('data-location');
+     
+      /* Copy the text inside the text field */
+      navigator.clipboard.writeText(loc);
+      alert(loc + " copied");
+    }); //end click
+  }); // end each
+});
 
 // for accept
 $(document).ready(function(){

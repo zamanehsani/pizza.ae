@@ -715,7 +715,7 @@ function validateForm() {
           })
         valid = false;
       }
-      
+
     if (y[i].value == "") {
       
       // add an "invalid" class to the field:
@@ -824,18 +824,37 @@ function preventSubmit(event){
       method: 'POST',
       data : data,
       success:function(response){
-        Swal.fire({
-          title: 'Error!',
-          text: 'Do you want to continue',
-          icon: 'error',
-          confirmButtonText: 'Cool' });
-
         localStorage.clear();
+        let timerInterval
+        Swal.fire({
+          title: 'THANK YOU',
+          html: 'Thank for ordering with us.',
+          timer: 5000,
+          // timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft()
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          location.reload();
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })
         // window.location.reload();
       }
     })
   };
 
+
+   
 
 </script>
 
