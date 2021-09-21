@@ -63,14 +63,14 @@
 
 
 /* for stepper */
-#regForm {
+/* #regForm { */
   /* background-color: #ffffff; */
   /* margin: 10px auto; */
   /* font-family: Raleway; */
   /* padding: 40px; */
   /* width: 70%; */
   /* min-width: 300px; */
-}
+/* } */
 
 input {
   padding: 10px;
@@ -247,8 +247,8 @@ input.invalid {
                           <input type="text" name="name" class="form-control" id="name" placeholder="name">
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="number">Number</label>
-                          <input type="tel" name="number" class="form-control" id="number" placeholder="phone number">
+                          <label for="number">phone number</label>
+                          <input type="number" name="number" class="form-control" id="number" placeholder="05---">
                         </div>
                       </div>
                     </div>
@@ -708,12 +708,30 @@ function validateForm() {
     ADD_TO(y[i]);
     if(!localStorage.getItem("order")){
         Swal.fire({
-            title: 'Error!',
-            text: 'your order cart is empty',
-            icon: 'error',
-            confirmButtonText: 'add item'
+            text: 'your cart is empty',
+            icon: 'warning',
+            showDenyButton:true,
+            showConfirmButton:false,
+            denyButtonText: 'add item'
           })
         valid = false;
+      }
+
+      // check the number input 
+      if(y[i].name == "number"){
+      // alert(y[i].value.length);
+        if(y[i].value.length < 10 || y[i].value.length >10 ){
+          
+          Swal.fire({
+            title: 'invalid phone number',
+            text: 'enter your number without the country code.',
+            icon: 'error',
+            showDenyButton:true,
+            showConfirmButton:false,
+            denyButtonText: 'try again'
+          })
+          valid = false;
+        }
       }
 
     if (y[i].value == "") {
