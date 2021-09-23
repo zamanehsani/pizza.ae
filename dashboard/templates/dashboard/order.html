@@ -98,94 +98,102 @@ img {
               <a href="{% url 'dashboard:dashboard'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add order</a>
               {% endif %}
             </div>
-           
+
+            <!-- orders under process -->
             <div class="card-body" style="background-color: antiquewhite;" id="card-body">
+              <p class="text-center text-success fw-bold"> Processing</p>
+              <hr class="bg-success " style="height: 3px;">
               {% for order in object_list %}
-            
                 {% if order.status == 'accepted' %}
-                  {% if forloop.counter == 0 %}
-                    <hr class="bg-success " style="height: 3px;">
-                    <p class="text-center text-success fw-bold"> Processing</p>
-                  {% endif %}
-                    <div class="card new_order_card">
-                      
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-sm-12 col-md-4 order">
-                            <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
-                            <hr>
-                            <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
-                            <hr>
-                            <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
-                            <hr>
-                            <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
-                          </div>
-                          <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
-                            {% for item in order.order_item_list.all %}
-                            <p class="fs-5 my-0">{{item.quantity}}
-                              <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
-                              {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
-                            </p>
-                            {% endfor %}
-                            <hr>
-                            <p class="fs-5">TOTAL BIll 
-                              <span class="small text-success ">{{order.payment_method}}</span> 
-                              <span class="float-right">{{order.get_totol}} AED </span></p>
-                            <hr>
-                            <div class="text-center pt-0">
-                              <!-- <p class="">ready for delivery.</p> -->
-                              <!-- list all deliverer -->
-                              <form method="POST" id="deliverer"> {% csrf_token %}
-                                <div class="row">
-                                  <input type="hidden" name="id" value="{{order.pk}}">
-                                  <div class="col-sm-12 col-md-6">
-                                    <select name="deliverer" class="form-select form-select-md mb-3">
-                                      <option disabled selected>select deliverer</option>
-                                      {% for u in deliveries.user_set.all %}
-                                        <option value="{{u.pk}}">{{u.get_full_name}}</option>
-                                      {% endfor %}
-                                    </select>
-                                  </div>
-                                  <div class="col-sm-12 col-md-6">
-                                    <button class="btn btn-info px-5 mx-3 btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
-                                  </div>
+                  <div class="card new_order_card">
+                    
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-4 order">
+                          <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
+                          <hr>
+                          <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
+                          <hr>
+                          <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
+                          <hr>
+                          <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
+                        </div>
+                        <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
+                          {% for item in order.order_item_list.all %}
+                          <p class="fs-5 my-0">{{item.quantity}}
+                            <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
+                            {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
+                          </p>
+                          {% endfor %}
+                          <hr>
+                          <p class="fs-5">TOTAL BIll 
+                            <span class="small text-success ">{{order.payment_method}}</span> 
+                            <span class="float-right">{{order.get_totol}} AED </span></p>
+                          <hr>
+                          <div class="text-center pt-0">
+                            <!-- <p class="">ready for delivery.</p> -->
+                            <!-- list all deliverer -->
+                            <form method="POST" id="deliverer"> {% csrf_token %}
+                              <div class="row">
+                                <input type="hidden" name="id" value="{{order.pk}}">
+                                <div class="col-sm-12 col-md-6">
+                                  <select name="deliverer" class="form-select form-select-md mb-3">
+                                    <option disabled selected>select deliverer</option>
+                                    {% for u in deliveries.user_set.all %}
+                                      <option value="{{u.pk}}">{{u.get_full_name}}</option>
+                                    {% endfor %}
+                                  </select>
                                 </div>
-                              </form>
-                            </div>
+                                <div class="col-sm-12 col-md-6">
+                                  <button class="btn btn-info px-5 mx-3 btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
+                                </div>
+                              </div>
+                            </form>
                           </div>
-                          <div class="col-sm-12 col-md-4 my-auto">
-                            <div class="card" style="box-shadow: none; border-radius: 7px;">
-                              <div class="card-header" style="background-color: transparent;">
-                                <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
-                              </div>
-                              <div class="card-body text-center">
-                                <p class="address">{{order.address}}</p>
-                                <span class="iconify copy_location" data-icon="fluent:document-copy-16-regular"  data-location="{{order.address}}"
-                                      style="color: #f96302;" data-width="35" data-height="35"></span>
-                                <span class="mx-2"></span>
-                                <a href="#!" data-location="{{order.location|default:'unknown'}}" class="copy_location text-decoration-none">
-                                  <span  class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
-                                </a>
-                                <span  class="mx-2"></span>
+                        </div>
+                        <div class="col-sm-12 col-md-4 my-auto">
+                          <div class="card" style="box-shadow: none; border-radius: 7px;">
+                            <div class="card-header" style="background-color: transparent;">
+                              <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
+                            </div>
+                            <div class="card-body text-center">
+                            
+                              <p class="address">{{order.address}}</p>
+                              <span class="iconify copy_location" data-icon="fluent:document-copy-16-regular"  data-location="{{order.address}}"
+                                    style="color: #f96302;" data-width="35" data-height="35"></span>
+                              <span class="mx-2"></span>
+                              <a href="#!" data-location="{{order.location|default:'unknown'}}" class="copy_location text-decoration-none">
+                                <span  class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                              </a>
+                              <span  class="mx-2"></span>
+                              <p class="d-none for-whatsapp">
+                                new order from {{order.name}}, 
+                                phone number: {{order.number}},
+                                items:
+                                  {% for item in order.order_item_list.all %} 
+                                    {{item.quantity}} X {{item.menu_item.name}},
+                                  {% endfor %}
+                                total: {{order.get_totol}},
+                                location: <a href="https://www.google.com/maps/place/{{order.coordinate}}">https://www.google.com/maps/place/{{order.coordinate}}</a>
+                              </p>
+                              <a href="#!" class="send_to_whatsapp text-decoration-none" data-order="{{order.address}}">
+                                <span class="iconify" data-icon="fa-brands:whatsapp-square" style="color: #f96302;" data-width="35" data-height="35"></span>
+                              </a>
+                              <span  class="mx-2"></span>
+                              <!-- onclick prints the ticket div via printjs library -->
+                              <a href="#!" onclick="printJS({ printable: '{{order.id}}', type: 'html' })" class=" text-decoration-none" data-order="{{order.address}}">
+                                <span class="iconify" data-icon="fluent:print-24-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
+                                <!-- <span class="iconify" data-icon="fa-brands:whatsapp-square" ></span> -->
+                              </a>
 
-                                <a href="#!" class="send_to_whatsapp text-decoration-none" data-order="{{order.address}}">
-                                  <span class="iconify" data-icon="fa-brands:whatsapp-square" style="color: #f96302;" data-width="35" data-height="35"></span>
-                                </a>
-                                <span  class="mx-2"></span>
-                                <!-- onclick prints the ticket div via printjs library -->
-                                <a href="#!" onclick="printJS({ printable: '{{order.id}}', type: 'html' })" class=" text-decoration-none" data-order="{{order.address}}">
-                                  <span class="iconify" data-icon="fluent:print-24-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
-                                  <!-- <span class="iconify" data-icon="fa-brands:whatsapp-square" ></span> -->
-                                </a>
-
-                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div> 
-                    <!-- ticket order -->
-                    <div class="ticket d-none" id="{{order.id}}">
+                    </div>
+                  </div> 
+                  <!-- ticket order -->
+                  <div class="ticket d-none" id="{{order.id}}">
                       <!-- <img src="{% static 'img/Pizzalogo.png' %}" alt="Logo"> -->
                       <p class="centered"><strong>PIZZA.AE</strong>
                           <br>Jumeirah 3, Umm Suqaim 2, <br> Dubai, UAE</p>
@@ -216,14 +224,21 @@ img {
                           <br>www.pizza.ae
                       </p>
                   </div>
-                  <!-- <button id="btnPrint" class="hidden-print">Print</button> -->
-
                 {% endif %}
-                {% if order.status == 'ordered' %}
-                  {% if forloop.last == 0 %}
-                  <hr class="bg-success " style="height: 3px;">
-                  <p class="text-center text-orange fw-bold"> NEW ORDER</p>
-                  {% endif %}
+              {% empty %}
+              <div class="card">
+                  <p class="text-center text-success my-2">NO ORDER IS BEING PROCESSED</p>                          
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- new order list -->
+            <div class="card-body" style="background-color: antiquewhite;" id="card-body">
+              <p class="text-center text-success fw-bold"> New Order</p>
+              <hr class="bg-success " style="height: 3px;">
+
+              {% for order in object_list %}
+                {% if order.status == 'ordered' and order.status != 'rejected' %}
                 <div class="card new_order_card">
                   <!-- play a sound on new order controls is removed to hide -->
                   <audio  autoplay>
@@ -277,7 +292,9 @@ img {
                 {% endif %}
 
               {% empty %}
-              <p>no order now.</p>
+              <div class="card">
+                  <p class="text-center text-success my-2">NO ORDER</p>
+              </div>
               {% endfor %}
             </div>
           </div>
@@ -304,7 +321,8 @@ img {
 $(document).ready(function(){
   $('.send_to_whatsapp').each(function(){
     $(this).click(function(){
-      var message = $(this).attr('data-order');
+      var message = $(this).prev().text();
+      console.log(message)
       var url = 'https://api.whatsapp.com/send?&text=' + encodeURIComponent(message);
       window.open(url, '_blank').focus();
     }); // click
@@ -353,6 +371,7 @@ $(document).ready(function(){
         data:{id:order_id, st: "accepted"},
         success: function(res){
           // alert(res);
+          window.location.reload();
           $(this).parents('.new_order_card').fadeOut();
         }, //endof success
       });//end of ajax
@@ -370,6 +389,7 @@ $(document).ready(function(){
         method: 'get',
         data:{id:order_id, st:"rejected"},
         success: function(res){
+          window.location.reload();
           // alert(res);
           // $(this).hide('slow');
         }, //endof success

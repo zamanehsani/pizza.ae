@@ -141,7 +141,7 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self) -> str:
-        return  self.name
+        return  str(self.name)
 
     def get_absolute_url(self):
         return reverse('dashboard:order')
@@ -154,6 +154,18 @@ class Order(models.Model):
         for i in price:
             tot += i.quantity * i.menu_item.price    
         return '%s' % (tot)
+
+    @property
+    def coordinate(self):
+        "get the location coordinate"
+        loca = self.location.split(',')
+        b = ''
+        b += loca[1]
+        b += ','
+        b += loca[0]
+        return b
+      
+        
 
     class Meta:
         verbose_name_plural = "Order"

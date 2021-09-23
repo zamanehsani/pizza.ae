@@ -20,6 +20,7 @@ class Order(LoginRequiredMixin, ListView):
     model = models.Order
     template_name = "dashboard/order.html"
     queryset = models.Order.objects.filter( Q( status = 'accepted') | Q(status = 'ordered'))
+    
     def post(self, request, *args, **kwargs):
         if 'finishing' in request.POST:
             # save the deliverer
