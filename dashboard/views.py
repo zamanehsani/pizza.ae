@@ -24,11 +24,13 @@ class Order(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         if 'finishing' in request.POST:
             # save the deliverer
-            form = forms.OrderForm(request.POST, instance=get_object_or_404(models.Order, pk = request.POST.get('id')))
-            if form.is_valid():
-                form.save()
-                messages.success(request, f'the order has been finished', fail_silently=True)
-                return redirect('dashboard:order')
+            order_obj = get_object_or_404(models.Order, pk = request.POST.get('id'))
+            deliverer = get_object_or_404(models.User, pk = request.POST.get('deliverer'))
+            order_obj.status = 'finished'
+            order_obj.deliverer = deliverer
+            order_obj.save()
+            messages.success(request, f'the order has been finished', fail_silently=True)
+            return redirect('dashboard:order')
         else:
             form = forms.OrderForm(request.POST)
             if form.is_valid():

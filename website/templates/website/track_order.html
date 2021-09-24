@@ -1,0 +1,85 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+
+{% endblock css %}
+
+
+{% block content %}
+
+{% include 'website/navbar.html' %}
+
+<div class="container  mt-5 pt-5">
+  <div class="row ">
+    <div class="col-sm-12">
+      <div class="card ">
+     
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12 col-md-4 order">
+              <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
+              <hr>
+              <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
+              <hr>
+              <p class="">NUMBER: <span class="order_number fw-bold">{{order.number}}</span> </p>
+              <hr>
+              <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
+            </div>
+            <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
+              {% for item in order.order_item_list.all %}
+              <p class="fs-5 my-0">{{item.quantity}}
+                <span class="iconify" data-icon="clarity:times-line" style="color: #f96302;" data-width="25" data-height="25"></span>
+                {{item.menu_item.name}} <span class="float-right">{{item.menu_item.price}} AED</span>
+              </p>
+              {% endfor %}
+              <hr>
+              <p class="fs-5">TOTAL BIll 
+                <span class="small text-success ">{{order.payment_method}}</span> 
+                <span class="float-right">{{order.get_totol}} AED </span></p>
+              <hr>
+              <div class="text-center">
+                <button class="btn btn-outline-success px-5 btn-lg"  type="button">
+                  {% if order.status == 'ordered' %}
+                    Order Placed
+                  {% endif %}
+                  {% if order.status == 'accepted' %}
+                    Order is Processing
+                  {%  endif %}
+                  {% if order.status == 'finished' %}
+                   Order in on its way
+                   {% endif %}
+                </button>
+              
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-4 my-auto">
+              <div class="card" style="box-shadow: none; border-radius: 7px;">
+                <div class="card-header" style="background-color: transparent;">
+                  <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
+                </div>
+                <div class="card-body text-center">
+                  <p class="address">{{order.address}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+{% endblock js %}
+

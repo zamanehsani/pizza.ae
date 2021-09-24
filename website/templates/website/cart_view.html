@@ -861,7 +861,7 @@ function preventSubmit(event){
           }
         }).then((result) => {
           /* Read more about handling dismissals below */
-          location.reload();
+          window.location = "/track-order/"+response+"";
           if (result.dismiss === Swal.DismissReason.timer) {
             console.log('I was closed by the timer')
           }

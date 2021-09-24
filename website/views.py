@@ -95,3 +95,13 @@ class CartView(TemplateView):
             order_item.save()
 
         return JsonResponse(order_obj.pk, safe=False)
+
+# order tracking
+class TrackOrder(DeleteView):
+    model = models.Order
+    template_name = "website/track_order.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(TrackOrder, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Track Order'
+        return data

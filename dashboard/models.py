@@ -158,14 +158,15 @@ class Order(models.Model):
     @property
     def coordinate(self):
         "get the location coordinate"
-        loca = self.location.split(',')
-        b = ''
-        b += loca[1]
-        b += ','
-        b += loca[0]
-        return b
+        # if location exist for the record swap let to longt
+        if self.location:
+            loca = self.location.split(',')
+            b = ''
+            b += loca[1]
+            b += ','
+            b += loca[0]
+            return b
       
-        
 
     class Meta:
         verbose_name_plural = "Order"
