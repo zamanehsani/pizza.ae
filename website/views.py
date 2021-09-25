@@ -105,3 +105,65 @@ class TrackOrder(DeleteView):
         data = super(TrackOrder, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Track Order'
         return data
+
+class Dine_Menu(ListView):
+    model = models.Menu_category
+    template_name = "website/menu_dine.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Dine_Menu, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'DINE IN'
+        return data
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class Dine_CartView(TemplateView):
+    template_name = "website/dine_in_cart_view.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Dine_CartView, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'DINE IN'
+        return data
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        # name_order = request.POST.get('name')
+        # number_order = request.POST.get('number')
+        # location_order = request.POST.get('location')
+        # address_order = request.POST.get('address') +" , " +request.POST.get('address2')
+        # payment_order = request.POST.get('payment')
+        # note_order = request.POST.get('description')
+
+        # order_obj = models.Order(
+        #         name = name_order, 
+        #         number = int(number_order), 
+        #         location = location_order, 
+        #         status = 'ordered',
+        #         address = address_order,
+        #         payment_method = payment_order,
+        #         description = note_order)
+
+        # order_obj.save()
+
+        # send sms here
+        # from dashboard.requests import sendsms
+        # # send a notification to the owner
+        # text = f'your order with ID of {order_obj.pk} had been placed.'
+        # sendsms(text, order_obj.number)
+
+        # update the order it no area
+        # if request.POST.get('area') != 'false':
+        #     print("area has been selected", request.POST.get('area'))
+        #     order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
+        #     order_obj.save()
+        
+        # import json
+        # order = request.POST.get('order').split(';')
+
+        # for i in order:
+        #     item = json.loads(i)
+        #     menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
+        #     order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
+        #     order_item.save()
+
+        return JsonResponse(1, safe=False)

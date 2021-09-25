@@ -1,0 +1,425 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+<!-- <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css"> -->
+<style>
+  
+.table td , th {
+ text-align: center;   
+}
+
+.counter {
+  width: 150px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.counter input {
+  width: 50px;
+  border: 0;
+  display: block;
+  line-height: 30px;
+  font-size: 25px;
+  text-align: center;
+  background: #F96302;
+  color: #fff;
+  appearance: none;
+  outline: 0;
+  border-radius: 0px;
+}
+.counter .down {
+  display: block;
+  display: block;
+  line-height: 30px;
+  font-size: 25px;
+  text-align: center;
+  padding: 0 10px;
+  cursor: pointer;
+  color: #F96302;
+  user-select: none;
+ 
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px ;
+  border: 2px solid #F96302;
+  border-right: none;
+}
+
+.counter .up {
+  display: block;
+  font-size: 25px;
+  padding: 0 10px;
+  line-height: 30px;
+  cursor: pointer;
+  color: #F96302;
+  user-select: none;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius:25px ;
+  border: 2px solid #F96302;
+  border-left: none;
+}
+
+
+/* for stepper */
+/* #regForm { */
+  /* background-color: #ffffff; */
+  /* margin: 10px auto; */
+  /* font-family: Raleway; */
+  /* padding: 40px; */
+  /* width: 70%; */
+  /* min-width: 300px; */
+/* } */
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  /* font-family: Raleway; */
+  border: 2px solid #c5bcbc;
+  border-radius: 5px;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+  border-color: #F96302;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+.btn-orange {
+  background-color: #F96302;
+  /* border-radius: 10px; */
+  color: #fff;
+  border: none;
+  /* padding: 10px 20px; */
+  /* font-size: 17px; */
+  cursor: pointer;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 40px;
+  width: 40px;
+  margin: 0 2px;
+  /* background-color: #bbbbbb; */
+  border: 2px solid #ffdddd;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.7;
+  text-align: center;
+  padding-top: 6px;
+}
+
+.step.active {
+  opacity: 1;
+  border: 2px solid #ffdddd;  
+  background-color: #c5aaaa;
+  color: white;
+  font-weight: bolder;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #F96302;
+  border-radius: 2px solid #F96302;
+  color: #fff;
+  font-weight: bolder;
+}
+
+.payment-check{
+  /* height: 30px; */
+  height: auto;
+  /* width: fit-content; */
+  border-radius: 10px;
+  border:2px solid #F96302;
+  color: #F96302;
+  padding: 10px;
+}
+.payment-check input:checked{
+  background-color: #F96302;
+  border-color: #F96302;
+}
+.payment-check input{
+  border-color: #F96302;
+}
+.payment-check input:focus{
+  border-color: #F96302;
+  outline: 0;
+  box-shadow: none;
+}
+
+.card{
+  border-color: #F96302;
+  background-color:antiquewhite;
+  color: #F96302;
+}
+.card .card-header, .card-footer{
+  border-color: #f96302;
+  background-color: bisque;
+}
+.info-summary p,h5 , .text-orange{
+  color: #F96302;
+}
+
+</style>
+
+{% endblock css %}
+
+
+{% block content %}
+
+{% include 'website/navbar.html' %}
+
+<div class="container-fluid" style="background-color: seashell;">
+  <div class="row pt-4 ">
+    <div class="table-responsive container">
+      <table class="table table-striped">
+        <caption style="text-align: end; padding-right: 5%;" class="" style="color: #F96302;">Total:AED</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">item</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total price</th>
+          </tr>
+        </thead>
+        <tbody id="order-table-body"> 
+        </tbody>
+      </table>
+      <div class="my-3" >
+        <div class="justify-content-center d-flex">
+          <button type="submit" onclick="order()" id="place_order" class="btn btn-orange rounded-pill px-5 py-2" >Place Order</button>
+        </div>
+      </div>
+    </div> 
+    <div id="empty-card" class=" mb-3 pt-3">
+      <div class="row">
+      <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
+        <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+        <p>Your cart is empty.</p>
+        <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:dine_menu' %}">Goto Menu</a>
+      </div>
+      </div>
+    </div> 
+  
+  </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+load_order()
+
+
+// send order
+function order(){
+  if(!localStorage.getItem("order")){
+    Swal.fire({
+      text: 'your cart is empty',
+      icon: 'warning',
+      showDenyButton:true,
+      showConfirmButton:false,
+      denyButtonText: 'add item'
+    })
+  }else{
+    order = localStorage.getItem("order");
+    $.ajax({
+      url: '',
+      method: 'POST',
+      data: order,
+      success: function(response){
+        Swal.fire({
+            title: 'THANK YOU',
+            text: 'your order has be placed.',
+            icon: 'success',
+          })
+      }// success
+    }); //ajax
+  }
+};
+
+function load_order(){
+  // load the orders into table
+  $(document).ready(function(){
+    // check if their is an order key in localstorage
+    if(localStorage.getItem("order")){
+      $("#empty-card").hide();
+      // split the orders string to array by ;
+      let order_arr = localStorage.getItem("order").split(";");
+      var total_of_total = 0;
+      $("#order-table-body").text("");
+      for(let x in order_arr){
+        let ord = JSON.parse(order_arr[x]);
+        var html = `
+        <tr>
+          <th class="align-middle" scope="row">
+            <span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="color: #f96302; cursor: pointer;" data-width="30" data-height="30"></span>
+          </th>
+          <td class="align-middle td-name">${ord.name}</td>
+          <td class="align-middle td-price">${ord.price}</td>
+          <td class="align-middle td-quantity">
+            <div class="counter td-counter">
+              <span class="down" onClick='decreaseCount(event, this)'>-</span>
+              <input type="text" style="padding:2px" data-id="${ord.id}" value="${ord.quantity}">
+              <span class="up"  onClick='increaseCount(event, this)'>+</span>
+            </div>
+          </td>
+          <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
+        </tr>
+        `;
+        
+        $("#order-table-body").append(html);
+        total_of_total +=parseFloat(ord.quantity) * parseFloat(ord.price);
+
+      }
+      
+      $("table caption").text("Total: " + total_of_total + " AED" );
+      // 
+      totals(total_of_total);
+      
+    }else{
+      $('.table-responsive').hide();
+      $("#empty-card").show();
+    }
+
+  });
+}
+
+
+
+function increaseCount(a, b) {
+  var input = b.previousElementSibling;
+  var value = parseInt(input.value, 10); 
+  value = isNaN(value)? 0 : value;
+  value ++;
+  var id_of_order = input.getAttribute('data-id');
+  update_order_quantity(id_of_order, value);
+  input.value = value;
+  load_order();
+}
+
+function decreaseCount(a, b) {
+  var input = b.nextElementSibling;
+  var value = parseInt(input.value, 10); 
+  if (value > 1) {
+    value = isNaN(value)? 0 : value;
+    value --;
+    var id_of_order = input.getAttribute('data-id');
+    update_order_quantity(id_of_order, value);
+    input.value = value;
+    load_order();
+  }
+}
+
+function delete_order(event, id){
+  if (localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      var obj_order = JSON.parse(orders);
+      if( obj_order.id == id){
+        // ids are matched, remove order
+        localStorage.removeItem("order");
+        // reload the orders
+        load_order();
+      }
+    }else{
+    // more then one order
+      var obj_order_arr = orders.split(";");
+      var new_order ='';
+      for(var i in obj_order_arr){
+        // check the orders
+        var one = JSON.parse(obj_order_arr[i]);
+        if(one.id == id){
+          continue;
+        }else{
+            new_order += ";"+JSON.stringify(one);
+        }
+      }
+      new_order = new_order.substring(1)
+      localStorage.removeItem("order");
+      localStorage.setItem("order", new_order);
+      load_order();
+    }
+  }
+  
+}
+
+function update_order_quantity(order_id, quantity){
+  if(localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      // not ; that means one order
+      var obj_one = JSON.parse(orders);
+      // now cheeck the ids
+      if(obj_one.id == order_id){
+        obj_one.quantity = quantity;
+        Update_order(orders, 0, obj_one, true);
+        return ;
+      }
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = orders.split(";");
+      for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == order_id){
+          one.quantity  = quantity;
+          Update_order(obj_arr, i, one);
+          return
+        }
+      }
+    }
+  }
+}
+
+function Update_order(obj_all, index, update, one_item=false){
+  var on='';
+  var size  = Object.keys(obj_all).length;
+    for(var i in obj_all){
+      if(i == index){
+        if(i ==0){
+          on +=JSON.stringify(update);
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on +=";"+JSON.stringify(update);
+        }
+      }else{
+        if(i ==0){
+          on += obj_all[i];
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on += ";"+obj_all[i];
+        }
+      }
+    }
+  localStorage.removeItem("order");
+  localStorage.setItem("order", on);
+}
+
+
+</script>
+
+
+{% endblock js %}
+

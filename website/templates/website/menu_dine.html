@@ -1,0 +1,265 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+
+.text-on-line {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #F05A23; 
+   line-height: 0.1em;
+   margin: 20px 0 30px; 
+} 
+
+/* for the heading line with text on it for category */
+.text-on-line span { 
+    background:#fff; 
+    padding:0 10px; 
+    color: #F05A23;
+}
+
+
+
+/*  hovering effects */
+.menu_item_hover .btn_order{
+    visibility: hidden;
+}
+.btn_order:focus{
+    background-color: yellowgreen;
+}
+
+.menu_item_hover:hover{
+    border-radius: 4px;
+    /* border: 1px solid green; */
+    box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+    -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+    -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+}
+
+.menu_item_hover:hover .btn_order{
+    visibility: visible;
+    color: #F05A23;
+    background-color: wheat;
+    border: 1px solid #F05A23;
+} 
+
+
+.menu_item_hover:hover .btn_order:focus{
+   /* for clicking btn */
+
+}
+
+.menu_item_hover:hover .btn_order:hover{
+    background-color: tomato;
+    color:white;
+}
+
+/* for fab btn */
+.btn-group-fab {
+  position: fixed;
+  width: 50px;
+  height: auto;
+  right: 20px; bottom: 20px;
+}
+.btn-group-fab div {
+  position: relative; width: 100%;
+  height: auto;
+}
+.btn-group-fab .btn {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  display: block;
+  margin-bottom: 4px;
+  width: 40px; height: 40px;
+  margin: 4px auto;
+}
+.btn-group-fab .btn-main {
+  width: 50px; height: 50px;
+  right: 50%; margin-right: -25px;
+  z-index: 9;
+}
+
+
+
+</style>
+
+{% endblock css %}
+
+
+{% block content %}
+
+{% include 'website/navbar.html' %}
+
+<div class="container mt-4">
+    <div class="row">
+        {% for category in object_list|dictsortreversed:"name" %}
+            <h2 class="text-on-line"><span>{{category|title}}</span></h2>
+            {% for obj in category.menu_set.all %}
+                <div class="col-sm-4 col-md-4 px-3 py-3">
+                    <div class="menu_item_hover mb-3 pb-2">
+                        <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
+                        <h4 class="text-center">{{obj.name|title}}</h4>
+                        <p class="text-center " style="padding: 0 40px;">{{obj.description|capfirst}}</p>
+                        <p class="text-center price"><b> {{obj.price}} AED </b></p>
+                        <p></p>
+                        <button data-id="{{obj.pk}}" class="btn px-5 rounded-pill mx-auto d-block btn_order "> Add To Cart  
+                          <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="30"></span>     -->
+                                          
+                        </button>
+                        <p></p>
+                    </div>
+                   
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+            <div>
+                
+              <a href="{% url 'website:dine_in_cart' %}">
+                  
+                <button class="btn btn-main btn-success px-auto" title="Cart"> 
+                   <span id="order_counter">0</span>
+                  <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
+                </button>
+              </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+
+<script>
+
+$(document).ready(function(){
+    $('.btn_order').each(function(){
+        $(this).click(function(){
+
+            var obj_id = $(this).attr("data-id");
+            var img = document.getElementById(obj_id);
+
+            // change thee image to text
+            // imgData = getBase64Image(img);
+            var obj_name = $(this).parent('.menu_item_hover').children('h4').text();
+            var obj_price = $(this).parent('.menu_item_hover').children('.price').children().text();
+            var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
+
+            // put to local storage function
+            To_local_Storage(obj_order);
+
+        }); // end of click
+    }); //end of each function
+});
+
+// img to textDATA
+function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+
+function To_local_Storage(obj){
+// check if we localstorage has got order already. 
+    if(localStorage.getItem("order")){
+    
+var orders = localStorage.getItem("order");
+// check if it have ";"
+if(orders.search(";") == -1){
+    // no match is found that means that order is one
+    // change it to obj
+    var obj_one = JSON.parse(orders);
+    // now cheeck the ids
+    if(obj_one.id == obj.id){
+        Update_order(obj_arr, i, one);
+        return ;
+    }else{
+        add_order(obj);
+    }
+}else{
+    // so the order is more then one and we split and check
+    var obj_arr = orders.split(";");
+    for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == obj.id){
+            one.quantity += 1;
+            Update_order(obj_arr, i, one);
+            return
+        }
+    }
+    add_order(obj);
+
+}  // end of ";" search
+    }else{
+        one_order(obj);
+        Order_counter();
+    } // end of else for if of local storage
+} // eend of function
+
+function Update_order(obj_all, index, update){
+    var on='';
+    for(var i in obj_all){
+        if(i == index){
+            if(i ==0){
+            on +=JSON.stringify(update);
+            }else{
+                on +=";"+JSON.stringify(update);
+            }
+        }else{
+            if(i ==0){
+                on += obj_all[i];
+            }else{
+                on += ";"+obj_all[i];
+            }
+        }
+    }
+    localStorage.setItem("order", on);
+    Order_counter();   
+}
+
+
+function add_order(obj){
+    // localStorage
+    var local_storagee_orders = localStorage.getItem("order");
+    local_storagee_orders += ";"+JSON.stringify(obj); 
+
+    localStorage.setItem("order", local_storagee_orders);
+    // console.log("appeandeed to orders");
+    Order_counter();
+}
+
+function one_order(obj){
+     var obj_local = JSON.stringify(obj);
+    localStorage.setItem("order", obj_local);
+    Order_counter();
+}
+
+
+function Order_counter(){
+    if(localStorage.getItem("order")){
+        let order_counter = localStorage.getItem("order").split(";");
+        $("#order_counter").text(order_counter.length)
+    }
+}
+// load the order counter on load
+$(document).ready(function(){
+    if(localStorage.getItem("order")){
+        let order_counter = localStorage.getItem("order").split(";");
+        $("#order_counter").text(order_counter.length)
+    }
+});
+
+</script>
+{% endblock js %}
