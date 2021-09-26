@@ -167,3 +167,4 @@ class Dine_CartView(TemplateView):
         #     order_item.save()
 
         return JsonResponse(1, safe=False)
+
