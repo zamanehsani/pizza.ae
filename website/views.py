@@ -70,7 +70,8 @@ class CartView(TemplateView):
                 status = 'ordered',
                 address = address_order,
                 payment_method = payment_order,
-                description = note_order)
+                description = note_order,
+                order_source = 'online')
 
         order_obj.save()
 
@@ -127,44 +128,19 @@ class Dine_CartView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         print(request.POST)
-        # name_order = request.POST.get('name')
-        # number_order = request.POST.get('number')
-        # location_order = request.POST.get('location')
-        # address_order = request.POST.get('address') +" , " +request.POST.get('address2')
-        # payment_order = request.POST.get('payment')
-        # note_order = request.POST.get('description')
 
-        # order_obj = models.Order(
-        #         name = name_order, 
-        #         number = int(number_order), 
-        #         location = location_order, 
-        #         status = 'ordered',
-        #         address = address_order,
-        #         payment_method = payment_order,
-        #         description = note_order)
+        # get the db to cloud, 
+        #
+        order_obj = models.Order(name="dine-in", status = 'ordered', order_source = 'dine-in')
 
-        # order_obj.save()
-
-        # send sms here
-        # from dashboard.requests import sendsms
-        # # send a notification to the owner
-        # text = f'your order with ID of {order_obj.pk} had been placed.'
-        # sendsms(text, order_obj.number)
-
-        # update the order it no area
-        # if request.POST.get('area') != 'false':
-        #     print("area has been selected", request.POST.get('area'))
-        #     order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
-        #     order_obj.save()
-        
-        # import json
-        # order = request.POST.get('order').split(';')
-
-        # for i in order:
-        #     item = json.loads(i)
-        #     menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
-        #     order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
-        #     order_item.save()
+        order_obj.save()
+        import json
+        order = request.POST.get('order').split(';')
+        for i in order:
+            item = json.loads(i)
+            menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
+            order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
+            order_item.save()
 
         return JsonResponse(1, safe=False)
 

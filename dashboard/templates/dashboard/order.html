@@ -109,6 +109,12 @@ img {
                     
                     <div class="card-body">
                       <div class="row">
+                        {% if order.order_source == 'dine-in' %}
+                      <div class="col-sm-12 col-md-4 my-auto"> 
+                        <h1 class="float-right pr-3"><p>DINE IN</p></h1>
+                      </div>
+                      {% else %}
+
                         <div class="col-sm-12 col-md-4 order">
                           <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
                           <hr>
@@ -118,6 +124,7 @@ img {
                           <hr>
                           <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
                         </div>
+                        {% endif %}
                         <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
                           {% for item in order.order_item_list.all %}
                           <p class="fs-5 my-0">{{item.quantity}}
@@ -136,6 +143,11 @@ img {
                             <form method="POST" id="deliverer"> {% csrf_token %}
                               <div class="row">
                                 <input type="hidden" name="id" value="{{order.pk}}">
+                                {% if order.order_source == 'dine-in' %}
+                                <div class="col-sm-12 col-md-6 mx-auto">
+                                  <button class="btn btn-info px-5  btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
+                                </div>
+                                {% else %}
                                 <div class="col-sm-12 col-md-6">
                                   <select name="deliverer" class="form-select form-select-md mb-3">
                                     <option disabled selected>select deliverer</option>
@@ -147,10 +159,17 @@ img {
                                 <div class="col-sm-12 col-md-6">
                                   <button class="btn btn-info px-5 mx-3 btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
                                 </div>
+                                {% endif %}
                               </div>
                             </form>
                           </div>
                         </div>
+                        {% if order.order_source == 'dine-in' %}
+                      <div class="col-sm-12 col-md-4 my-auto"> 
+                        <h1 class="pl-3"><p>DINE IN</p></h1>
+                      </div>
+                      {% else %}
+
                         <div class="col-sm-12 col-md-4 my-auto">
                           <div class="card" style="box-shadow: none; border-radius: 7px;">
                             <div class="card-header" style="background-color: transparent;">
@@ -189,6 +208,7 @@ img {
                             </div>
                           </div>
                         </div>
+                        {% endif %}
                       </div>
                     </div>
                   </div> 
@@ -247,15 +267,22 @@ img {
                   </audio>
                   <div class="card-body">
                     <div class="row">
+                      {% if order.order_source == 'dine-in' %}
+                      <div class="col-sm-12 col-md-4 my-auto"> 
+                        <h1 class="float-right pr-3"><p>DINE IN</p></h1>
+                      </div>
+                      {% else %}
                       <div class="col-sm-12 col-md-4 order">
                         <p class="">ID:<span class="fw-bold" id="order_id">{{order.id}}</span> </p>
                         <hr>
                         <p class="">NAME: <span class="fw-bold" id="order_name">{{order.name}}</span> </p>
                         <hr>
-                        <p class="">NUMBER: <span class="order_number fw-bold">{{order.name}}</span> </p>
+                        <p class="">NUMBER: <span class="order_number fw-bold">{{order.number}}</span> </p>
                         <hr>
                         <p class="">NOTE:<span class="order_note fw-bold">{{order.description}}</span> </p>
                       </div>
+                      {% endif %}
+
                       <div class="col-sm-12 col-md-4 border-right border-left border-light  my-4">
                         {% for item in order.order_item_list.all %}
                         <p class="fs-5 my-0">{{item.quantity}}
@@ -273,6 +300,11 @@ img {
                           <button class="btn btn-outline-danger px-5 mb-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
                         </div>
                       </div>
+                      {% if order.order_source == 'dine-in' %}
+                      <div class="col-sm-12 col-md-4 my-auto"> 
+                        <h1 class="pl-3"><p>DINE IN</p></h1>
+                      </div>
+                      {% else %}
                       <div class="col-sm-12 col-md-4 my-auto">
                         <div class="card" style="box-shadow: none; border-radius: 7px;">
                           <div class="card-header" style="background-color: transparent;">
@@ -286,6 +318,7 @@ img {
                           </div>
                         </div>
                       </div>
+                      {% endif %}
                     </div>
                   </div>
                 </div> 

@@ -15,6 +15,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
+class Company(DetailView):
+    model = models.About_company
+    template_name = "dashboard/company.html"
+    # queryset = models.About_company.objects.first()
+
+    
+
+
 from django.db.models import Q
 class Order(LoginRequiredMixin, ListView):
     model = models.Order
@@ -76,6 +84,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         data['stocks'] = models.Stock.objects.all().count()
         data['menus'] = models.Menu.objects.all().count()
         data['orders'] = models.Order.objects.all().count()
+        data['company'] = models.About_company.objects.first()
 
         return data
 

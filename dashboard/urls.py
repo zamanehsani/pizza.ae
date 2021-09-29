@@ -9,6 +9,8 @@ app_name ="dashboard"
 urlpatterns = [
     path('', dashboard_views.Dashboard.as_view(), name="dashboard"),
     # profile
+    path('company/<int:pk>', dashboard_views.Company.as_view(), name="company"),
+    
     path('profile/<int:pk>', dashboard_views.Profile.as_view(), name="profile"),
     path('users/', dashboard_views.UserList.as_view(), name ="users"),
     path('add-user/', dashboard_views.Add_User.as_view(), name="add_user"),

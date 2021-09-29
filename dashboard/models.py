@@ -139,6 +139,7 @@ class Order(models.Model):
     payment     = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     area        = models.ForeignKey(Areas, on_delete=models.CASCADE, null=True, blank=True)
     payment_method = models.CharField(max_length=100, blank=True, null=True)
+    order_source    = models.CharField(max_length=70, blank=True, null=True)
 
     def __str__(self) -> str:
         return  str(self.name)

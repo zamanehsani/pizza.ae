@@ -243,7 +243,7 @@ function order(){
     $.ajax({
       url: '',
       method: 'POST',
-      data: order,
+      data: {order:order},
       success: function(response){
         Swal.fire({
             title: 'THANK YOU',
