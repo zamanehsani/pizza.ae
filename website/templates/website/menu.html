@@ -25,6 +25,8 @@
 .menu_item_hover .btn_order{
     /* visibility: hidden; */
     border:solid 1px #FF5400;
+    border-top: none;
+    border-bottom:none;    
 }
 .btn_order:focus{
     background-color: yellowgreen;
@@ -48,6 +50,8 @@
     color: #FF5400;
     background-color: wheat;
     border: 1px solid #FF5400;
+    border-top: none;
+    border-bottom:none;
 } 
 .menu_item_hover:hover .in-cart-item-counter{
     visibility: visible;
@@ -87,6 +91,11 @@
   z-index: 9;
 }
 
+.btn-order{
+    border: solid 1px #FF5400;
+}
+
+
 
 </style>
 
@@ -103,7 +112,7 @@
             <h2 class="text-on-line"><span>{{category|title}}</span></h2>
             {% for obj in category.menu_set.all %}
                 <div class="col-sm-4 col-md-4 px-3 py-3">
-                    <div class="menu_item_hover mb-3 pb-2">
+                    <div class="menu_item_hover mb-3 pb-2 text-center">
                         <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
                         <h4 class="text-center"><span class="name">{{obj.name|title}}</span>
                             <div class="in-cart-item-counter">
@@ -113,16 +122,16 @@
                         </h4>
                         <p class="text-center body-text" style="padding: 0 40px;">{{obj.description|capfirst}}</p>
                         <p class="text-center"><b class="price"> {{obj.price}} AED </b></p>
-                        <p class="mx-auto d-block btn"><span data-id="{{obj.pk}}" class="btn px-5 rounded-0  btn_order">Add To Cart </span></p>
-                        
-                        <!-- <button data-id="{{obj.pk}}" class="btn px-5 rounded-0 mx-auto d-block btn_order ">Add To Cart</button> -->
-                        <p></p>
+                        <p class="mx-auto btn py-0 rounded-0 btn-order">
+                            <span class="increment-item"><b style="color: #FF5400;">-&nbsp;&nbsp;</b></span>
+                            <span data-id="{{obj.pk}}" class="btn btn_order rounded-0">Add To Cart</span>
+                            <span class="decrement-item"><b style="color: #FF5400;">&nbsp;&nbsp;+</b></span>
+                        </p>
                     </div>
                    
                 </div>
             {% endfor %}
         {% endfor %}
-
         <div class="btn-group-fab" style="z-index: 1000;" role="group" aria-label="FAB Menu">
             <div >
               <a href="{% url 'website:cart_view' %}">
@@ -133,7 +142,6 @@
               </a>
             </div>
         </div>
-
     </div>
 </div>
 
