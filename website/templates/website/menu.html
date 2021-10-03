@@ -7,7 +7,7 @@
 .text-on-line {
    width: 100%; 
    text-align: center; 
-   border-bottom: 1px solid #F05A23; 
+   border-bottom: 1px solid #FF5400; 
    line-height: 0.1em;
    margin: 20px 0 30px; 
 } 
@@ -16,42 +16,48 @@
 .text-on-line span { 
     background:#fff; 
     padding:0 10px; 
-    color: #F05A23;
+    color: #FF5400;
 }
 
 
 
 /*  hovering effects */
 .menu_item_hover .btn_order{
-    visibility: hidden;
+    /* visibility: hidden; */
+    border:solid 1px #FF5400;
 }
 .btn_order:focus{
     background-color: yellowgreen;
 }
 
 .menu_item_hover:hover{
-    border-radius: 4px;
+    /* border-radius: 4px; */
     /* border: 1px solid green; */
     box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
     -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
     -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
 }
 
-.menu_item_hover:hover .btn_order{
-    visibility: visible;
-    color: #F05A23;
-    background-color: wheat;
-    border: 1px solid #F05A23;
-} 
-
-
-.menu_item_hover:hover .btn_order:focus{
-   /* for clicking btn */
-
+.in-cart-item-counter{
+    /* visibility: hidden; */
+    display: none;
 }
 
+.menu_item_hover:hover .btn_order{
+    visibility: visible;
+    color: #FF5400;
+    background-color: wheat;
+    border: 1px solid #FF5400;
+} 
+.menu_item_hover:hover .in-cart-item-counter{
+    visibility: visible;
+    display: inline;
+    position: absolute;
+}
+
+
 .menu_item_hover:hover .btn_order:hover{
-    background-color: tomato;
+    background-color: #FF5400;
     color:white;
 }
 
@@ -82,7 +88,6 @@
 }
 
 
-
 </style>
 
 {% endblock css %}
@@ -100,14 +105,17 @@
                 <div class="col-sm-4 col-md-4 px-3 py-3">
                     <div class="menu_item_hover mb-3 pb-2">
                         <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
-                        <h4 class="text-center">{{obj.name|title}}</h4>
-                        <p class="text-center " style="padding: 0 40px;">{{obj.description|capfirst}}</p>
-                        <p class="text-center price"><b> {{obj.price}} AED </b></p>
-                        <p></p>
-                        <button data-id="{{obj.pk}}" class="btn px-5 rounded-pill mx-auto d-block btn_order "> Add To Cart  
-                          <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="30"></span>     -->
-                                          
-                        </button>
+                        <h4 class="text-center"><span class="name">{{obj.name|title}}</span>
+                            <div class="in-cart-item-counter">
+                                <span style="font-size: small; font-weight: bold; position: relative; right: -5px;"></span>
+                                <span class="in-cart-item px-2 in-cart-item-count" style="color: #fff;">0</span>
+                            </div>
+                        </h4>
+                        <p class="text-center body-text" style="padding: 0 40px;">{{obj.description|capfirst}}</p>
+                        <p class="text-center"><b class="price"> {{obj.price}} AED </b></p>
+                        <p class="mx-auto d-block btn"><span data-id="{{obj.pk}}" class="btn px-5 rounded-0  btn_order">Add To Cart </span></p>
+                        
+                        <!-- <button data-id="{{obj.pk}}" class="btn px-5 rounded-0 mx-auto d-block btn_order ">Add To Cart</button> -->
                         <p></p>
                     </div>
                    
@@ -115,13 +123,11 @@
             {% endfor %}
         {% endfor %}
 
-        <div class="btn-group-fab" role="group" aria-label="FAB Menu">
-            <div>
-                
+        <div class="btn-group-fab" style="z-index: 1000;" role="group" aria-label="FAB Menu">
+            <div >
               <a href="{% url 'website:cart_view' %}">
-                  
-                <button class="btn btn-main btn-success px-auto" title="Cart"> 
-                   <span id="order_counter">0</span>
+                <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
+                   <h2 id="order_counter" class="pt-1">0</h2>
                   <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
                 </button>
               </a>
@@ -131,12 +137,16 @@
     </div>
 </div>
 
+
+{% include 'website/footer.html' %}
 {% endblock content %}
 
 {% block js %}
 
 
 <script>
+
+
 
 $(document).ready(function(){
     $('.btn_order').each(function(){
@@ -147,14 +157,31 @@ $(document).ready(function(){
 
             // change thee image to text
             // imgData = getBase64Image(img);
-            var obj_name = $(this).parent('.menu_item_hover').children('h4').text();
-            var obj_price = $(this).parent('.menu_item_hover').children('.price').children().text();
+            var obj_name = $(this).parent().parent('.menu_item_hover').find('.name').text();
+            // alert(obj_name)
+            var obj_price = $(this).parent().parent('.menu_item_hover').find('.price').text();
+            // alert(obj_name + " + " + obj_price)
             var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
 
             // put to local storage function
             To_local_Storage(obj_order);
-
-        }); // end of click
+            var a = $(this).parent().prev().prev().prev().find('.in-cart-item-count').text();
+            if(a.length > 0){
+                var b = parseInt(a);
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').text(b+=1);
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').css("background-color", "#FF5400");
+                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("position","absolute");
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').prev().text("X");
+                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("display","inline");
+            } else{
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').text(1);
+                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("position","absolute");
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').prev().text("X");
+                $(this).parent().prev().prev().prev().find('.in-cart-item-count').css("background-color", "#FF5400");                
+                $(this).parent().prev().prev().prev().find('.in-cart-item-counter').css("display","inline");
+            }
+            // console.log(a);
+        }); // end of clic
     }); //end of each function
 });
 
@@ -174,34 +201,34 @@ function To_local_Storage(obj){
 // check if we localstorage has got order already. 
     if(localStorage.getItem("order")){
     
-var orders = localStorage.getItem("order");
-// check if it have ";"
-if(orders.search(";") == -1){
-    // no match is found that means that order is one
-    // change it to obj
-    var obj_one = JSON.parse(orders);
-    // now cheeck the ids
-    if(obj_one.id == obj.id){
-        Update_order(obj_arr, i, one);
-        return ;
-    }else{
-        add_order(obj);
-    }
-}else{
-    // so the order is more then one and we split and check
-    var obj_arr = orders.split(";");
-    for(var i in obj_arr){
-        // check the orders
-        var one = JSON.parse(obj_arr[i]);
-        if(one.id == obj.id){
-            one.quantity += 1;
-            Update_order(obj_arr, i, one);
-            return
-        }
-    }
-    add_order(obj);
+        var orders = localStorage.getItem("order");
+        // check if it have ";"
+        if(orders.search(";") == -1){
+            // no match is found that means that order is one
+            // change it to obj
+            var obj_one = JSON.parse(orders);
+            // now cheeck the ids
+            if(obj_one.id == obj.id){
+                Update_order(obj_arr, i, one);
+                return ;
+            }else{
+                add_order(obj);
+            }
+        }else{
+            // so the order is more then one and we split and check
+            var obj_arr = orders.split(";");
+            for(var i in obj_arr){
+                // check the orders
+                var one = JSON.parse(obj_arr[i]);
+                if(one.id == obj.id){
+                    one.quantity += 1;
+                    Update_order(obj_arr, i, one);
+                    return
+                }
+            }
+            add_order(obj);
 
-}  // end of ";" search
+        }  // end of ";" search
     }else{
         one_order(obj);
         Order_counter();
@@ -258,7 +285,6 @@ function Order_counter(){
 // load the order counter on load
 $(document).ready(function(){
     if(localStorage.getItem("order")){
-        console.log(localStorage.getItem("order"));
         let order_counter = localStorage.getItem("order").split(";");
         $("#order_counter").text(order_counter.length)
     }
@@ -269,37 +295,3 @@ $(document).ready(function(){
 
 
 
-<!-- 
-    for(let x in obj_arr){
-            var order = JSON.parse(obj_arr[x]);
-            // check ids
-            if(order.id == obj.id){
-               order.quantity +=1;
-               obj_arr[x] = JSON.stringify(order);
-               
-               break;
-            }else{
-                // obj_local
-                obj_local += ";"+JSON.stringify(obj);
-                
-            }
-            obj_local += ";"+JSON.stringify(obj_arr);
-            console.log(obj_local);
-            
-        } //end of for
-
- -->
-
- <!-- // for(var i in order_array){
-    //     var order = JSON.parse(order_array[i]);
-    //     if(obj.id == order.id ){
-    //         console.log("match found on " + i + " : " + order_array[i]);
-    //         order.quantity += 1;
-    //         order_array[i] = JSON.stringify(order);
-    //         localStorage.setItem("order", order_array);
-    //         break;
-    //     } //end if 
-    // } // end for
-    // obj_local += JSON.stringify(obj) + ";";
-    // localStorage.setItem("order", obj_local);
-    // Order_counter(); -->

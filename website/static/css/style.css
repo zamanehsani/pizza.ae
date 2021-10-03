@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "provicali";
-    src: url("../fonts/Provicali.otf") format("opentype");
+    font-family: "Ageo";
+    src: url("../fonts/AgeoPersonalUse-SemiBold.otf") format("opentype");
 }
 
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); */
@@ -14,14 +14,10 @@
     /* font-weight: 600; */
 }
 
-/* *{
-    font-family: 'Montserrat', sans-serif;
+/* h4, p{
+    font-family: "Ageo"!important;
 } */
 
-/* .mostserrat-font, h1{
-    font-family: 'Montserrat', 'sans-serif';
-    font-weight: bolder;
-} */
 .logo-whatsapp{
     width: 8em;
 }
@@ -99,7 +95,7 @@
 
 .content {
     background-image: url("../img/piz-bg.png"), url("../img/piz-bg-still.png");
-    background-color: #F05A23;
+    background-color: #FF5400;
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */

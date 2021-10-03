@@ -19,7 +19,7 @@ class LandingPage(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         data = super(LandingPage, self).get_context_data(*args, **kwargs)
-        data['page_title'] = 'PIZZA.AE'
+        data['page_title'] = ' '
         return data
 
 

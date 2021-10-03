@@ -120,7 +120,7 @@
                 
               <a href="{% url 'website:dine_in_cart' %}">
                   
-                <button class="btn btn-main btn-success px-auto" title="Cart"> 
+                <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
                    <span id="order_counter">0</span>
                   <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
                 </button>
@@ -131,6 +131,7 @@
     </div>
 </div>
 
+{% include 'website/footer.html' %}
 {% endblock content %}
 
 {% block js %}

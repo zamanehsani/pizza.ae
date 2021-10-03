@@ -1,0 +1,73 @@
+{% load static %}
+<nav class="bg-dark">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6 ">
+                <div class="card border-0 rounded-0 mt-3 p-3"  style="background-color:rgba(255, 255, 255, 0.15);height: 330px;" >
+                    <h4 class="my-1 text-light " style="opacity: 1;"><b> Discover Pizza.ae</b></h4>
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">What is pizza.ae?</a></p>
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Contacts </a></p>
+                    <!-- <p class="my-2 "><a href="#!" class="text-decoration-none links-text"></a></p> -->
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Address</a></p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="card border-0 rounded-0 mt-3 p-3" style="height: 330px; background-color:rgba(255, 255, 255, 0.15);">
+                    <h4 class="my-1 text-light title-text"> <b>Legal </b></h4>
+                    <!-- <ul class="" style="list-style-type: none;">  -->
+                        <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Terms and Conditions </a></p>
+                        <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Franchise </a></p>
+                        <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Consumer Rights </a></p>
+                        <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Cookies </a></p>
+                        <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Refund Policy </a></p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="card border-0 rounded-0 mt-3 p-3" style="height: 330px; background-color:rgba(255, 255, 255, 0.15);">
+                    <h4 class="my-1 text-light"> <b>Help </b></h4>
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Contact Us </a></p>
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">FAQ </a></p>
+                    <p class="my-2 "><a href="#!" class="text-decoration-none links-text">Careers </a></p>
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="card border-0 rounded-0 mt-3 p-3" style="height: 330px; background-color:rgba(255, 255, 255, 0.15);">
+                    <h4 class="my-1 text-light"> <b>Get Pizza.ae </b></h4>
+                    <div class="row">
+                        <div class="col-sm-12 text-center mt-2">
+                            <a href="">
+                                <img class="" src="{% static 'img/app-store.svg' %}" style="width: 50%;" alt="">
+                            </a>
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <a href="">
+                                <img class="" src="{% static 'img/google-play.svg' %}" style="width: 50%;" alt="">
+                            </a>
+                        </div>
+                        <div class="col-sm-12 text-center my-4">
+                            <p class="my-0 pb-1 text-light">Accepted Payments</p>
+
+                            <li class="mb-1" style="display: inline;">
+                                <img class="mb-1" src="{% static 'img/mastercard-black.svg' %}" alt="">
+                            </li>
+                            <li class="mb-1" style="display: inline;">
+                                <img class="mb-1" src="{% static 'img/visa-black.svg' %}" alt="">
+                            </li>
+                            <li class="mb-1" style="display: inline;">
+                                <img class="mb-1" src="{% static 'img/amex-black-v2.svg' %}" alt="">
+                            </li>
+                            <li class="mb-1" style="display: inline;">
+                                <img class="mb-1" src="{% static 'img/cash-black.svg' %}" alt="">
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <a class="navbar-brand d-block d-sm-block d-md-block" href="{% url 'website:landingpage' %}"> 
+        <img src="{% static 'img/pizza_logo_new.png' %}" height="60" alt="">
+      </a>
+     
+    </div>
+</nav>
