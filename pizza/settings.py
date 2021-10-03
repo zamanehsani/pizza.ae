@@ -167,7 +167,7 @@ EMAIL_HOST_USER = '	aldeyarbakery@gmail.com'
 EMAIL_HOST_PASSWORD = 'mfkvxhotyijcakuh' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Aldeyar Bakery'
+DEFAULT_FROM_EMAIL = 'PIZZA.AE'
 
 
 from django.contrib import messages
