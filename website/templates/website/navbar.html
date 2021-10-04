@@ -30,18 +30,24 @@
         </a>
         <ul class="navbar-nav my-2 my-lg-0">
 
-          <li class="me-4 text-center">
+          <!-- <li class="me-4 text-center">
             <a href="" class="btn mx-4 rounded-0" style="background-color: #FF5400; color: white;">
              <span class="header-font">Orders</span>
              <span>
               
              </span>
             </a>
-          </li>
+          </li> -->
 
           <li class="me-4 text-center mb-2">
-              <a href="{% url 'website:customer_login' %}" class="btn px-4 fw-bold header-font rounded-0" style="background-color: #FF5400; color: white;">Login</a>
+              <a href="{% url 'website:customer_login' %}" 
+                 class="btn px-4 fw-bold px-4 header-font rounded-0" 
+                 style="background-color: #FF5400; color: white;">In Cart | 2 </a>
           </li>
+          <li class="me-4 text-center">
+            <a href="{% url 'website:customer_login' %}" class="btn px-4 fw-bold btn-success rounded-0 header-font" style="background-color: #219653;">Sign In</a>
+        </li>
+        
           <li class="me-4 text-center">
               <a href="{% url 'website:customer_sign_up' %}" class="btn px-4 fw-bold btn-success rounded-0 header-font" style="background-color: #219653;">Sign Up</a>
           </li>

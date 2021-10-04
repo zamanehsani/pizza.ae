@@ -3,17 +3,7 @@
     src: url("../fonts/AgeoPersonalUse-SemiBold.otf") format("opentype");
 }
 
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); */
-
-
 /* this is provicali but it is bold and is not good */
-.logo{
-    font-family: "provicali";
-    letter-spacing: 3px;
-    font-size: 50px;
-    /* font-weight: 600; */
-}
-
 /* h4, p{
     font-family: "Ageo"!important;
 } */

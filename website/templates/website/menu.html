@@ -25,8 +25,8 @@
 .menu_item_hover .btn_order{
     /* visibility: hidden; */
     border:solid 1px #FF5400;
-    border-top: none;
-    border-bottom:none;    
+    border-right: none;
+    border-left:none;    
 }
 .btn_order:focus{
     background-color: yellowgreen;
@@ -50,8 +50,8 @@
     color: #FF5400;
     background-color: wheat;
     border: 1px solid #FF5400;
-    border-top: none;
-    border-bottom:none;
+    border-right: none;
+    border-left:none;
 } 
 .menu_item_hover:hover .in-cart-item-counter{
     visibility: visible;
@@ -59,6 +59,9 @@
     position: absolute;
 }
 
+.btn_order{
+    color: #FF5400;
+}
 
 .menu_item_hover:hover .btn_order:hover{
     background-color: #FF5400;
@@ -93,8 +96,21 @@
 
 .btn-order{
     border: solid 1px #FF5400;
+    margin: 0px;
+    color: #FF5400;
+    font-weight: bold;
+}
+.menu_item_hover:hover .btn-order:hover{
+    background-color: #FF5400;
+    color:white;
 }
 
+.menu-links{
+    border: solid 1px #FFF;
+}
+/* .menu-links:hover{background-color: #FFF;} */
+
+.checked{color: #FF5400;}
 
 
 </style>
@@ -104,31 +120,46 @@
 
 {% block content %}
 
+<!-- this is the sticky  -->
 {% include 'website/navbar.html' %}
+<nav class="navbar navbar-expand-lg sticky-top" style="background-color: #FF5400;">
+    <div class="container-fluid">
+        <ul class="navbar-nav mx-auto my-lg-0" style="flex-direction: row;">
+        {% for category in object_list|dictsortreversed:"name" %}
+          <li class=" mx-2 px-2 py-0 menu-links ">
+            <a class="nav-link text-white title-fonts" style="padding-bottom: 0px;" href="#{{category}}"><h2> {{category|title}}</h2></a>
+          </li> 
+        {% endfor %}
+        </ul>
+    </div>
+</nav>
 
-<div class="container mt-4">
+<div class="container">
     <div class="row">
         {% for category in object_list|dictsortreversed:"name" %}
-            <h2 class="text-on-line"><span>{{category|title}}</span></h2>
+            <h2 class="text-on-line title-fonts" id="{{category}}"><span>{{category|title}}</span></h2>
             {% for obj in category.menu_set.all %}
-                <div class="col-sm-4 col-md-4 px-3 py-3">
-                    <div class="menu_item_hover mb-3 pb-2 text-center">
+                <div class="col-sm-12 col-md-6 col-lg-4 px-3 py-3">
+                    <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
                         <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
-                        <h4 class="text-center"><span class="name">{{obj.name|title}}</span>
+                        <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span>
                             <div class="in-cart-item-counter">
                                 <span style="font-size: small; font-weight: bold; position: relative; right: -5px;"></span>
                                 <span class="in-cart-item px-2 in-cart-item-count" style="color: #fff;">0</span>
                             </div>
                         </h4>
-                        <p class="text-center body-text" style="padding: 0 40px;">{{obj.description|capfirst}}</p>
-                        <p class="text-center"><b class="price"> {{obj.price}} AED </b></p>
-                        <p class="mx-auto btn py-0 rounded-0 btn-order">
-                            <span class="increment-item"><b style="color: #FF5400;">-&nbsp;&nbsp;</b></span>
-                            <span data-id="{{obj.pk}}" class="btn btn_order rounded-0">Add To Cart</span>
-                            <span class="decrement-item"><b style="color: #FF5400;">&nbsp;&nbsp;+</b></span>
+                        <p class="text-center body-text">{{obj.description|capfirst}}</p>
+                        
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
+                        <p class="title-fonts">
+                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
                         </p>
                     </div>
-                   
                 </div>
             {% endfor %}
         {% endfor %}
@@ -151,42 +182,160 @@
 
 {% block js %}
 
-
 <script>
+
+// load the menu item in cart counter labal
+$(document).ready(function(){
+    if(localStorage.getItem('order')){
+      var orders = localStorage.getItem('order');
+      if(orders.search(";") == -1){
+      // not ; that means one order
+    
+      var obj_one = JSON.parse(orders);
+      // loop through cards and check ids
+      $('.menu_item_hover').each(function(){
+            var card_id = $(this).attr('data-id');
+            if(obj_one.id == card_id){
+                set_label(card_id, obj_one.quantity);
+            }
+            // alert( obj_one.id)
+        });
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = orders.split(";");
+      for(var i in obj_arr){
+        var one = JSON.parse(obj_arr[i]);
+        $('.menu_item_hover').each(function(){
+            var card_id = $(this).attr('data-id');
+            if(one.id == card_id){
+            set_label(card_id, one.quantity);
+            }
+            // alert( obj_one.id)
+        });
+      }
+    }
+    }
+});
+
+
+$(document).ready(function(){
+    $('.decrement-item').each(function(){
+        $(this).click(function(){
+            var id = $(this).attr("data-id");
+            var val = parseInt($(this).closest('.menu_item_hover').find('.in-cart-item-count').text());
+            // alert(id + " - " + val)
+            update_order_quantity(parseInt(id), parseInt(val)-1);
+            set_label(id, parseInt(val)-1);
+        }); //click
+    });//each   
+})
+
+$(document).ready(function(){
+    $('.increment-item').each(function(){
+        $(this).click(function(){
+            var id = $(this).attr("data-id");
+            var val = parseInt($(this).closest('.menu_item_hover').find('.in-cart-item-count').text());
+            // alert(id + " - " + val)
+            update_order_quantity(parseInt(id), parseInt(val)+1);
+            set_label(id, parseInt(val)+1);
+        }); //click
+    });//each   
+})
+
+function set_label(id, val){
+    $("#"+id).find('.in-cart-item-count').text(val);
+    $("#"+id).find('.in-cart-item-counter').css("position","absolute");
+    $("#"+id).find('.in-cart-item-count').prev().text("X");
+    $("#"+id).find('.in-cart-item-count').css("background-color", "#FF5400");                
+    $("#"+id).find('.in-cart-item-counter').css("display","inline");
+}
+function update_order_quantity(order_id, quantity){
+    
+  if(localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      // not ; that means one order
+      var obj_one = JSON.parse(orders);
+      // now cheeck the ids
+      if(obj_one.id == order_id){
+        obj_one.quantity = quantity;
+        Update_order(orders, 0, obj_one, true);
+        return ;
+      }
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = orders.split(";");
+      for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == order_id){
+          one.quantity  = quantity;
+          Update_order(obj_arr, i, one);
+          return
+        }
+      }
+    }
+  }
+}
+
+function Update_order(obj_all, index, update, one_item=false){
+  var on='';
+  var size  = Object.keys(obj_all).length;
+    for(var i in obj_all){
+      if(i == index){
+        if(i ==0){
+          on +=JSON.stringify(update);
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on +=";"+JSON.stringify(update);
+        }
+      }else{
+        if(i ==0){
+          on += obj_all[i];
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on += ";"+obj_all[i];
+        }
+      }
+    }
+  localStorage.removeItem("order");
+  localStorage.setItem("order", on);
+}
 
 
 
 $(document).ready(function(){
     $('.btn_order').each(function(){
         $(this).click(function(){
-
             var obj_id = $(this).attr("data-id");
             var img = document.getElementById(obj_id);
-
             // change thee image to text
             // imgData = getBase64Image(img);
-            var obj_name = $(this).parent().parent('.menu_item_hover').find('.name').text();
-            // alert(obj_name)
-            var obj_price = $(this).parent().parent('.menu_item_hover').find('.price').text();
-            // alert(obj_name + " + " + obj_price)
+            var obj_name = $(this).closest('.menu_item_hover').find('.name').text();
+            var obj_price = $(this).closest('.menu_item_hover').find('.price').text();
             var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
 
             // put to local storage function
             To_local_Storage(obj_order);
-            var a = $(this).parent().prev().prev().prev().find('.in-cart-item-count').text();
+            var a = $(this).closest('.menu_item_hover').find('.in-cart-item-count').text();
+            
             if(a.length > 0){
                 var b = parseInt(a);
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').text(b+=1);
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').css("background-color", "#FF5400");
-                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("position","absolute");
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').prev().text("X");
-                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("display","inline");
-            } else{
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').text(1);
-                $(this).parent().prev().prev().prev().children('.in-cart-item-counter').css("position","absolute");
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').prev().text("X");
-                $(this).parent().prev().prev().prev().find('.in-cart-item-count').css("background-color", "#FF5400");                
-                $(this).parent().prev().prev().prev().find('.in-cart-item-counter').css("display","inline");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').text(b+=1);
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').css("background-color", "#FF5400");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("position","absolute");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').prev().text("X");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("display","inline");
+            }else{
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').text(1);
+                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("position","absolute");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').prev().text("X");
+                $(this).closest('.menu_item_hover').find('.in-cart-item-count').css("background-color", "#FF5400");                
+                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("display","inline");
             }
             // console.log(a);
         }); // end of clic
