@@ -8,7 +8,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, T
 class Menu(ListView):
     model = models.Menu_category
     template_name = "website/menu.html"
-
+    ordering = ['sort']
     def get_context_data(self, *args, **kwargs):
         data = super(Menu, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'menu'

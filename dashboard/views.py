@@ -162,7 +162,7 @@ class MenuList(LoginRequiredMixin, ListView):
     # login_url = '/login'
     model = models.Menu_category
     template_name = "dashboard/MenuList.html"
-
+    ordering = ['sort']
     def get_context_data(self, *args, **kwargs):
         data = super(MenuList, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Menu'

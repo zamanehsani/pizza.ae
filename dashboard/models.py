@@ -80,7 +80,7 @@ class About_company(models.Model):
 class Menu_category(models.Model):
     name = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField()
-
+    sort = models.SmallIntegerField(blank=True, null=True)
     def __str__(self):
         return self.name
 
@@ -117,6 +117,7 @@ class Menu(models.Model):
     date            = models.DateField(auto_now_add=True, auto_now=False)
     category        = models.ForeignKey(Menu_category, on_delete=models.CASCADE)
     new             = models.BooleanField(default=False)
+    sort = models.SmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name
