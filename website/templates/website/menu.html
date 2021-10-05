@@ -127,7 +127,9 @@
         <ul class="navbar-nav mx-auto my-lg-0" style="flex-direction: row;">
         {% for category in object_list|dictsortreversed:"name" %}
           <li class=" mx-2 px-2 py-0 menu-links ">
-            <a class="nav-link text-white title-fonts" style="padding-bottom: 0px;" href="#{{category}}"><h2> {{category|title}}</h2></a>
+            <a class="nav-link text-white title-fonts" style="padding-bottom: 0px;" href="#{{category}}">
+                <h2 class=" title-fonts"><span>{{category|title}}</span></h2>
+            </a>
           </li> 
         {% endfor %}
         </ul>
@@ -139,17 +141,20 @@
         {% for category in object_list|dictsortreversed:"name" %}
             <h2 class="text-on-line title-fonts" id="{{category}}"><span>{{category|title}}</span></h2>
             {% for obj in category.menu_set.all %}
-                <div class="col-sm-12 col-md-6 col-lg-4 px-3 py-3">
+            {%  if category.name == "Drinks" %}
+                <div class="col-6 col-sm-6 col-md-6 col-lg-2 py-3">
+                    {% else %}
+                <div class="col-6 col-md-6 col-lg-4 px-3 py-3">
+                    {% endif %}
                     <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
-                        <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 70%;" alt="">
+                        <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 100%;" alt="">
                         <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span>
                             <div class="in-cart-item-counter">
                                 <span style="font-size: small; font-weight: bold; position: relative; right: -5px;"></span>
                                 <span class="in-cart-item px-2 in-cart-item-count" style="color: #fff;">0</span>
                             </div>
                         </h4>
-                        <p class="text-center body-text">{{obj.description|capfirst}}</p>
-                        
+                        {% comment %} <p class="text-center body-text">{{obj.description|capfirst}}</p>{% endcomment%}
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
@@ -157,7 +162,11 @@
                         <span class="fa fa-star"></span>
                         <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
                         <p class="title-fonts">
-                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                        {%  if category.name == "Drinks" %}
+                        <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add </span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                        {% else %}
+                        <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                        {% endif %}
                         </p>
                     </div>
                 </div>
@@ -175,7 +184,7 @@
         </div>
     </div>
 </div>
-
+</div>
 
 {% include 'website/footer.html' %}
 {% endblock content %}
@@ -243,11 +252,11 @@ $(document).ready(function(){
 })
 
 function set_label(id, val){
-    $("#"+id).find('.in-cart-item-count').text(val);
-    $("#"+id).find('.in-cart-item-counter').css("position","absolute");
-    $("#"+id).find('.in-cart-item-count').prev().text("X");
-    $("#"+id).find('.in-cart-item-count').css("background-color", "#FF5400");                
-    $("#"+id).find('.in-cart-item-counter').css("display","inline");
+    $("#"+id).find('.btn_order').text(val);
+    // $("#"+id).find('.in-cart-item-counter').css("position","absolute");
+    // $("#"+id).find('.in-cart-item-count').prev().text("X");
+    // $("#"+id).find('.in-cart-item-count').css("background-color", "#FF5400");                
+    // $("#"+id).find('.in-cart-item-counter').css("display","inline");
 }
 function update_order_quantity(order_id, quantity){
     

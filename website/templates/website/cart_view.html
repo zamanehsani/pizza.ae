@@ -112,26 +112,37 @@ input.invalid {
   width: 40px;
   margin: 0 2px;
   /* background-color: #bbbbbb; */
-  border: 2px solid #ffdddd;  
+  border: 2px solid #FF5400;  
   border-radius: 50%;
   display: inline-block;
-  opacity: 0.7;
+  /* opacity: 1; */
+  color: #FF5400;
   text-align: center;
   padding-top: 6px;
 }
 
 .step.active {
   opacity: 1;
-  border: 2px solid #ffdddd;  
-  background-color: #c5aaaa;
+  border: 2px solid #219653;  
+  background-color: #dad7d6;
+  color: #FFF;
+  /* font-weight: bolder; */
+}
+
+.btn-orange{
+  border: solid 1px #FF5400;
+  color: #FF5400;
+  background-color: transparent;
+}
+.btn-orange:hover{
+  background-color: #FF5400;
   color: white;
-  font-weight: bolder;
 }
 
 /* Mark the steps that are finished and valid: */
 .step.finish {
-  background-color: #F96302;
-  border-radius: 2px solid #F96302;
+  background-color: #219653;
+  border-radius: 2px solid #219653;
   color: #fff;
   font-weight: bolder;
 }
@@ -140,17 +151,18 @@ input.invalid {
   /* height: 30px; */
   height: auto;
   /* width: fit-content; */
-  border-radius: 10px;
+  /* border-radius: 10px; */
   border:2px solid #F96302;
-  color: #F96302;
+  color: #FFF;
   padding: 10px;
+  background-color: #FF5400;
 }
 .payment-check input:checked{
-  background-color: #F96302;
-  border-color: #F96302;
+  background-color: #FFF;
+  border-color: #FFF;
 }
 .payment-check input{
-  border-color: #F96302;
+  border-color: #FFF;
 }
 .payment-check input:focus{
   border-color: #F96302;
@@ -181,173 +193,179 @@ input.invalid {
 {% include 'website/navbar.html' %}
 
 <div class="container-fluid" style="background-color: seashell;">
-  <div class="row pt-4 ">
-    <form id="regForm" onsubmit="preventSubmit(event)">
-      <!-- Circles which indicates the steps of the form: -->
-      <div style="text-align:center;">
-        <span class="step">1</span>
-        <span class="step">2</span>
-        <span class="step">3</span>
-      </div>
-      <!-- <h1>Register:</h1> -->
-      <!-- One "tab" for each step in the form: -->
-      <div class="tab">
-        <div class="row mt-3">
-          <div >
-            <div class="table-responsive container">
-              <!-- <p class="fw-bold">your order details</p> -->
-              <table class="table table-striped">
-                <caption style="text-align: end; " class="" style="color: #F96302;">Total: 200 AED</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">item</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total price</th>
-                  </tr>
-                </thead>
-                <tbody id="order-table-body"> 
-                </tbody>
-              </table>
-            </div> 
-            <div id="empty-card" class=" mb-3 pt-3">
-              <div class="row">
-              <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
-                <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
-                <p>Your cart is empty.</p>
-                <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
-              </div>
-              
-              </div>
-            </div> 
-
-            <!-- end of table -->
-    
-            <div class="container" >
-              <div class="row">
-                <div class="col-sm-12 ">
-                  <div id="map" style="height:400px; width:auto"></div>
+<div class="row">
+  <div class="col-sm-12 col-md-3"></div>
+  <div class="col-sm-12 col-md-6">
+    <div class="row pt-4 ">
+      <form id="regForm" onsubmit="preventSubmit(event)">
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;">
+          <span class="step title-fonts">1</span>
+          <span class="step title-fonts">2</span>
+          <span class="step title-fonts">3</span>
+        </div>
+        <!-- <h1>Register:</h1> -->
+        <!-- One "tab" for each step in the form: -->
+        <div class="tab">
+          <div class="row mt-3">
+            <div >
+              <div class="table-responsive container">
+                <!-- <p class="fw-bold">your order details</p> -->
+                <table class="table table-striped">
+                  <caption style="text-align: end; " class="" style="color: #F96302;">Total: 200 AED</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">item</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Total price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="order-table-body"> 
+                  </tbody>
+                </table>
+              </div> 
+              <div id="empty-card" class=" mb-3 pt-3">
+                <div class="row">
+                <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
+                  <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+                  <p>Your cart is empty.</p>
+                  <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
                 </div>
-              </div>
-              <div class="row my-3 mx-1">
                 
-                  <button type="button" onclick="locate_me()" class="btn btn-outline-primary rounded-pill btn-lg btn-block">Locate me</button>
-           
-              </div>
-              <div class="row">
-                <form id="regForm1">
+                </div>
+              </div> 
+  
+              <!-- end of table -->
+      
+              <div class="container" >
+                <div class="row">
+                  <div class="col-sm-12 ">
+                    <div id="map" style="height:400px; width:auto"></div>
+                  </div>
+                </div>
+                <div class="row my-3 mx-1">
                   
-                  <div class="col-sm-12 col-md-6 pt-3 mb-3">
-                    <div class="form-row">
-                      <div class="row">
-                        <div class="form-group col-md-6">
-                          <label for="name">Name</label>
-                          <input type="text" name="name" class="form-control" id="name" placeholder="name">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="number">phone number</label>
-                          <input type="number" name="number" class="form-control" id="number" placeholder="05---">
+                    <button type="button" onclick="locate_me()" class="btn btn-orange rounded-0 btn-lg btn-block">Locate Me</button>
+             
+                </div>
+                <div class="row">
+                  <form id="regForm1">
+                    
+                    <div class="col-sm-12 col-md-6 pt-3 mb-3">
+                      <div class="form-row">
+                        <div class="row">
+                          <div class="form-group col-md-6">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control rounded-0" id="name" placeholder="name">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="number">phone number</label>
+                            <input type="number" name="number" class="form-control rounded-0" id="number" placeholder="05---">
+                          </div>
                         </div>
                       </div>
+                      <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" name="address" class="form-control rounded-0" id="inputAddress" placeholder="1234 Main St">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress2">Address 2</label>
+                        <input type="text" name="address2" class="form-control rounded-0" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                      </div>
                     </div>
-                    <div class="form-group">
-                      <label for="inputAddress">Address</label>
-                      <input type="text" name="address" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                    </div>
-                    <div class="form-group">
-                      <label for="inputAddress2">Address 2</label>
-                      <input type="text" name="address2" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                    </div>
+                  </form>
+                  <div class="col-sm-12 col-md-6 mb-3 mt-3 pt-3 pl-2" style="background-color: palegoldenrod; border-radius: 8px;">
+                    <p class="my-0 text-orange">Total Order: <span class="total-payment"></span> AED</p>
+                    <p class="my-0 text-orange">Delivery Charge: <span class="delivery-charge"></span> </p>
+                    <hr class="my-0 ">
+                    <input type="hidden" name="delivery_charge" id="" value="false">
+                    <p class="text-orange">TOTAL BILL: <span class="total-payable"> </span> AED</p>
                   </div>
-                </form>
-                <div class="col-sm-12 col-md-6 mb-3 mt-3 pt-3 pl-2" style="background-color: palegoldenrod; border-radius: 8px;">
-                  <p class="my-0 text-orange">Total Order: <span class="total-payment"></span> AED</p>
-                  <p class="my-0 text-orange">Delivery Charge: <span class="delivery-charge"></span> </p>
-                  <hr class="my-0 ">
-                  <input type="hidden" name="delivery_charge" id="" value="false">
-                  <p class="text-orange">TOTAL BILL: <span class="total-payable"> </span> AED</p>
                 </div>
               </div>
+             
             </div>
-           
           </div>
+  
         </div>
-
-      </div>
-      <div class="tab">
-          <div class="container">
-            <div class="row mt-5 text-center">
-              <h3 class="mx-auto">PAYEMENT METHOD</h3>
-              <div class="col-sm-12 col-md-3"> </div>
-              <div class="col-sm-12 col-md-6">
-                <div class="row mt-4 mb-4 ">
-                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
-                    <div class="payment-check  mb-4">
-                      <input type="radio" checked name="payment" value="cash" class="form-check-input" id="cash">
-                      <label class="form-check-label" style="margin: auto 10px;" for="cash">Cash ON Delivery</label>
+        <div class="tab">
+            <div class="container">
+              <div class="row mt-5 text-center">
+                <h3 class="mx-auto">PAYEMENT METHOD</h3>
+                <div class="col-sm-12 col-md-3"> </div>
+                <div class="col-sm-12 col-md-6">
+                  <div class="row mt-4 mb-4 ">
+                    <div class="col-sm-12">
+                      <div class="payment-check  mb-4">
+                        <input type="radio" checked name="payment" value="cash" class="form-check-input" id="cash">
+                        <label class="form-check-label" style="margin: auto 10px;" for="cash">Cash on Delivery</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
-                    <div class="payment-check mb-4 ">
-                      <input type="radio" name="payment" value="pos"  class="form-check-input" id="POS">
-                      <label class="form-check-label" style="margin: auto 10px;" for="POS">Card ON Delivery</label>
+                    <div class="col-sm-12">
+                      <div class="payment-check mb-4 ">
+                        <input type="radio" name="payment" value="pos"  class="form-check-input" id="POS">
+                        <label class="form-check-label" style="margin: auto 10px;" for="POS">Card on Delivery</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-sm-12 col-md-4 justify-content-sm-center">
-                    <div class="payment-check mb-4">
-                      <input type="radio" name="payment" value="online" class="form-check-input" id="online">
-                      <label class="form-check-label" style="margin: auto 10px;" for="online">	&nbsp; Pay Online Now 	&nbsp;</label>
+                    <div class="col-sm-12">
+                      <div class="payment-check mb-4">
+                        <input type="radio" name="payment" value="online" class="form-check-input" id="online">
+                        <label class="form-check-label" style="margin: auto 10px;" for="online">	&nbsp; Online Payment 	&nbsp;</label>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div class="col-sm-12 col-md-3"> </div>
               </div>
-              <div class="col-sm-12 col-md-3"> </div>
             </div>
-          </div>
-      </div>
-      <div class="tab">
-        <div class="container pt-4">
-          <div class="row my-3">
-            <div class="col-sm-12 col-md-6">
-             <div class="card mx-4">
-               <div class="card-header">
-                 <h5>YOUR ORDER SUMMARY</h5>
+        </div>
+        <div class="tab">
+          <div class="container pt-4">
+            <div class="row my-3">
+              <div class="col-sm-12 col-md-6">
+               <div class="card mx-4">
+                 <div class="card-header">
+                   <h5>YOUR ORDER SUMMARY</h5>
+                 </div>
+                 <div class="card-body order-summary">
+           
+                 </div>
+                 <div class="card-footer">
+                   <h5>TOTAL <span style="float: right;" class="total-summary"></span></h5>
+                 </div>
                </div>
-               <div class="card-body order-summary">
-         
-               </div>
-               <div class="card-footer">
-                 <h5>TOTAL <span style="float: right;" class="total-summary"></span></h5>
-               </div>
+              </div>
+              <div class="col-sm-12 col-md-6 px-5 py-3">
+                <h5>Your Address and Information</h5>
+                <div class="info-summary">
+                  
+                </div>
              </div>
             </div>
-            <div class="col-sm-12 col-md-6 px-5 py-3">
-              <h5>Your Address and Information</h5>
-              <div class="info-summary">
-                
-              </div>
-           </div>
-          </div>
-           <div class="row py-4" style="background-color: palegoldenrod;">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label>Optional</label>
-                  <textarea class="form-control" id="note" placeholder="add any note to your order here ..." rows="3"></textarea>
+             <div class="row py-4" style="background-color: palegoldenrod;">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>Optional</label>
+                    <textarea class="form-control" id="note" placeholder="add any note to your order here ..." rows="3"></textarea>
+                  </div>
                 </div>
-              </div>
-            </div> 
+              </div> 
+          </div>
         </div>
-      </div>
-     
-      <div class="my-3" >
-        <div class="justify-content-center d-flex">
-          <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-          <button type="submit" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
+       
+        <div class="my-3" >
+          <div class="justify-content-center d-flex">
+            <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="submit" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
+  <div class="col-sm-12 col-md-3"></div>
+</div>
 </div>
 
 </div>
