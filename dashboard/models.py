@@ -115,9 +115,10 @@ class Menu(models.Model):
     description     = models.TextField(null=True, blank=True)
     photo           = models.ImageField(default='default-pizza.png', upload_to = "menu", null=True, blank=True)
     date            = models.DateField(auto_now_add=True, auto_now=False)
-    category        = models.ForeignKey(Menu_category, on_delete=models.CASCADE)
+    category        = models.ForeignKey(Menu_category, on_delete=models.CASCADE, default=1)
     new             = models.BooleanField(default=False)
-    sort = models.SmallIntegerField(blank=True, null=True)
+    sort            = models.SmallIntegerField(blank=True, null=True)
+    available       = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

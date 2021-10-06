@@ -162,10 +162,14 @@
                         <span class="fa fa-star"></span>
                         <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
                         <p class="title-fonts">
-                        {%  if category.name == "Drinks" %}
-                        <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add </span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                        {% if not obj.available  %}
+                        <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
                         {% else %}
-                        <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                            {%  if category.name == "Drinks" %}
+                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add </span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                            {% else %}
+                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
+                            {% endif %}
                         {% endif %}
                         </p>
                     </div>
@@ -205,7 +209,7 @@ $(document).ready(function(){
       $('.menu_item_hover').each(function(){
             var card_id = $(this).attr('data-id');
             if(obj_one.id == card_id){
-                set_label(card_id, obj_one.quantity);
+              set_label(card_id, obj_one.quantity);
             }
             // alert( obj_one.id)
         });
@@ -217,7 +221,7 @@ $(document).ready(function(){
         $('.menu_item_hover').each(function(){
             var card_id = $(this).attr('data-id');
             if(one.id == card_id){
-            set_label(card_id, one.quantity);
+               set_label(card_id, one.quantity);
             }
             // alert( obj_one.id)
         });
