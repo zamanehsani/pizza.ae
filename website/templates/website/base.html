@@ -23,32 +23,51 @@
 
     .links-text:hover{color: #FF5400; }
     .links-text{ color: white; }
-
-
       /* this is for footer aligm center bottom */
-      body{ 
+      /* body{ 
         min-height: 100vh; 
         margin: 0; 
         display: grid;
         grid-template-rows: auto 1fr auto;
       }
+      footer{ min-height:50px; } */
 
-      footer{ min-height:50px; }
-
+      #preloader{
+        height: 100vh;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+      }
     </style>
     
   </head>
   <body>
-
    
-
+    {% include 'website/navbar.html' %}
+    <div class="row">
+        <div class="container  justify-content-center" style="background-color: #FFF;" id="preloader">
+            <div class="spinner-border text-success m-5 " style="width: 5rem; height: 5rem;"  role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    </div>
+  
    {% block content %}
-   
    {% endblock content %}
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-    
+   {% include 'website/footer.html' %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script>
+      $(window).on('load', function(){
+        $("#preloader").fadeOut();
+      })
+    </script>
     {% block js %}{% endblock js %}
+
   </body>
 </html>

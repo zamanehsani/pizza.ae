@@ -116,12 +116,9 @@
 </style>
 
 {% endblock css %}
-
-
 {% block content %}
 
 <!-- this is the sticky  -->
-{% include 'website/navbar.html' %}
 <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #FF5400;">
     <div class="container-fluid">
         <ul class="navbar-nav mx-auto my-lg-0" style="flex-direction: row;">
@@ -146,7 +143,7 @@
                     {% else %}
                 <div class="col-6 col-md-6 col-lg-4 px-3 py-3">
                     {% endif %}
-                    <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
+                    <div class="menu_item_hover card-op mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
                         <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 100%;" alt="">
                         <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span>
                             <div class="in-cart-item-counter">
@@ -178,19 +175,18 @@
         {% endfor %}
         <div class="btn-group-fab" style="z-index: 1000;" role="group" aria-label="FAB Menu">
             <div >
-              <a href="{% url 'website:cart_view' %}">
+            <a href="{% url 'website:cart_view' %}">
                 <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
-                   <h2 id="order_counter" class="pt-1">0</h2>
-                  <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
+                <h2 id="order_counter" class="pt-1">0</h2>
+                <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
                 </button>
-              </a>
+            </a>
             </div>
         </div>
     </div>
 </div>
 </div>
 
-{% include 'website/footer.html' %}
 {% endblock content %}
 
 {% block js %}
