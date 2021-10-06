@@ -153,12 +153,12 @@ input.invalid {
   /* width: fit-content; */
   /* border-radius: 10px; */
   border:2px solid #F96302;
-  color: #FFF;
+  color: rgb(43, 138, 14);
   padding: 10px;
-  background-color: #FF5400;
+  background-color: #FFF;
 }
 .payment-check input:checked{
-  background-color: #FFF;
+  background-color: rgb(83, 7, 7);
   border-color: #FFF;
 }
 .payment-check input{
@@ -190,8 +190,6 @@ input.invalid {
 
 {% block content %}
 
-{% include 'website/navbar.html' %}
-
 <div class="container-fluid" style="background-color: seashell;">
 <div class="row">
   <div class="col-sm-12 col-md-3"></div>
@@ -215,7 +213,7 @@ input.invalid {
                   <caption style="text-align: end; " class="" style="color: #F96302;">Total: 200 AED</caption>
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
+                      <th scope="col">X</th>
                       <th scope="col">item</th>
                       <th scope="col">Price</th>
                       <th scope="col">Quantity</th>
@@ -357,8 +355,8 @@ input.invalid {
        
         <div class="my-3" >
           <div class="justify-content-center d-flex">
-            <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="submit" class="btn btn-orange rounded-pill px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            <button type="button" class="btn btn-outline-secondary rounded-0 px-4 py-2 mx-2" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="submit" class="btn btn-orange rounded-0 px-5 py-2" id="nextBtn" onclick="nextPrev(1)">Next</button>
           </div>
         </div>
       </form>
@@ -370,7 +368,6 @@ input.invalid {
 
 </div>
 
-{% include 'website/footer.html' %}
 {% endblock content %}
 
 

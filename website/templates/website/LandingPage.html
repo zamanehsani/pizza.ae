@@ -105,16 +105,10 @@
 </style>
 
 {% endblock css %}
-
-
 {% block content %}
 
 <div class="box">
-    <div class="header">
-       {% include 'website/navbar.html' %}
-    </div>
     <div class="content rotated-background-image">
-    
       <div class="container">
         <!-- <div class="pizza-background img-thumbnail">
           <img src="{% static 'img/makhsos.png' %}" class="img-fluid ">
@@ -134,18 +128,13 @@
         
       </div>
         <img class=" store_icon position-absolute bottom-5 start-10 translate-middle bottom-5 "   src="{% static 'img/store.png' %}" alt="">
-
         <a href="https://wa.me/message/GYU3UVTPAADHM1" class="call_24_7 position-absolute bottom-5 end-0 translate-middle fw-bold fs-5 text-decoration-none text-white">
           Live Chat 24/7
         </a>
     </div>
 </div>
 
-
-{% include 'website/footer.html' %}
 {% endblock content %}
-
-
 {% block js %}
 
 

@@ -25,8 +25,7 @@
 .menu_item_hover .btn_order{
     /* visibility: hidden; */
     border:solid 1px #FF5400;
-    border-right: none;
-    border-left:none;    
+        
 }
 .btn_order:focus{
     background-color: yellowgreen;
@@ -50,8 +49,7 @@
     color: #FF5400;
     background-color: wheat;
     border: 1px solid #FF5400;
-    border-right: none;
-    border-left:none;
+   
 } 
 .menu_item_hover:hover .in-cart-item-counter{
     visibility: visible;
@@ -143,14 +141,9 @@
                     {% else %}
                 <div class="col-6 col-md-6 col-lg-4 px-3 py-3">
                     {% endif %}
-                    <div class="menu_item_hover card-op mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
+                    <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
                         <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 100%;" alt="">
-                        <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span>
-                            <div class="in-cart-item-counter">
-                                <span style="font-size: small; font-weight: bold; position: relative; right: -5px;"></span>
-                                <span class="in-cart-item px-2 in-cart-item-count" style="color: #fff;">0</span>
-                            </div>
-                        </h4>
+                        <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span> </h4>
                         {% comment %} <p class="text-center body-text">{{obj.description|capfirst}}</p>{% endcomment%}
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
@@ -159,15 +152,15 @@
                         <span class="fa fa-star"></span>
                         <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
                         <p class="title-fonts">
-                        {% if not obj.available  %}
+                    {% if not obj.available  %}
                         <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
+                    {% else %}
+                        {%  if category.name == "Drinks" %}
+                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add       </span><span class="btn  d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% else %}
-                            {%  if category.name == "Drinks" %}
-                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add </span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
-                            {% else %}
-                            <span class="btn rounded-0 decrement-item btn-order mx-0 title-fonts" data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn title-fonts rounded-0 increment-item btn-order" data-id="{{obj.pk}}">+</span>
-                            {% endif %}
+                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn  d-none title-fonts rounded-0 increment-item  btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% endif %}
+                    {% endif %}
                         </p>
                     </div>
                 </div>
@@ -227,39 +220,35 @@ $(document).ready(function(){
 });
 
 
-$(document).ready(function(){
-    $('.decrement-item').each(function(){
-        $(this).click(function(){
-            var id = $(this).attr("data-id");
-            var val = parseInt($(this).closest('.menu_item_hover').find('.in-cart-item-count').text());
-            // alert(id + " - " + val)
-            update_order_quantity(parseInt(id), parseInt(val)-1);
-            set_label(id, parseInt(val)-1);
-        }); //click
-    });//each   
-})
+function increaseCount(a, b) {
+  var input = b.previousElementSibling;
+//   console.log(input.)
+  var value = parseInt(input.textContent, 10); 
+  value = isNaN(value)? 0 : value;
+  value ++;
+  var id_of_order = input.getAttribute('data-id');
+  update_order_quantity(id_of_order, value);
+  input.textContent = value;
+}
 
-$(document).ready(function(){
-    $('.increment-item').each(function(){
-        $(this).click(function(){
-            var id = $(this).attr("data-id");
-            var val = parseInt($(this).closest('.menu_item_hover').find('.in-cart-item-count').text());
-            // alert(id + " - " + val)
-            update_order_quantity(parseInt(id), parseInt(val)+1);
-            set_label(id, parseInt(val)+1);
-        }); //click
-    });//each   
-})
+function decreaseCount(a, b) {
+  var input = b.nextElementSibling;
+  var value = parseInt(input.textContent, 10); 
+  if (value > 1) {
+    value = isNaN(value)? 0 : value;
+    value --;
+    var id_of_order = input.getAttribute('data-id');
+    update_order_quantity(id_of_order, value);
+    input.textContent = value;
+  }
+}
 
 function set_label(id, val){
     $("#"+id).find('.btn_order').text(val);
-    // $("#"+id).find('.in-cart-item-counter').css("position","absolute");
-    // $("#"+id).find('.in-cart-item-count').prev().text("X");
-    // $("#"+id).find('.in-cart-item-count').css("background-color", "#FF5400");                
-    // $("#"+id).find('.in-cart-item-counter').css("display","inline");
+    $("#"+id).find('.decrement-item').removeClass('d-none');
+    $("#"+id).find('.increment-item').removeClass('d-none');
 }
 function update_order_quantity(order_id, quantity){
-    
   if(localStorage.getItem("order")){
     var orders = localStorage.getItem("order");
     if(orders.search(";") == -1){
@@ -316,7 +305,6 @@ function Update_order(obj_all, index, update, one_item=false){
 }
 
 
-
 $(document).ready(function(){
     $('.btn_order').each(function(){
         $(this).click(function(){
@@ -327,26 +315,9 @@ $(document).ready(function(){
             var obj_name = $(this).closest('.menu_item_hover').find('.name').text();
             var obj_price = $(this).closest('.menu_item_hover').find('.price').text();
             var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
-
             // put to local storage function
             To_local_Storage(obj_order);
-            var a = $(this).closest('.menu_item_hover').find('.in-cart-item-count').text();
-            
-            if(a.length > 0){
-                var b = parseInt(a);
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').text(b+=1);
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').css("background-color", "#FF5400");
-                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("position","absolute");
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').prev().text("X");
-                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("display","inline");
-            }else{
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').text(1);
-                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("position","absolute");
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').prev().text("X");
-                $(this).closest('.menu_item_hover').find('.in-cart-item-count').css("background-color", "#FF5400");                
-                $(this).closest('.menu_item_hover').find('.in-cart-item-counter').css("display","inline");
-            }
-            // console.log(a);
+            set_label(obj_id, 1);
         }); // end of clic
     }); //end of each function
 });
@@ -362,11 +333,9 @@ function getBase64Image(img) {
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
-
 function To_local_Storage(obj){
 // check if we localstorage has got order already. 
-    if(localStorage.getItem("order")){
-    
+    if(localStorage.getItem("order")){   
         var orders = localStorage.getItem("order");
         // check if it have ";"
         if(orders.search(";") == -1){
@@ -393,7 +362,6 @@ function To_local_Storage(obj){
                 }
             }
             add_order(obj);
-
         }  // end of ";" search
     }else{
         one_order(obj);
@@ -421,7 +389,6 @@ function Update_order(obj_all, index, update){
     localStorage.setItem("order", on);
     Order_counter();   
 }
-
 
 function add_order(obj){
     // localStorage
