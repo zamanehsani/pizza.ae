@@ -210,14 +210,14 @@ input.invalid {
               <div class="table-responsive container">
                 <!-- <p class="fw-bold">your order details</p> -->
                 <table class="table table-striped">
-                  <caption style="text-align: end; " class="" style="color: #F96302;">Total: 200 AED</caption>
+                  <caption style="text-align: end; " class="text-orange">Total: 200 AED</caption>
                   <thead>
                     <tr>
-                      <th scope="col">X</th>
-                      <th scope="col">item</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Quantity</th>
-                      <th scope="col">Total price</th>
+                      <th scope="col " style="color: #FF5400;">X</th>
+                      <th scope="col " style="color: #FF5400;">item</th>
+                      <th scope="col " style="color: #FF5400;">Price</th>
+                      <th scope="col " style="color: #FF5400;">Quantity</th>
+                      <th scope="col " style="color: #FF5400;">Total price</th>
                     </tr>
                   </thead>
                   <tbody id="order-table-body"> 
@@ -228,13 +228,11 @@ input.invalid {
                 <div class="row">
                 <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
                   <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
-                  <p>Your cart is empty.</p>
-                  <a class="btn btn-outline-success rounded-pill mx-auto px-5 py-3" href="{% url 'website:menu' %}">Goto Menu</a>
+                  <p class="body-font"> Your cart is empty.</p>
+                  <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'website:menu' %}">Goto Menu</a>
                 </div>
-                
                 </div>
               </div> 
-  
               <!-- end of table -->
       
               <div class="container" >
@@ -244,9 +242,7 @@ input.invalid {
                   </div>
                 </div>
                 <div class="row my-3 mx-1">
-                  
                     <button type="button" onclick="locate_me()" class="btn btn-orange rounded-0 btn-lg btn-block">Locate Me</button>
-             
                 </div>
                 <div class="row">
                   <form id="regForm1">
@@ -274,12 +270,12 @@ input.invalid {
                       </div>
                     </div>
                   </form>
-                  <div class="col-sm-12 col-md-6 mb-3 mt-3 pt-3 pl-2" style="background-color: palegoldenrod; border-radius: 8px;">
+                  <div class="col-sm-12 col-md-6 mb-3 mt-3 pt-3 pl-2" style="background-color: palegoldenrod;">
                     <p class="my-0 text-orange">Total Order: <span class="total-payment"></span> AED</p>
                     <p class="my-0 text-orange">Delivery Charge: <span class="delivery-charge"></span> </p>
                     <hr class="my-0 ">
                     <input type="hidden" name="delivery_charge" id="" value="false">
-                    <p class="text-orange">TOTAL BILL: <span class="total-payable"> </span> AED</p>
+                    <p class="text-orange">TOTAL BILL: <span class="total-payable "> </span> AED</p>
                   </div>
                 </div>
               </div>
@@ -291,7 +287,7 @@ input.invalid {
         <div class="tab">
             <div class="container">
               <div class="row mt-5 text-center">
-                <h3 class="mx-auto">PAYEMENT METHOD</h3>
+                <h3 class="mx-auto text-orange">PAYEMENT METHOD</h3>
                 <div class="col-sm-12 col-md-3"> </div>
                 <div class="col-sm-12 col-md-6">
                   <div class="row mt-4 mb-4 ">
@@ -323,7 +319,7 @@ input.invalid {
           <div class="container pt-4">
             <div class="row my-3">
               <div class="col-sm-12 col-md-6">
-               <div class="card mx-4">
+               <div class="card mx-4 rounded-0">
                  <div class="card-header">
                    <h5>YOUR ORDER SUMMARY</h5>
                  </div>
@@ -411,8 +407,8 @@ function load_order(){
           <th class="align-middle" scope="row">
             <span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="color: #f96302; cursor: pointer;" data-width="30" data-height="30"></span>
           </th>
-          <td class="align-middle td-name">${ord.name}</td>
-          <td class="align-middle td-price">${ord.price}</td>
+          <td class="align-middle td-name text-orange">${ord.name}</td>
+          <td class="align-middle td-price text-orange">${ord.price}</td>
           <td class="align-middle td-quantity">
             <div class="counter td-counter">
               <span class="down" onClick='decreaseCount(event, this)'>-</span>
@@ -420,7 +416,7 @@ function load_order(){
               <span class="up"  onClick='increaseCount(event, this)'>+</span>
             </div>
           </td>
-          <td class="align-middle td-total-price">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
+          <td class="align-middle td-total-price text-orange">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
         </tr>
         `;
         
