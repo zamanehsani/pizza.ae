@@ -156,9 +156,9 @@
                         <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
                     {% else %}
                         {%  if category.name == "Drinks" %}
-                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add       </span><span class="btn  d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
+                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add       </span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% else %}
-                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn  d-none title-fonts rounded-0 increment-item  btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
+                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}"  class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% endif %}
                     {% endif %}
                         </p>
@@ -268,7 +268,7 @@ function update_order_quantity(order_id, quantity){
         var one = JSON.parse(obj_arr[i]);
         if(one.id == order_id){
           one.quantity  = quantity;
-          Update_order(obj_arr, i, one);
+          Update_order(obj_arr, i, one, false);
           return
         }
       }
@@ -276,12 +276,12 @@ function update_order_quantity(order_id, quantity){
   }
 }
 
-function Update_order(obj_all, index, update, one_item=false){
+function Update_order(obj_all, index, update, one_item){
   var on='';
   var size  = Object.keys(obj_all).length;
     for(var i in obj_all){
       if(i == index){
-        if(i ==0){
+        if(i == 0){
           on +=JSON.stringify(update);
           if(one_item == true){
             break;
@@ -290,7 +290,7 @@ function Update_order(obj_all, index, update, one_item=false){
           on +=";"+JSON.stringify(update);
         }
       }else{
-        if(i ==0){
+        if(i == 0){
           on += obj_all[i];
           if(one_item == true){
             break;
@@ -369,26 +369,6 @@ function To_local_Storage(obj){
     } // end of else for if of local storage
 } // eend of function
 
-function Update_order(obj_all, index, update){
-    var on='';
-    for(var i in obj_all){
-        if(i == index){
-            if(i ==0){
-            on +=JSON.stringify(update);
-            }else{
-                on +=";"+JSON.stringify(update);
-            }
-        }else{
-            if(i ==0){
-                on += obj_all[i];
-            }else{
-                on += ";"+obj_all[i];
-            }
-        }
-    }
-    localStorage.setItem("order", on);
-    Order_counter();   
-}
 
 function add_order(obj){
     // localStorage
