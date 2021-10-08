@@ -166,7 +166,7 @@
                 </div>
             {% endfor %}
         {% endfor %}
-        <div class="btn-group-fab" style="z-index: 1000;" role="group" aria-label="FAB Menu">
+        <div class="btn-group-fab shopping-cart" style="z-index: 1000;" role="group" aria-label="FAB Menu">
             <div >
             <a href="{% url 'website:cart_view' %}">
                 <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
@@ -184,8 +184,9 @@
 
 {% block js %}
 
-<script>
+<script src="{% static 'js/scripts.js' %}"></script>
 
+<script>
 // load the menu item in cart counter labal
 $(document).ready(function(){
     if(localStorage.getItem('order')){
@@ -244,7 +245,7 @@ function decreaseCount(a, b) {
 }
 
 function set_label(id, val){
-    $("#"+id).find('.btn_order').text(val);
+    $("#"+id).find('.btn_order').text(val).css({"padding":"auto 4em"});
     $("#"+id).find('.decrement-item').removeClass('d-none');
     $("#"+id).find('.increment-item').removeClass('d-none');
 }
@@ -317,7 +318,11 @@ $(document).ready(function(){
             var obj_order = {id:obj_id,name:obj_name, price:obj_price, quantity:1}
             // put to local storage function
             To_local_Storage(obj_order);
-            set_label(obj_id, 1);
+
+            // set label
+            var labal = parseInt($(this).text());
+            labal >=1 ? set_label(obj_id, labal+1) : set_label(obj_id,1);
+           
         }); // end of clic
     }); //end of each function
 });
@@ -369,7 +374,6 @@ function To_local_Storage(obj){
     } // end of else for if of local storage
 } // eend of function
 
-
 function add_order(obj){
     // localStorage
     var local_storagee_orders = localStorage.getItem("order");
@@ -387,7 +391,6 @@ function one_order(obj){
     console.log("added: ", obj_local);
     Order_counter();
 }
-
 
 function Order_counter(){
     if(localStorage.getItem("order")){
