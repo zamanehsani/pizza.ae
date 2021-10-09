@@ -1,0 +1,49 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="container-fluid" style="background-color: seashell;">
+<div class="row">
+  <div class="col-sm-12 col-md-3"></div>
+  <div class="col-sm-12 col-md-6">
+    <div class="row mt-3">
+      <div class="col-sm-12 col-md-6 text-center mx-auto my-4">
+        <img src="{% static 'img/otp.png' %}" alt="">
+        <h2 class="center"> OTP Verification</h2>
+        <p>Enter the OTP sent to <b>+971 566652534</b></p>
+        <p> code here</p>
+        <p>didn't revieve the code? <a href="!#"><b>Resend OTP</b></a></p>
+        <div class="row">
+          <button type="button" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Verify Me</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-3"></div>
+</div>
+</div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+
+</script>
+
+
+{% endblock js %}
+

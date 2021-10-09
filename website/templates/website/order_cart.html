@@ -1,0 +1,244 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="container-fluid" style="background-color: seashell;">
+<div class="row">
+  <div class="col-sm-12 col-md-4"></div>
+  <div class="col-sm-12 col-md-4">
+    <div class="row mt-3">
+      <div class="table-responsive container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>X</th>
+              <th>Item(s)</th>
+              <th class="" style="padding-left: 50px;">Qty</th>
+              <th style="width:100px;">Price</th>
+            </tr>
+          </thead>
+          <tbody id="order-table-body"> 
+
+          </tbody>
+        </table>
+      </div> 
+      <div id="empty-card" class=" mb-3 pt-3">
+        <div class="row">
+        <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
+          <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+          <p class="body-font"> Your cart is empty.</p>
+          <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'website:menu' %}">Goto Menu</a>
+        </div>
+        </div>
+      </div> 
+      <!-- end of table -->
+      <div class="container" >
+        <div class="row" id="regform_row">
+          <form id="regForm1" method="post"> {% csrf_token %}
+            <div class="col-sm-12 pt-3 mb-3">
+              <div class="form-row">
+                <label for="number">Phone Number:</label>
+                <div class="input-group col-sm-12">
+                  <span class="input-group-text rounded-0 " id="basic-addon1">
+                    <img src="{% static 'img/united-arab-emirates.png'%}" height="30" alt="">
+                  </span>
+                  <input type="text" id="number" name="number" class="form-control rounded-0" placeholder="05--------">
+                </div>
+                <div class="row my-3 mx-1">
+                  <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Validate Me</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div> 
+      <!-- end of form of phone number -->
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4"></div>
+</div>
+</div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+  // call the load 
+load_order()
+
+function load_order(){
+  // load the orders into table
+  $(document).ready(function(){
+    // check if their is an order key in localstorage
+    if(localStorage.getItem("order")){
+      $("#empty-card").hide();
+      // split the orders string to array by ;
+      let order_arr = localStorage.getItem("order").split(";");
+      // var total_of_total = 0;
+      $("#order-table-body").text("");
+      for(let x in order_arr){
+        let ord = JSON.parse(order_arr[x]);
+        var html = `<tr>
+          <td scope="row"><span class="iconify delete_order" onClick='delete_order(event, ${ord.id})' data-id=${ord.id} data-icon="mdi-light:delete" style="cursor: pointer;" data-width="30" data-height="30"></span></td>
+          <td class="td-name">${ord.name}</td>
+          <td class="td-quantity">
+            <div class="counter td-counter">
+              <span class="down" onClick='decreaseCount(event, this)'>-</span>
+              <input type="text" style="padding:0px" data-id="${ord.id}" value="${ord.quantity}">
+              <span class="up"  onClick='increaseCount(event, this)'>+</span>
+            </div>
+          </td>
+          <td class="td-total-price text-nowrap text-lg-right" style="width:100;text-align: right;">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
+          </tr> `;
+
+        $("#order-table-body").append(html);
+        cart_counter();
+      }
+    }else{
+      $('.table-responsive').hide();
+      $("#empty-card").show();
+      $("#regform_row").addClass('d-none');
+      cart_counter();
+    }
+  });
+}
+
+function increaseCount(a, b) {
+  var input = b.previousElementSibling;
+  var value = parseInt(input.value, 10); 
+  value = isNaN(value)? 0 : value;
+  value ++;
+  var id_of_order = input.getAttribute('data-id');
+  update_order_quantity(id_of_order, value);
+  input.value = value;
+  load_order();
+}
+
+function decreaseCount(a, b) {
+  var input = b.nextElementSibling;
+  var value = parseInt(input.value, 10); 
+  if (value > 1) {
+    value = isNaN(value)? 0 : value;
+    value --;
+    var id_of_order = input.getAttribute('data-id');
+    update_order_quantity(id_of_order, value);
+    input.value = value;
+    load_order();
+  }
+}
+
+function delete_order(event, id){
+  if (localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      var obj_order = JSON.parse(orders);
+      if( obj_order.id == id){
+        // ids are matched, remove order
+        localStorage.removeItem("order");
+        // reload the orders
+        load_order();
+      }
+    }else{
+    // more then one order
+      var obj_order_arr = orders.split(";");
+      var new_order ='';
+      for(var i in obj_order_arr){
+        // check the orders
+        var one = JSON.parse(obj_order_arr[i]);
+        if(one.id == id){
+          continue;
+        }else{
+            new_order += ";"+JSON.stringify(one);
+        }
+      }
+      new_order = new_order.substring(1)
+      localStorage.removeItem("order");
+      localStorage.setItem("order", new_order);
+      load_order();
+    }
+  }
+  
+}
+
+function update_order_quantity(order_id, quantity){
+  if(localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      // not ; that means one order
+      var obj_one = JSON.parse(orders);
+      // now cheeck the ids
+      if(obj_one.id == order_id){
+        obj_one.quantity = quantity;
+        Update_order(orders, 0, obj_one, true);
+        return ;
+      }
+    }else{
+      // found a ; that means two order or more
+      var obj_arr = orders.split(";");
+      for(var i in obj_arr){
+        // check the orders
+        var one = JSON.parse(obj_arr[i]);
+        if(one.id == order_id){
+          one.quantity  = quantity;
+          Update_order(obj_arr, i, one);
+          return
+        }
+      }
+    }
+  }
+}
+
+function Update_order(obj_all, index, update, one_item=false){
+  var on='';
+  var size  = Object.keys(obj_all).length;
+    for(var i in obj_all){
+      if(i == index){
+        if(i ==0){
+          on +=JSON.stringify(update);
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on +=";"+JSON.stringify(update);
+        }
+      }else{
+        if(i == 0){
+          on += obj_all[i];
+          if(one_item == true){
+            break;
+          }
+        }else{
+          on += ";"+obj_all[i];
+        }
+      }
+    }
+  localStorage.removeItem("order");
+  localStorage.setItem("order", on);
+}
+
+  // load the order counter on load
+  function cart_counter(){
+    if(localStorage.getItem("order")){
+      let order_counter = localStorage.getItem("order").split(";");
+      $("#in_cart_header").text(order_counter.length)
+    }else{ $('#in_cart_header').text(0) }
+  }
+
+</script>
+
+
+{% endblock js %}
+

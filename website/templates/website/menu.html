@@ -142,39 +142,37 @@
                 <div class="col-6 col-md-6 col-lg-4 px-3 py-3">
                     {% endif %}
                     <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
-                        <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 100%;" alt="">
-                        <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span> </h4>
-                        {% comment %} <p class="text-center body-text">{{obj.description|capfirst}}</p>{% endcomment%}
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
-                        <p class="title-fonts">
+                      <img class="mx-auto d-block" id="{{obj.id}}" src="{{obj.photo.url}}" style="width: 100%;" alt="">
+                      <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span> </h4>
+                      {% comment %} <p class="text-center body-text">{{obj.description|capfirst}}</p>{% endcomment%}
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
+                      <p class="title-fonts">
                     {% if not obj.available  %}
-                        <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
+                      <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
                     {% else %}
-                        {%  if category.name == "Drinks" %}
-                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
-                        {% else %}
-                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}"  class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
-                        {% endif %}
+                      {%  if category.name == "Drinks" %}
+                      <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
+                      {% else %}
+                      <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}"  class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
+                      {% endif %}
                     {% endif %}
-                        </p>
+                      </p>
                     </div>
                 </div>
             {% endfor %}
         {% endfor %}
         <div class="btn-group-fab shopping-cart" style="z-index: 1000;" role="group" aria-label="FAB Menu">
-            <div >
-            <a href="{% url 'website:cart_view' %}">
-                <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
-                <h2 id="order_counter" class="pt-1">0</h2>
-                <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
-                </button>
-            </a>
-            </div>
+          <a href="{% url 'website:order_cart' %}">
+            <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
+            <h2 id="order_counter" class="pt-1">0</h2>
+            <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
+            </button>
+          </a>
         </div>
     </div>
 </div>
@@ -331,7 +329,7 @@ function delete_order(id){
         if(one.id == id){
           continue;
         }else{
-            new_order += ";"+JSON.stringify(one);
+          new_order += ";"+JSON.stringify(one);
         }
       }
       new_order = new_order.substring(1)

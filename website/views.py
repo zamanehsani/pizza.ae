@@ -1,6 +1,6 @@
 from dashboard.forms import OrderForm
 from django.http.response import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from dashboard import models
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 
@@ -83,7 +83,6 @@ class CartView(TemplateView):
 
         # update the order it no area
         if request.POST.get('area') != 'false':
-            print("area has been selected", request.POST.get('area'))
             order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
             order_obj.save()
         
@@ -96,6 +95,17 @@ class CartView(TemplateView):
             order_item.save()
 
         return JsonResponse(order_obj.pk, safe=False)
+
+
+class Order_cart(TemplateView):
+    template_name = "website/order_cart.html"
+    def post(self, request,*args, **kwargs):
+        print(request.POST)
+        return redirect('website:order_cart_OTP')
+
+class Order_cart_OTP(TemplateView):
+    template_name = "website/order_cart_OTP.html"
+
 
 # order tracking
 class TrackOrder(DeleteView):
@@ -127,12 +137,7 @@ class Dine_CartView(TemplateView):
         return data
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-
-        # get the db to cloud, 
-        #
         order_obj = models.Order(name="dine-in", status = 'ordered', order_source = 'dine-in')
-
         order_obj.save()
         import json
         order = request.POST.get('order').split(';')

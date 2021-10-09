@@ -1,5 +1,4 @@
 # importing the requests library
-from django.forms.widgets import NumberInput
 import requests
 
 def sendsms(text, number):
@@ -10,7 +9,7 @@ def sendsms(text, number):
     PARAMS = {'action':'sendsms',
             'user':'1bfz48ju',
             'password':'uVh9zc5Z',
-            'from': '1bfz48ju',
+            'from': 'Pizza.ae',
             'to': '971' + number,
             'text': text,}
     # sending get request and saving the response as response object

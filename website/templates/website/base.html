@@ -2,36 +2,20 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
     <title>{% if page_title %}{{page_title}} {%else%}PIZZA{%endif %}</title>
     {% block css %} {%endblock css%}
-    
     <style>
-
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@600&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
     h1,h2,h3,h4,h5,h6, .title-fonts, .header-font{ font-family: 'Noto Sans Display', sans-serif; }
-    
     p, a, i, span, .body-font{font-family: 'Ubuntu', sans-serif;}
     .active{ color: #FF5400!important;}
-
     .links-text:hover{color: #FF5400; }
     .links-text{ color: white; }
-      /* this is for footer aligm center bottom */
-      /* body{ 
-        min-height: 100vh; 
-        margin: 0; 
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-      }
-      footer{ min-height:50px; } */
-
       #preloader{
         height: 100vh;
         width: 100%;
@@ -43,34 +27,39 @@
         align-items: center;
       }
     </style>
-    
   </head>
   <body>
-   
     {% include 'website/navbar.html' %}
     <div class="row">
-        <div class="container  justify-content-center" style="background-color: #FFF;" id="preloader">
+        <div class="container justify-content-center" style="background-color: #FFF;" id="preloader">
             <div class="spinner-border text-success m-5 " style="width: 5rem; height: 5rem;"  role="status">
-                <span class="sr-only"></span>
+              <span class="sr-only"></span>
             </div>
         </div>
     </div>
-  
    {% block content %}
    {% endblock content %}
    {% include 'website/footer.html' %}
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+  <!-- this jquery ui is for add to cart animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-    <script>
-      $(window).on('load', function(){
-        $("#preloader").fadeOut();
-      })
-    </script>
-    {% block js %}{% endblock js %}
-
+  
+  <script>
+    $(window).on('load', function(){
+      $("#preloader").fadeOut();
+    })
+    // load the order counter on load
+    $(document).ready(function(){
+        if(localStorage.getItem("order")){
+          let order_counter = localStorage.getItem("order").split(";");
+          $("#in_cart_header").text(order_counter.length)
+        }else{ $('#in_cart_header').text(0) }
+    });
+  </script>
+  {% block js %}{% endblock js %}
   </body>
 </html>
