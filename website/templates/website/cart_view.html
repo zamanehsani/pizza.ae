@@ -382,11 +382,6 @@ input.invalid {
 
 <script>
 
-// payment testing
-
-
-
-
   // call the load 
 load_order()
 
@@ -507,7 +502,7 @@ function user_location_calculation(position){
         var bool = turf.booleanPointInPolygon(turf.point(position), gjson.features[0]);
         // console.log(data[i].name + " | " + bool + " from out");
         if (bool === true){
-            var html =`delivery charge:${data[i].charge}`;
+            var html =`${data[i].charge}`;
             $('.delivery-charge').text(html + " AED");
             $('[name="delivery_charge"]').val(data[i].id);
             // alert("area is: " + data[i].name + " charge is: " + data[i].charge);
@@ -523,8 +518,6 @@ function user_location_calculation(position){
   }); //end of ajax
 }
 
-
-
 // adding the areas to the map
 $(document).ready(function(){
   $.ajax({
@@ -537,7 +530,6 @@ $(document).ready(function(){
           'type': 'geojson',
           'data': gjson
           });
-          
           // Add a layer showing the state polygons.
           map.addLayer({
           'id': data[i].id+"",
@@ -553,7 +545,6 @@ $(document).ready(function(){
     } //end of success
   }) //end of ajax
 });
-
 
 function increaseCount(a, b) {
   var input = b.previousElementSibling;

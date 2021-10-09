@@ -156,7 +156,7 @@
                         <h4 class="btn rounded-0 btn-order mx-0 title-fonts" style="border:solid 1px #FF5400"> Not Available </h4>
                     {% else %}
                         {%  if category.name == "Drinks" %}
-                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add       </span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
+                        <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)'  data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}" class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% else %}
                         <span class="btn d-none rounded-0 decrement-item btn-order mx-0 title-fonts" onClick='decreaseCount(event, this)' data-id="{{obj.pk}}">-</span><span data-id="{{obj.pk}}"  class="btn btn_order rounded-0 title-fonts">Add To Cart</span><span class="btn d-none title-fonts rounded-0 increment-item btn-order" onClick='increaseCount(event, this)' data-id="{{obj.pk}}">+</span>
                         {% endif %}
@@ -223,7 +223,6 @@ $(document).ready(function(){
 
 function increaseCount(a, b) {
   var input = b.previousElementSibling;
-//   console.log(input.)
   var value = parseInt(input.textContent, 10); 
   value = isNaN(value)? 0 : value;
   value ++;
@@ -235,6 +234,13 @@ function increaseCount(a, b) {
 function decreaseCount(a, b) {
   var input = b.nextElementSibling;
   var value = parseInt(input.textContent, 10); 
+  if(value == 1){
+    delete_order(parseInt(input.getAttribute('data-id')))
+    input.textContent = "Add To Cart"
+    b.classList.add("d-none");
+    b.nextElementSibling.nextElementSibling.classList.add("d-none");
+    Order_counter()
+  }
   if (value > 1) {
     value = isNaN(value)? 0 : value;
     value --;
@@ -305,6 +311,35 @@ function Update_order(obj_all, index, update, one_item){
   localStorage.setItem("order", on);
 }
 
+function delete_order(id){
+  if (localStorage.getItem("order")){
+    var orders = localStorage.getItem("order");
+    if(orders.search(";") == -1){
+      var obj_order = JSON.parse(orders);
+      if( obj_order.id == id){
+        // ids are matched, remove order
+        localStorage.removeItem("order");
+        Order_counter();
+      }
+    }else{
+    // more then one order
+      var obj_order_arr = orders.split(";");
+      var new_order ='';
+      for(var i in obj_order_arr){
+        // check the orders
+        var one = JSON.parse(obj_order_arr[i]);
+        if(one.id == id){
+          continue;
+        }else{
+            new_order += ";"+JSON.stringify(one);
+        }
+      }
+      new_order = new_order.substring(1)
+      localStorage.removeItem("order");
+      localStorage.setItem("order", new_order);
+    }
+  }  
+}
 
 $(document).ready(function(){
     $('.btn_order').each(function(){
@@ -378,17 +413,13 @@ function add_order(obj){
     // localStorage
     var local_storagee_orders = localStorage.getItem("order");
     local_storagee_orders += ";"+JSON.stringify(obj); 
-
     localStorage.setItem("order", local_storagee_orders);
-    // console.log("appeandeed to orders");
     Order_counter();
-    console.log(localStorage.getItem("order"));
 }
 
 function one_order(obj){
-     var obj_local = JSON.stringify(obj);
+    var obj_local = JSON.stringify(obj);
     localStorage.setItem("order", obj_local);
-    console.log("added: ", obj_local);
     Order_counter();
 }
 
@@ -396,14 +427,14 @@ function Order_counter(){
     if(localStorage.getItem("order")){
         let order_counter = localStorage.getItem("order").split(";");
         $("#order_counter").text(order_counter.length)
-    }
+    }else{ $('#order_counter').text(0)}
 }
 // load the order counter on load
 $(document).ready(function(){
     if(localStorage.getItem("order")){
-        let order_counter = localStorage.getItem("order").split(";");
-        $("#order_counter").text(order_counter.length)
-    }
+      let order_counter = localStorage.getItem("order").split(";");
+      $("#order_counter").text(order_counter.length)
+    }else{ $('#order_counter').text(0) }
 });
 
 </script>
