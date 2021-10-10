@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-p$kk^ylq11+utti@skppm%4!ozxfos*fbpgxi#t8_kv@8l^xeu"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1','www.pizza.ae','192.168.1.114','pizza.ae','192.168.1.191','pizza-ae.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','www.pizza.ae','192.168.1.114','10.125.108.82','pizza.ae','192.168.1.191','pizza-ae.herokuapp.com']
 # Application definition
 import os
 INSTALLED_APPS = [
@@ -132,8 +132,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Z2020z@98 is the email password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '	aldeyarbakery@gmail.com'
-EMAIL_HOST_PASSWORD = 'mfkvxhotyijcakuh' #past the key or password app here
+EMAIL_HOST_USER = '	info@pizza.ae'
+EMAIL_HOST_PASSWORD = 'oihkdhdvesqiiuuk' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'PIZZA.AE'

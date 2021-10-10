@@ -41,7 +41,7 @@
       <!-- end of table -->
       <div class="container" >
         <div class="row" id="regform_row">
-          <form id="regForm1" method="post"> {% csrf_token %}
+          <form name="phone_number_form" onsubmit="return validateForm()" method="post"> {% csrf_token %}
             <div class="col-sm-12 pt-3 mb-3">
               <div class="form-row">
                 <label for="number">Phone Number:</label>
@@ -76,7 +76,32 @@
 
 <script>
 
-  // call the load 
+// validate phone number and submit form
+function validateForm() {
+  let x = document.forms["phone_number_form"]["number"].value;
+  var phoneno = /^\d{10}$/;
+  if(x.match(phoneno)){return true; }
+  else {
+     alert("Not a valid Phone Number");
+     return false;
+  }
+
+  // if (x == "") {
+  //   alert("Please Enter your Phone number");
+  //   return false;
+  // }
+  // if(x.isNaN){
+  //     alert("please enter numeric")
+  //     return false
+  //   }
+  // if(x.length < 10 || x.length > 10){
+    
+  //   alert("invalide number")
+  //   return false
+  // }
+} 
+
+
 load_order()
 
 function load_order(){

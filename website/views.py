@@ -1,3 +1,4 @@
+import random
 from dashboard.forms import OrderForm
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -99,13 +100,43 @@ class CartView(TemplateView):
 
 class Order_cart(TemplateView):
     template_name = "website/order_cart.html"
+    num = 0
+    import random
+    otp = random.randint(0,9999)
     def post(self, request,*args, **kwargs):
-        print(request.POST)
-        return redirect('website:order_cart_OTP')
+        number = request.POST.get('number')
+        if(number[0] == "0"):
+            self.num = number[1:]
+        else:
+            self.num = number
+        print(self.num)
+
+        # send otp to number
+        from dashboard.requests import sendsms
+        text = f'your OTP is {self.otp}'
+        # sendsms(text, self.num)
+
+        data = {"otp" : self.otp, "number":self.num }
+        return render(request, 'website/order_cart_OTP.html', data)
+
+
+# request.post is handed inside order_cart
 
 class Order_cart_OTP(TemplateView):
     template_name = "website/order_cart_OTP.html"
-
+    import random
+    number=0
+    otp = random.randint(0,9999)
+    
+    def post(self, request,*args, **kwargs):
+        self.number = request.POST.get('number')
+        
+    def get_context_data(self, *args, **kwargs):
+        data = super(Order_cart_OTP, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Order'
+        data['otp'] =  self.otp
+        data['number'] = self.number
+        return data
 
 # order tracking
 class TrackOrder(DeleteView):
