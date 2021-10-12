@@ -4,6 +4,9 @@
 {% block css %}
 <style>
 
+#map{
+  height:400px;
+}
 
 </style>
 {% endblock css %}
@@ -12,7 +15,9 @@
   <div class="row">
     <div class="col sm-12">
       <h2>Location</h2>
-      <p>location here</p>
+
+      <div id="map"></div>
+
     </div>
 
     <hr>
@@ -28,8 +33,21 @@
 {% endblock content %}
 {% block js %}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEvv_TaJsCDx2sWSwrgP1fEjCV7SA9gdE&callback=initMap">
+</script>
 <script>
-  
+
+let map;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 25.156627208000344, lng: 55.204545339122625 },
+    zoom: 14,
+  });
+}
+
+
 </script>
 {% endblock js %}
 
