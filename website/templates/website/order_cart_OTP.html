@@ -32,10 +32,10 @@
                     <input type="hidden" name="otp" value="{{otp.pk}}">
                     <input name="otp_validation" type="hidden">
                     <div id="otp" class="d-flex">
-                      <input class="m-2 text-center" name="first"  type="text" id="first"  maxlength="1" />
-                      <input class="m-2 text-center" name="second" type="text" id="second" maxlength="1" />
-                      <input class="m-2 text-center" name="third"  type="text" id="third"  maxlength="1" />
-                      <input class="m-2 text-center" name="fourth" type="text" id="fourth" maxlength="1" />
+                      <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="first"  type="tel" id="first"  maxlength="1" />
+                      <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="second" type="tel" id="second" maxlength="1" />
+                      <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="third"  type="tel" id="third"  maxlength="1" />
+                      <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="fourth" type="tel" id="fourth" maxlength="1" />
                     </div>                    
                   </div>
                   <div class="col-sm-4 col-md-3"></div>
@@ -71,7 +71,7 @@ $(document).ready(function(){
   count()
 })
 function count(){
-  var seconds = 10;
+  var seconds = 60;
   var el = document.getElementById('resend');
 function incrementSeconds() {
   seconds -= 1;
@@ -85,17 +85,17 @@ var cancel = setInterval(incrementSeconds, 1000);
 }
 
 function resend(myMessage) {
-    var num = $('#number').val();
-    $.ajax({
-      url: '{% url "website:resend_otp" %}',
-      method: 'get',
-      data:{number:num},
-      success:function(res){
-        $('input[name="otp"]').val(res)
-        alert(res)
-        count();
-      },
-    })
+  var num = $('#number').val();
+  $.ajax({
+    url: '{% url "website:resend_otp" %}',
+    method: 'get',
+    data:{number:num},
+    success:function(res){
+      $('input[name="otp"]').val(res)
+      alert(res)
+      count();
+    },
+  })
 }
 
 function OTPInput() {
@@ -113,7 +113,7 @@ function OTPInput() {
           inputs[i].value = event.key;
           if (i !== inputs.length - 1)
             inputs[i + 1].focus();
-          event.preventDefault();
+            event.preventDefault();
         } else if (event.keyCode > 64 && event.keyCode < 91) {
           inputs[i].value = String.fromCharCode(event.keyCode);
           if (i !== inputs.length - 1)

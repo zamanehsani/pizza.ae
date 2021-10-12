@@ -51,7 +51,7 @@
                   <span class="input-group-text rounded-0 " id="basic-addon1">
                     <img src="{% static 'img/united-arab-emirates.png'%}" height="30" alt="">
                   </span>
-                  <input type="text" id="number" name="number" class="form-control rounded-0" placeholder="05--------">
+                  <input type="tel" id="number" onfocus="number_focus(this)" name="number" class="form-control rounded-0" placeholder="05--------">
                 </div>
                 <div class="row my-3 mx-1">
                   <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Validate Me</button>
@@ -77,6 +77,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
 
 // validate phone number and submit form
 function validateForm() {
@@ -128,7 +129,7 @@ function load_order(){
               <span class="up"  onClick='increaseCount(event, this)'>+</span>
             </div>
           </td>
-          <td class="td-total-price text-nowrap text-lg-right" style="width:100;text-align: right;">${parseFloat(ord.quantity) * parseFloat(ord.price) } AED</td>
+          <td class="td-total-price text-nowrap text-lg-right" style="width:100;text-align: right;">${ (parseFloat(ord.quantity) * parseFloat(ord.price)).toFixed(2) } AED</td>
           </tr> `;
 
         $("#order-table-body").append(html);
@@ -256,13 +257,23 @@ function Update_order(obj_all, index, update, one_item=false){
   localStorage.setItem("order", on);
 }
 
-  // load the order counter on load
-  function cart_counter(){
+// load the order counter on load
+function cart_counter(){
     if(localStorage.getItem("order")){
       let order_counter = localStorage.getItem("order").split(";");
       $("#in_cart_header").text(order_counter.length)
     }else{ $('#in_cart_header').text(0) }
   }
+
+
+// on focus number input
+function number_focus(e) {
+  var val = '05'
+  if(e.value.length <= 0){
+    val+=e.value
+    e.value = val
+  }
+}
 
 </script>
 
