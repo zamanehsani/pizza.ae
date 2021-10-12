@@ -100,44 +100,81 @@ class CartView(TemplateView):
 
 class Order_cart(TemplateView):
     template_name = "website/order_cart.html"
-    num = 0
-    import random
-    otp = random.randint(0,9999)
     def post(self, request,*args, **kwargs):
-        number = request.POST.get('number')
-        if(number[0] == "0"):
-            self.num = number[1:]
-        else:
-            self.num = number
-        print(self.num)
+        # if the post request has otp_validation in it, it means that otp post form is being submitted
+        if "otp_validation" in request.POST:
+            otp = get_object_or_404(models.OTP, pk = request.POST.get('otp'))
+            OTP_complate =  request.POST.get('first')
+            OTP_complate += request.POST.get('second')
+            OTP_complate += request.POST.get('third')
+            OTP_complate += request.POST.get('fourth')
+            if OTP_complate == otp.otp:    
+                data = {"otp_com" : OTP_complate, "otp":otp , 'number':otp.number}
+                return render(request, 'website/order_cart_Add.html', data)
+            else:
+                data = {"otp" : otp, "number":otp.number, 'error':"failed" }
+                return render(request, 'website/order_cart_OTP.html', data)
 
-        # send otp to number
-        from dashboard.requests import sendsms
-        text = f'your OTP is {self.otp}'
-        # sendsms(text, self.num)
+        if "otp_send" in request.POST:
+            otp = otp_gen()
+            number = request.POST.get('number')
+            if(number[0] == "0"):
+                number = number[1:]
+            # send otp to number
+            from dashboard.requests import sendsms
+            text = f'your OTP is {otp}'
+            sendsms(text, number)
+            # save otp generated for number
+            OTP_obj = models.OTP.objects.create(number = number, otp = otp)
+            OTP_obj.save()
+            
+            data = {"otp" : OTP_obj, "number":number }
+            return render(request, 'website/order_cart_OTP.html', data)
 
-        data = {"otp" : self.otp, "number":self.num }
-        return render(request, 'website/order_cart_OTP.html', data)
 
-
-# request.post is handed inside order_cart
-
+def otp_gen():
+    import random
+    otp_1 = random.randint(0,9)
+    otp_2 = random.randint(0,9)
+    otp_3 = random.randint(0,9)
+    otp_4 = random.randint(0,9)
+    otp   = str(otp_1) + str(otp_2) + str(otp_3) + str(otp_4)
+    return otp
+# this class is not needed
 class Order_cart_OTP(TemplateView):
     template_name = "website/order_cart_OTP.html"
-    import random
-    number=0
-    otp = random.randint(0,9999)
-    
+
     def post(self, request,*args, **kwargs):
-        self.number = request.POST.get('number')
-        
+        data = 0
+        return render(request, 'website/order_cart_Add.html', data)
+
     def get_context_data(self, *args, **kwargs):
         data = super(Order_cart_OTP, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Order'
-        data['otp'] =  self.otp
-        data['number'] = self.number
         return data
 
+
+class Order_Location(TemplateView):
+    template_name = "website/order_cart_Add.html"
+
+
+def resend_otp(request):
+    if request.method =="GET":
+        number = request.GET.get('number')
+        if number[0] == "0":
+            number = number[1:]
+
+        # generate otp and save it to db
+        otp = otp_gen()
+        obj_otp = models.OTP.objects.create(number = number, otp = otp)
+        obj_otp.save()
+
+        # send otp to number
+        from dashboard.requests import sendsms
+        sendsms(f"your OTP is: {otp}", number)
+        return JsonResponse(obj_otp.pk, safe=False)
+    else:
+        return JsonResponse(False, safe=False) 
 # order tracking
 class TrackOrder(DeleteView):
     model = models.Order

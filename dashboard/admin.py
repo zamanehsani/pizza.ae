@@ -6,6 +6,10 @@ admin.site.site_title = "PIZZA"
 admin.site.index_title = "PIZZA Admin"
 
 
+class OTP(admin.ModelAdmin):
+    list_display = ( "date", 'otp', "number")
+admin.site.register(models.OTP, OTP)
+
 # list of menu category
 class Menu_category(admin.ModelAdmin):
     list_display = ( 'name', 'description')

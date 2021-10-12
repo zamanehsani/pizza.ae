@@ -1,0 +1,35 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+
+
+</style>
+{% endblock css %}
+{% block content %}
+<div class="container" style="background-color: seashell;">
+  <div class="row">
+    <div class="col sm-12">
+      <h2>Location</h2>
+      <p>location here</p>
+    </div>
+
+    <hr>
+    <div class="col-sm-12 col-md-3"></div>
+    <div class="col-sm-12 col-md-6">
+      <p>{{otp_com}}</p>
+      <p>otp:{{otp.otp}} - number: {{otp.number}} - date:{{otp.date}}</p>
+    </div>
+    <div class="col-sm-12 col-md-3"></div>
+  </div>
+</div>
+
+{% endblock content %}
+{% block js %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  
+</script>
+{% endblock js %}
+

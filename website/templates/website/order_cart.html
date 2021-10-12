@@ -13,6 +13,7 @@
 <div class="row">
   <div class="col-sm-12 col-md-4"></div>
   <div class="col-sm-12 col-md-4">
+    <h2 class="mt-3">Confirm your order:</h2>
     <div class="row mt-3">
       <div class="table-responsive container">
         <table class="table">
@@ -44,6 +45,7 @@
           <form name="phone_number_form" onsubmit="return validateForm()" method="post"> {% csrf_token %}
             <div class="col-sm-12 pt-3 mb-3">
               <div class="form-row">
+                <input type="hidden" name="otp_send">
                 <label for="number">Phone Number:</label>
                 <div class="input-group col-sm-12">
                   <span class="input-group-text rounded-0 " id="basic-addon1">

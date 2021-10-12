@@ -1,6 +1,7 @@
 from os import truncate
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.base import Model
 from django.urls import reverse
 
 def customer_profile_location(instance, filename):
@@ -128,6 +129,16 @@ class Menu(models.Model):
 
     class Meta:
         verbose_name_plural = "Menu"
+
+
+class OTP(models.Model):
+    date = models.DateTimeField(auto_now=True)
+    otp = models.CharField(max_length=10, null=True, blank=True)
+    number = models.IntegerField(null=True, blank=True)
+
+    def __str__(self) ->str:
+        return str(self.otp)
+
 
 class Order(models.Model):
     name        = models.CharField(max_length=200, null=True, blank=True)

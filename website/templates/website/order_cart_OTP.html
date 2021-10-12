@@ -18,30 +18,37 @@
         <img src="{% static 'img/otp.png' %}" alt="">
         <h3 class="center"> OTP Verification</h3>
         <p class="body-text">Enter the OTP sent to <b>+971 {{number}}</b></p>
-        <b>this is OTP: {{otp}}</b>
+        {% if error %}
+        <b class="text-danger">Invalid OTP, Please Try again!</b>
+        {% endif %}
         <div class="container">  
-          <form action="" method="post"> {% csrf_token %}
+          <form id="OTP" method="POST"> {% csrf_token %}
+            <input type="hidden" name="number" id="number" value="{{number}}">
             <div class="row d-flex justify-content-center mb-2">
               <div class="mb-6 text-center">
                 <div class="row">
-                  <div class="col-sm-4 col-md-4"></div>
-                  <div class="col-sm-12 col-md-4">
+                  <div class="col-sm-4 col-md-3"></div>
+                  <div class="col-sm-12 col-md-6">
+                    <input type="hidden" name="otp" value="{{otp.pk}}">
+                    <input name="otp_validation" type="hidden">
                     <div id="otp" class="d-flex">
-                      <input class="m-2 text-center" type="text" id="first" maxlength="1" />
-                      <input class="m-2 text-center" type="text" id="second" maxlength="1" />
-                      <input class="m-2 text-center" type="text" id="third" maxlength="1" />
-                      <input class="m-2 text-center" type="text" id="fourth" maxlength="1" />
+                      <input class="m-2 text-center" name="first"  type="text" id="first"  maxlength="1" />
+                      <input class="m-2 text-center" name="second" type="text" id="second" maxlength="1" />
+                      <input class="m-2 text-center" name="third"  type="text" id="third"  maxlength="1" />
+                      <input class="m-2 text-center" name="fourth" type="text" id="fourth" maxlength="1" />
                     </div>                    
                   </div>
-                  <div class="col-sm-4 col-md-4"></div>
+                  <div class="col-sm-4 col-md-3"></div>
                 </div>
               </div>
             </div>
-            <p class="mt-2 pt-2">Didn't recieve the code? <a href="!#" class="text-decoration-none"><b class="active">Resend OTP</b></a></p>
+            <p class="mt-2 pt-2">Didn't recieve the code? 
+              <span id="resend"></span>
+            </p>
             <div class="row">
               <div class="col-sm-12 col-md-6 mx-auto">
                 <div class="row">
-                  <button type="button" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Verify Me</button>
+                  <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Verify Me</button>
                 </div>
               </div>
             </div>
@@ -59,6 +66,37 @@
 {% block js %}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+$(document).ready(function(){
+  count()
+})
+function count(){
+  var seconds = 10;
+  var el = document.getElementById('resend');
+function incrementSeconds() {
+  seconds -= 1;
+  if (seconds < 1){
+    el.innerHTML = '<a href="javascript:resend()" class="text-decoration-none"><b class="active">Resend OTP</b></a>'
+  }else{
+    el.innerText = "resend in " + seconds;
+  }
+}
+var cancel = setInterval(incrementSeconds, 1000);
+}
+
+function resend(myMessage) {
+    var num = $('#number').val();
+    $.ajax({
+      url: '{% url "website:resend_otp" %}',
+      method: 'get',
+      data:{number:num},
+      success:function(res){
+        $('input[name="otp"]').val(res)
+        alert(res)
+        count();
+      },
+    })
+}
 
 function OTPInput() {
   const inputs = document.querySelectorAll('#otp > *[id]');
