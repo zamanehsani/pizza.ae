@@ -1,0 +1,98 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+
+
+</style>
+{% endblock css %}
+{% block content %}
+<div class="container-fluid" style="background-color: seashell;">
+<div class="row">
+  <div class="col-sm-12 col-md-3"></div>
+  <div class="col-sm-12 col-md-6">
+    <h2 class="mx-auto mt-2">Order Summary</h2>
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="orders">     </div>
+        <div id="prices">     </div>
+        <h3 class="mt-2">Location:</h3>
+        <div id="address">     </div>
+      
+        <div class="row mx-1 my-2">
+          <button type="submit" class="my-1 btn btn-dark title-fonts rounded-0 btn-lg btn-block">Apple Pay</button>
+          <button type="submit" class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Payment</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-3"></div>
+</div>
+</div>
+</div>
+
+{% endblock content %}
+{% block js %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+load_order()
+
+function load_order(){
+  // load the orders into table
+  $(document).ready(function(){
+    // check if their is an order key in localstorage
+    if(localStorage.getItem("order")){
+      $("#empty-card").hide();
+      // split the orders string to array by ;
+      let order_arr = localStorage.getItem("order").split(";");
+      let total_order = 0, vat, delivery =0, total_of_total
+      let orders = ``;
+      for(let x in order_arr){
+        let ord = JSON.parse(order_arr[x]);
+        total_order = total_order + (parseFloat(ord.quantity) * parseFloat(ord.price))
+        orders += ` 
+        <div class="card rounded-0 my-1 py-1">
+          <p class="my-2 mx-2">
+          <span class="rounded-0 py-1 px-2 my-auto mx-1" style="border: 1px solid #FF5400;">${ord.quantity}</span>
+          x 
+          <b class="px-2">${ord.name}</b>
+          <span class="active" style="float: right;">${parseFloat(ord.quantity) * parseFloat(ord.price)} <span class="text-dark">AED</span> </span> 
+          </p>
+        </div> `;  
+      }
+      vat = (total_order * 5) /100;
+      var prices = `
+      <div class="card py-1 px-1 rounded-0">
+          <P class="m-0"> <b class="">ORDER:</b>     <b style="float: right;">${total_order} AED</b></P>
+          <P class="m-0"> <b class="">VAT 5%:</b>    <span style="float: right;" class="text-secondary">${vat} AED</span></P>
+          <P class="m-0"> <b class="">DELIVERY:</b>  <span style="float: right;" class="text-secondary">15.00 AED</span></P>
+          <h4 class="mt-4">  <b class="">TOTAL:</b>  <b class="active" style="float: right;">${total_order + vat + delivery} <span class="text-dark">AED</span></b></h4>
+        </div>
+      `;
+
+        var address = `
+        <div class="card rounded-0 py-1 px-1">
+          <p class="m-0"><b class="m-0">Address:</b>  ${localStorage.getItem('address')} </p>
+          <p class="m-0"><b class="m-0">Additional Direction:</b> note here</p>
+          <p class="m-0"><b class="m-0">Mobile:</b> +9715666343</p>
+        </div>  
+        `;
+      $("#orders").append(orders);
+      $("#prices").append(prices);
+      $("#address").append(address);
+
+    }else{
+      // $('.table-responsive').hide();
+      // $("#empty-card").show();
+      // $("#regform_row").addClass('d-none');
+    }
+  });
+}
+
+
+</script>
+{% endblock js %}
+

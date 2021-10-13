@@ -175,6 +175,11 @@ def resend_otp(request):
         return JsonResponse(obj_otp.pk, safe=False)
     else:
         return JsonResponse(False, safe=False) 
+
+
+class Order_summary(TemplateView):
+    template_name = 'website/order_cart_summary.html'
+
 # order tracking
 class TrackOrder(DeleteView):
     model = models.Order

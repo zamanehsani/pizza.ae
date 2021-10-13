@@ -13,6 +13,7 @@ urlpatterns = [
     path('order/', views.Order_cart.as_view(), name="order_cart"),
     path('order/otp', views.Order_cart_OTP.as_view(), name="order_cart_OTP"),
     path('otp-resend/', views.resend_otp, name="resend_otp"),
+    path('order/summary', views.Order_summary.as_view(), name="order_summary"),
     path('order/address', views.Order_Location.as_view(), name="order_cart_address"),
     path('track-order/<int:pk>', views.TrackOrder.as_view(), name="track_order"),
     path('dine-in-menu/', views.Dine_Menu.as_view(), name="dine_menu"),

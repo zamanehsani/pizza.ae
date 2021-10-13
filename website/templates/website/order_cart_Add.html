@@ -13,13 +13,13 @@
 {% block content %}
 <div class="container" style="background-color: seashell;">
   <div class="row">
+    <span>{{phone}}</span>
     <h2 class="my-3"> Select your location:</h2>
     <div class="col-sm-12 mb-4">
       <div class="row mx-4">
-        <input  id="places_input" class="rounded-0 my-3 border border-dark" type="text" placeholder="Search Places"/>
+        <input  id="places_input" class="rounded-0 my-3 border border-dark" type="text" style="width: 90%;" placeholder="Search Places"/>
       </div>
       <div id="map"></div>
-  
       <div class="row">
         <div class="col-sm-12 col-md-3"></div>
         <div class="col-sm-12 col-md-6">          
@@ -27,8 +27,7 @@
           <div class="row mx-1">
             <button type="button" id="locate_me" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Locate Me</button>
           </div>
-
-          <form action="">
+          <form action="" class="mt-4">
             <label for="full_name">Full Name:</label>
             <input type="text" name="name" class="rounded-0" placeholder="Full name" id="full_name">
       
@@ -73,7 +72,7 @@ function initAutocomplete() {
   const input = document.getElementById("places_input");
   const searchBox = new google.maps.places.SearchBox(input);
 
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
   // Bias the SearchBox results towards current map's viewport.
   map.addListener("bounds_changed", () => {
     searchBox.setBounds(map.getBounds());
@@ -107,24 +106,18 @@ function initAutocomplete() {
 
       // list 
       $('#deliver_to').text(place.formatted_address);
-
-      // const icon = {
-      //   url: place.icon,
-      //   size: new google.maps.Size(71, 71),
-      //   origin: new google.maps.Point(0, 0),
-      //   anchor: new google.maps.Point(17, 34),
-      //   scaledSize: new google.maps.Size(25, 25),
-      // };
-
+      localStorage.setItem('address', place.formatted_address)
+      localStorage.setItem('location', place.geometry.location)
+      
       // Create a marker for each place.
       markers.push(
         new google.maps.Marker({
           map,
-          icon,
           title: place.name,
           position: place.geometry.location,
         })
       );
+
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
@@ -138,36 +131,30 @@ function initAutocomplete() {
 
   // locate user
   infoWindow = new google.maps.InfoWindow();
-
   const locate_me = document.getElementById("locate_me");
- 
   locate_me.addEventListener("click", () => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       let pos
       navigator.geolocation.getCurrentPosition(
         (position) => {
-           pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-
-          infoWindow.setPosition(pos);
-          infoWindow.setContent("You");
-          infoWindow.open(map);
+          pos = {lat: position.coords.latitude,lng: position.coords.longitude};
+          // For each place, get the icon, name and location.
+          new google.maps.Marker({ map, position: pos })
           map.setCenter(pos);
+          localStorage.setItem('lat', pos.lat)
+          localStorage.setItem('lng', pos.lng)
         },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
-        },
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-  });
-}
-
+        () => {  handleLocationError(true, infoWindow, map.getCenter()); },
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    });
+  }
+  
+  
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(
@@ -176,9 +163,9 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       : "Error: Your browser doesn't support geolocation."
   );
   infoWindow.open(map);
-
 }
 
+localStorage.setItem('phone',)
 </script>
 {% endblock js %}
 
