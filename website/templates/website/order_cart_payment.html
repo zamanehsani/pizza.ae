@@ -15,23 +15,23 @@
     <h2 class="mx-auto mt-2">Payment Methods:</h2>
     <div class="row">
       <div class="col-sm-12">
-        <div class="card rounded-0  my-2 py-3 px-2 text">
-          <h4 class="p-0 my-auto"> 
+        <div class="card rounded-0  my-2 py-3 px-2 text" id="online">
+          <h6 class="p-0 my-auto"> 
             <span class="iconify" data-icon="logos:visaelectron"></span> 
             <span class="iconify" data-icon="logos:mastercard"></span> 
-            &nbsp;Cash on Delivery
-          </h4>
+            &nbsp;Online Payment
+          </h6 >
         </div> 
-        <div class="card rounded-0 my-2 py-3 px-2 text">
-          <h4 class="p-0 my-auto">  &nbsp;
+        <div class="card rounded-0 my-2 py-3 px-2 text" id="cash">
+          <h6 class="p-0 my-auto">  &nbsp;
             <span class="iconify" data-icon="fa-solid:money-bill-wave"></span>    &nbsp; &nbsp;&nbsp;Cash on Delivery
-          </h4>
+          </h6 >
         </div> 
         
-        <div class="card rounded-0 my-2 py-3 px-2 text">
-          <h4 class="p-0 my-auto">  &nbsp;
+        <div class="card rounded-0 my-2 py-3 px-2 text" id="card">
+          <h6 class="p-0 my-auto">  &nbsp;
             <span class="iconify" data-icon="fontisto:shopping-pos-machine" data-rotate="90deg"></span>  &nbsp;  &nbsp;Card on Delivery
-          </h4>
+          </h6 >
         </div> 
       
         <div class="row mx-1 my-2">
@@ -52,16 +52,31 @@
 
 <script>
   $(document).ready(function(){
-    $('#apply_pay').click(function(){
-      alert("comming soon. You can try other payment options")
+    $('#online').click(function(){
+      $('#online').toggleClass('bg-success')
+      $('#cash').removeClass('bg-success')
+     $('#card').removeClass('bg-success')
     })
   })
   
   $(document).ready(function(){
-    $('#payments').click(function(){
-      window.location.assign('')
+    $('#cash').click(function(){
+     $('#cash').toggleClass('bg-success')
+     $('#online').removeClass('bg-success')
+     $('#card').removeClass('bg-success')
+
     })
   })
+  
+  $(document).ready(function(){
+    $('#card').click(function(){
+      $('#card').toggleClass('bg-success')
+      $('#cash').removeClass('bg-success')
+     $('#online').removeClass('bg-success')
+    })
+  })
+  
+ 
 
   load_order()
 
