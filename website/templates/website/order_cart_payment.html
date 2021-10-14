@@ -12,18 +12,30 @@
 <div class="row">
   <div class="col-sm-12 col-md-3"></div>
   <div class="col-sm-12 col-md-6">
-    <h2 class="mx-auto mt-2">Order Summary</h2>
+    <h2 class="mx-auto mt-2">Payment Methods:</h2>
     <div class="row">
       <div class="col-sm-12">
-        <div id="orders">     </div>
-        <div id="prices">     </div>
-        <h3 class="mt-2">Location:</h3>
-        <div id="address">     </div>
+        <div class="card rounded-0  my-2 py-3 px-2 text">
+          <h4 class="p-0 my-auto"> 
+            <span class="iconify" data-icon="logos:visaelectron"></span> 
+            <span class="iconify" data-icon="logos:mastercard"></span> 
+            &nbsp;Cash on Delivery
+          </h4>
+        </div> 
+        <div class="card rounded-0 my-2 py-3 px-2 text">
+          <h4 class="p-0 my-auto">  &nbsp;
+            <span class="iconify" data-icon="fa-solid:money-bill-wave"></span>    &nbsp; &nbsp;&nbsp;Cash on Delivery
+          </h4>
+        </div> 
+        
+        <div class="card rounded-0 my-2 py-3 px-2 text">
+          <h4 class="p-0 my-auto">  &nbsp;
+            <span class="iconify" data-icon="fontisto:shopping-pos-machine" data-rotate="90deg"></span>  &nbsp;  &nbsp;Card on Delivery
+          </h4>
+        </div> 
       
         <div class="row mx-1 my-2">
-          <button type="submit" id="apply_pay" class="my-1 btn btn-dark title-fonts rounded-0 btn-lg btn-block"> 
-            <img src="https://svg-clipart.com/svg/logo/rzd7tfu-apple-logo-white-vector.svg" height="25" class="my-auto pb-1 mr-2" alt=""> Pay</button>
-          <button type="submit" id="payments" class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Payments</button>
+          <button type="submit"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
         </div>
         
       </div>
@@ -39,7 +51,6 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
   $(document).ready(function(){
     $('#apply_pay').click(function(){
       alert("comming soon. You can try other payment options")
@@ -48,7 +59,7 @@
   
   $(document).ready(function(){
     $('#payments').click(function(){
-      window.location.assign('{% url "website:order_payment" %}')
+      window.location.assign('')
     })
   })
 

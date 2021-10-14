@@ -38,12 +38,12 @@
           <div class="row px-2 mt-4">
             <div class="col mx-1">
               <div class="row">
-                <button type="submit" class="btn btn-orange title-fonts rounded-0 btn-lg btn-block">Back</button>
+                <button id="back" class="btn btn-orange title-fonts rounded-0 btn-lg btn-block">Back</button>
               </div>
             </div>
             <div class="col mx-1">
               <div class="row">
-                <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Next</button>
+                <button id="next" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Next</button>
               </div>
             </div>
           </div>
@@ -62,6 +62,29 @@
 </script>
 
 <script>
+// set the back and next btn
+  $(document).ready(function(){
+    $('#back').click(function(){
+      window.location.assign('{% url "website:order_cart" %}')
+    })
+  })
+  $(document).ready(function(){
+    $('#next').click(function(){
+
+      var full_name =  $('#full_name').val()
+      if(full_name.length <= 0){
+        $('#full_name').addClass('border border-danger')
+        $('#full_name').before('<span class="text-danger">Required</span>')
+        return
+      } 
+      localStorage.setItem('full_name', full_name)
+      var address_details = $('#address_details').val()
+      localStorage.setItem('address_details', address_details)
+      window.location.assign('{% url "website:order_summary" %}')
+
+    })
+  })
+
 function initAutocomplete() {
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 25.156627208000344, lng: 55.204545339122625 },

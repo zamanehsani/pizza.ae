@@ -180,6 +180,9 @@ def resend_otp(request):
 class Order_summary(TemplateView):
     template_name = 'website/order_cart_summary.html'
 
+class Order_payment(TemplateView):
+    template_name = 'website/order_cart_payment.html'
+
 # order tracking
 class TrackOrder(DeleteView):
     model = models.Order

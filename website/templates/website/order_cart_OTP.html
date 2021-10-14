@@ -67,6 +67,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
+  $(document).ready(function(){
+    var num = $('#number').val();
+    localStorage.setItem('number', num);
+  });
+
 $(document).ready(function(){
   count()
 })
