@@ -107,7 +107,6 @@ function initAutocomplete() {
   // more details for that place.
   searchBox.addListener("places_changed", () => {
     const places = searchBox.getPlaces();
-
     if (places.length == 0) {
       return;
     }
@@ -126,13 +125,13 @@ function initAutocomplete() {
         console.log("Returned place contains no geometry");
         return;
       }
-
+      
       // list 
       $('#deliver_to').text(place.formatted_address);
       localStorage.setItem('address', place.formatted_address)
-      localStorage.setItem('location', place.geometry.location)
-      
-      // Create a marker for each place.
+      localStorage.setItem('lat', place.geometry.location.lat())
+      localStorage.setItem('lng', place.geometry.location.lng())
+
       markers.push(
         new google.maps.Marker({
           map,
@@ -151,7 +150,6 @@ function initAutocomplete() {
     map.fitBounds(bounds);
   });
 
-
   // locate user
   infoWindow = new google.maps.InfoWindow();
   const locate_me = document.getElementById("locate_me");
@@ -167,6 +165,27 @@ function initAutocomplete() {
           map.setCenter(pos);
           localStorage.setItem('lat', pos.lat)
           localStorage.setItem('lng', pos.lng)
+          //  deocode
+          const geocoder = new google.maps.Geocoder();
+          const infowindow = new google.maps.InfoWindow();
+          const latlng = {
+            lat: parseFloat(localStorage.getItem('lat')),
+            lng: parseFloat(localStorage.getItem('lng')),
+          };
+          geocoder
+            .geocode({ location: latlng })
+            .then((response) => {
+              if (response.results[0]) {
+                map.setZoom(11);
+                const marker = new google.maps.Marker({
+                  position: latlng,
+                  map: map,
+                });
+                $('#deliver_to').text(response.results[0].formatted_address);
+                localStorage.setItem('address', response.results[0].formatted_address)  
+              }
+            })
+            .catch((e) => window.alert("Geocoder failed due to: " + e));
         },
         () => {  handleLocationError(true, infoWindow, map.getCenter()); },
         );
@@ -174,9 +193,8 @@ function initAutocomplete() {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter());
       }
-    });
+    })
   }
-  
   
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
@@ -188,7 +206,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.open(map);
 }
 
-localStorage.setItem('phone',)
 </script>
 {% endblock js %}
 

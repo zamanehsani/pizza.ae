@@ -48,6 +48,7 @@
   
   $(document).ready(function(){
     $('#payments').click(function(){
+      
       window.location.assign('{% url "website:order_payment" %}')
     })
   })
@@ -105,6 +106,10 @@ function load_order(){
     }
   });
 }
+
+$(document).ready(function(){
+
+});
 
 
 </script>
