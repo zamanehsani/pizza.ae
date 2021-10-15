@@ -60,20 +60,14 @@ class CartView(TemplateView):
         name_order = request.POST.get('name')
         number_order = request.POST.get('number')
         location_order = request.POST.get('location')
-        address_order = request.POST.get('address') +" , " +request.POST.get('address2')
+        address_order = request.POST.get('address')
         payment_order = request.POST.get('payment')
-        note_order = request.POST.get('description')
 
         order_obj = models.Order(
-                name = name_order, 
-                number = int(number_order), 
-                location = location_order, 
-                status = 'ordered',
-                address = address_order,
-                payment_method = payment_order,
-                description = note_order,
+                name = name_order, number = int(number_order), 
+                location = location_order, status = 'ordered',
+                address = address_order, payment_method = payment_order,
                 order_source = 'online')
-
         order_obj.save()
 
         # send sms here
@@ -83,9 +77,9 @@ class CartView(TemplateView):
         sendsms(text, order_obj.number)
 
         # update the order it no area
-        if request.POST.get('area') != 'false':
-            order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
-            order_obj.save()
+        # if request.POST.get('area') != 'false':
+        #     order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
+        #     order_obj.save()
         
         import json
         order = request.POST.get('order').split(';')

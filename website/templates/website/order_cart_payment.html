@@ -35,9 +35,8 @@
         </div> 
       
         <div class="row mx-1 my-2">
-          <button type="submit"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
+          <button type="submit" id="pay"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
         </div>
-        
       </div>
     </div>
   </div>
@@ -51,11 +50,13 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
   $(document).ready(function(){
     $('#online').click(function(){
       $('#online').toggleClass('bg-success')
       $('#cash').removeClass('bg-success')
      $('#card').removeClass('bg-success')
+     localStorage.setItem('pay_method', 'online')
     })
   })
   
@@ -64,6 +65,7 @@
      $('#cash').toggleClass('bg-success')
      $('#online').removeClass('bg-success')
      $('#card').removeClass('bg-success')
+     localStorage.setItem('pay_method', 'cash')
 
     })
   })
@@ -73,15 +75,18 @@
       $('#card').toggleClass('bg-success')
       $('#cash').removeClass('bg-success')
      $('#online').removeClass('bg-success')
+     localStorage.setItem('pay_method', 'card')
     })
   })
   
- 
+//  set payment method defualt cash
+$(document).ready(function(){
+  $('#cash').addClass('bg-success')
+  localStorage.setItem('pay_method', 'cash')
+});
 
 
-  
-  load_order()
-
+load_order()
 function load_order(){
   // load the orders into table
   $(document).ready(function(){
@@ -136,6 +141,54 @@ function load_order(){
 
 // get all info from order, location, address, pbone, lat, lng, delivery charge from localstorage
 // and send it to dash
+// process order
+$(document).ready(function(){
+  $('#pay').click(function(){
+    data = {};
+    data['name'] = localStorage.getItem('full_name');
+    data['number'] = localStorage.getItem('number')
+    data['address'] = localStorage.getItem('address_details')
+    data['area']    = $('[name="delivery_charge"]').val();
+    var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
+    data['location'] = location;
+    data['payment'] = localStorage.getItem('pay_method');
+    data['order'] = localStorage.getItem('order');
+    // area is missing becuase of the calculation
+    $.ajax({
+      url: "{% url 'website:cart_view' %}",
+      method: 'POST',
+      data : data,
+      success:function(response){
+        localStorage.clear();
+        let timerInterval
+        Swal.fire({
+          title: 'THANK YOU',
+          html: 'Thank for ordering with us.',
+          timer: 5000,
+          // timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft()
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          window.location = "/track-order/"+response+"";
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })
+        // window.location.reload();
+      }
+    })
+  });
+});
+
 </script>
 {% endblock js %}
 
