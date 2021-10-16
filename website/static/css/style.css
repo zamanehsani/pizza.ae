@@ -168,14 +168,20 @@
     border-color: #F96302;
   }
   
+  .btn-orange{
+      cursor: pointer;
+      border: solid 1px #FF5400;
+      background-color: #FF5400;
+      color: white;
+  }
   
-  .btn-orange {
+  .btn-orange-outline {
     cursor: pointer;
     border: solid 1px #FF5400;
     color: #FF5400;
     background-color: transparent;
   }
-  .btn-orange:hover{
+  .btn-orange-outline:hover{
     background-color: #FF5400;
     color: white;
   }

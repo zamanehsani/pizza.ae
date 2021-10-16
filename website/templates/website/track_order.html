@@ -8,10 +8,32 @@
 
 {% block content %}
 
-<div class="container mt-5 pt-5">
+<div class="container">
   <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
+    <div class="col -sm-12 col md-3"></div>
+    <div class="col-sm-12 col-md-6">
+      {% if order.status != 'finished' or order.status != 'ordered' or order.status != 'Processing' %}
+      <h2 class="my-3"><span class="iconify" data-icon="ant-design:check-square-filled" style="color: #5cb85c;"></span> Order is Confirmed</h2>
+      <div class="card rounded-0 p-2 pb-0">
+        <p class="m-0"><b>Ya Salaam, "Amin" is preparing your order!</b></p>
+        <p class="m-0 text-secondary">We will call you once the order arrive.</p>
+        <p class="text-secondary"> the Approximate time of delivery is 22:4</p>
+      </div>
+      <div class="container py-3">
+        <img src="{% static 'img/order_complete.png' %}" style="width: 100%; height: 100%;" alt="">
+      </div>
+      <div class="row my-3 mx-2 mt-4">
+        <a href="{% url 'website:menu' %}" class="btn btn-orange title-fonts rounded-0 btn-lg btn-block">Menu</a>
+      </div>
+      {% else %}
+      <h2  class="text-center"> Nothign to Show</h2>
+      <img class="mx-auto d-block" src="{% static 'img/nothing.webp' %}" alt="">
+      <div class="row my-3 mx-2 mt-4">
+        <a href="{% url 'website:menu' %}" class="btn btn-orange title-fonts rounded-0 btn-lg btn-block">Menu</a>
+      </div>
+
+      {% endif %}
+      <!-- <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-sm-12 col-md-4 order">
@@ -62,8 +84,9 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>  -->
     </div>
+    <div class="col -sm-12 col md-3"></div>
 
   </div>
 </div>
@@ -76,7 +99,29 @@
 {% block js %}
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 
+<script>
+  import axios from 'axios';
+
+  $(document).ready(function(){
+    // var axios = require('axios');
+    var config = {
+      method: 'get',
+      url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101%2C-73.89188969999998&destinations=40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=AIzaSyDEvv_TaJsCDx2sWSwrgP1fEjCV7SA9gdE',
+      headers: { }
+    };
+
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  });
+</script>
 
 {% endblock js %}
 

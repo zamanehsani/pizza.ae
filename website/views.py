@@ -152,6 +152,7 @@ class Order_Location(TemplateView):
     template_name = "website/order_cart_Add.html"
 
 
+
 def resend_otp(request):
     if request.method =="GET":
         number = request.GET.get('number')
