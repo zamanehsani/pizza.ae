@@ -161,8 +161,11 @@ let pizza = new Pizza('pizza');
   pizza.update()
 }())
 
-      $("#preloader").fadeOut();
-    })
+  // $("#preloader").fadeOut();
+  setTimeout(function() {
+    $('#preloader').fadeOut();
+  }, 1500); // <-- time in milliseconds
+})
 
 
     // load the order counter on load
