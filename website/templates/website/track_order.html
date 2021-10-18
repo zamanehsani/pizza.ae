@@ -15,9 +15,10 @@
       {% if order.status != 'finished' or order.status != 'ordered' or order.status != 'Processing' %}
       <h2 class="my-3"><span class="iconify" data-icon="ant-design:check-square-filled" style="color: #5cb85c;"></span> Order is Confirmed</h2>
       <div class="card rounded-0 p-2 pb-0">
+        <span class="d-none" id="destination">{{order.location}}</span>
         <p class="m-0"><b>Your order has been placed!</b></p>
         <p class="m-0 text-secondary">We will call you once the order arrive.</p>
-        <p class="text-secondary"> the Approximate time of delivery is 22:4</p>
+        <p class="text-secondary"> Your Approximate time of delivery is <span id="duration"></span></p>
       </div>
       <div class="container py-3">
         <img src="{% static 'img/order_complete.png' %}" style="width: 100%; height: 100%;" alt="">
@@ -48,28 +49,52 @@
 {% block js %}
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEvv_TaJsCDx2sWSwrgP1fEjCV7SA9gdE&callback=calculateDistance&libraries=places">
+</script>
 
 <script>
-  import axios from 'axios';
-
+  let dis , lo
   $(document).ready(function(){
-    // var axios = require('axios');
-    var config = {
-      method: 'get',
-      url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101%2C-73.89188969999998&destinations=40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=AIzaSyDEvv_TaJsCDx2sWSwrgP1fEjCV7SA9gdE',
-      headers: { }
-    };
-
-    axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    dis = $('#destination').text(); 
+    lo = dis.split(',')
+    calculateDistance()
   });
+function calculateDistance(){
+  var origin1 = new google.maps.LatLng(25.156627208000344,55.204545339122625 );
+  var destinationB = new google.maps.LatLng(parseFloat(lo[0]),parseFloat(lo[1]));
+
+  var service = new google.maps.DistanceMatrixService();
+service.getDistanceMatrix(
+  {
+    origins: [origin1,],
+    destinations: [destinationB,],
+    travelMode: 'DRIVING',
+    avoidHighways: false,
+    avoidTolls: false,
+  }, callback);
+
+
+  function callback(response, status) {
+  if (status == 'OK') {
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+
+    for (var i = 0; i < origins.length; i++) {
+      var results = response.rows[i].elements;
+      for (var j = 0; j < results.length; j++) {
+        var element = results[j];
+        var distance = element.distance.text;
+        var duration = element.duration.text;
+        $('#duration').text(duration)
+        var from = origins[i];
+        var to = destinations[j];
+      }
+    }
+  }
+}
+
+}
 </script>
 
 {% endblock js %}
