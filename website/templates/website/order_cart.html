@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="container-fluid" style="background-color: seashell;">
+<div class="container-fluid">
 <div class="row">
   <div class="col-sm-12 col-md-4"></div>
   <div class="col-sm-12 col-md-4">
@@ -26,14 +26,14 @@
             </tr>
           </thead>
           <tbody id="order-table-body"> 
-
           </tbody>
         </table>
       </div> 
-      <div id="empty-card" class=" mb-3 pt-3">
+      <div id="empty-card" class="mb-3">
         <div class="row">
         <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
-          <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span>
+          <img src="{% static 'img/pizza-empty.webp' %}" style="width: 100%;" alt="">
+          <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span> -->
           <p class="body-font"> Your cart is empty.</p>
           <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'website:menu' %}">Goto Menu</a>
         </div>

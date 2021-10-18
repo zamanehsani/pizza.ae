@@ -63,7 +63,7 @@ function load_order(){
       $("#empty-card").hide();
       // split the orders string to array by ;
       let order_arr = localStorage.getItem("order").split(";");
-      let total_order = 0, vat, delivery =0, total_of_total
+      let total_order = 0, vat, delivery = 0, total_of_total
       let orders = ``;
       for(let x in order_arr){
         let ord = JSON.parse(order_arr[x]);
@@ -78,13 +78,17 @@ function load_order(){
           </p>
         </div> `;  
       }
-      vat = (total_order * 5) /100;
+
+
+      vat = (total_order * 5) /100
+      delivery = parseFloat(localStorage.getItem('delivery_charge'))
+      total_of_total = total_order + vat + delivery
       var prices = `
       <div class="card py-1 px-1 rounded-0">
           <P class="m-0"> <b class="">ORDER:</b>     <b style="float: right;">${total_order} AED</b></P>
           <P class="m-0"> <b class="">VAT 5%:</b>    <span style="float: right;" class="text-secondary">${vat} AED</span></P>
-          <P class="m-0"> <b class="">DELIVERY:</b>  <span style="float: right;" class="text-secondary">15.00 AED</span></P>
-          <h4 class="mt-4">  <b class="">TOTAL:</b>  <b class="active" style="float: right;">${total_order + vat + delivery} <span class="text-dark">AED</span></b></h4>
+          <P class="m-0"> <b class="">DELIVERY:</b>  <span style="float: right;" class="text-secondary">${delivery.toFixed(2)} AED</span></P>
+          <h4 class="mt-4">  <b class="">TOTAL:</b>  <b class="active" style="float: right;">${total_of_total} <span class="text-dark">AED</span></b></h4>
         </div>
       `;
 

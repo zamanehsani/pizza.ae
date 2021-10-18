@@ -147,13 +147,12 @@ $(document).ready(function(){
     data = {};
     data['name'] = localStorage.getItem('full_name');
     data['number'] = localStorage.getItem('number')
-    data['address'] = localStorage.getItem('address_details')
-    data['area']    = $('[name="delivery_charge"]').val();
+    data['address'] = localStorage.getItem('address_details') + ", " + localStorage.getItem('address')
+    data['area']    = localStorage.getItem('delivery_id')
     var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
     data['location'] = location;
     data['payment'] = localStorage.getItem('pay_method');
     data['order'] = localStorage.getItem('order');
-    // area is missing becuase of the calculation
     $.ajax({
       url: "{% url 'website:cart_view' %}",
       method: 'POST',

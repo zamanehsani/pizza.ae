@@ -77,9 +77,9 @@ class CartView(TemplateView):
         sendsms(text, order_obj.number)
 
         # update the order it no area
-        # if request.POST.get('area') != 'false':
-        #     order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
-        #     order_obj.save()
+        if request.POST.get('area'):
+            order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
+            order_obj.save()
         
         import json
         order = request.POST.get('order').split(';')
@@ -150,7 +150,6 @@ class Order_cart_OTP(TemplateView):
 
 class Order_Location(TemplateView):
     template_name = "website/order_cart_Add.html"
-
 
 
 def resend_otp(request):

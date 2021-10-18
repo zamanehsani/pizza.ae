@@ -57,6 +57,8 @@
 {% endblock content %}
 {% block js %}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
 <script async
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEvv_TaJsCDx2sWSwrgP1fEjCV7SA9gdE&callback=initAutocomplete&libraries=places">
 </script>
@@ -131,6 +133,7 @@ function initAutocomplete() {
       localStorage.setItem('address', place.formatted_address)
       localStorage.setItem('lat', place.geometry.location.lat())
       localStorage.setItem('lng', place.geometry.location.lng())
+      user_location_calculation(place.geometry.location.lng(), place.geometry.location.lat())
 
       markers.push(
         new google.maps.Marker({
@@ -181,8 +184,11 @@ function initAutocomplete() {
                   position: latlng,
                   map: map,
                 });
+                
                 $('#deliver_to').text(response.results[0].formatted_address);
                 localStorage.setItem('address', response.results[0].formatted_address)  
+                // calculate the user location if inside areas
+                user_location_calculation(position.coords.longitude, position.coords.latitude)
               }
             })
             .catch((e) => window.alert("Geocoder failed due to: " + e));
@@ -204,6 +210,31 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       : "Error: Your browser doesn't support geolocation."
   );
   infoWindow.open(map);
+}
+
+function user_location_calculation(lng,lat){
+  // change the [lat, lng] to [lng, lat]
+  $.ajax({
+    url:"../api/areas",
+    type:'GET',
+    success:function(data){
+      for(var i in data){
+        var gjson = JSON.parse(data[i].geojson);
+        var bool = turf.booleanPointInPolygon(turf.point([lng,lat]), gjson.features[0]);
+        // console.log(data[i].name + " | " + bool + " from out");
+        if (bool === true){
+          var html =`${data[i].charge}`;
+          localStorage.setItem('delivery_charge', data[i].charge)
+          localStorage.setItem('delivery_id', data[i].id)
+          return ;
+        }
+      
+      } //end of for loop
+      alert("no aread has found");
+      console.log("no area. out of area location")
+    } //end of success
+
+  }); //end of ajax
 }
 
 </script>
