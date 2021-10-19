@@ -73,7 +73,7 @@ class CartView(TemplateView):
         # send sms here
         from dashboard.requests import sendsms
         # send a notification to the owner
-        text = f'your order with ID of {order_obj.pk} had been placed.'
+        text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
         sendsms(text, order_obj.number)
 
         # update the order it no area

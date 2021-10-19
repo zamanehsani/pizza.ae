@@ -112,7 +112,38 @@ function load_order(){
 }
 
 $(document).ready(function(){
+  console.log("requesting the access token")
+//   const options = {
+//   method: 'POST',
+//   headers: {
+//     Accept: 'application/vnd.ni-identity.v1+json',
+//     'Content-Type': 'application/vnd.ni-identity.v1+json',
+//     Authorization: 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=='
+//   }
+// };
 
+// fetch('https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token', options)
+//   .then(response => response.json())
+//   .then(response => console.log(response))
+//   .catch(err => console.error(err));
+
+  $.ajax({
+    beforeSend: function(request) {
+      request.setRequestHeader( "Accept", 'application/vnd.ni-identity.v1+json');
+      request.setRequestHeader("Content-Type", 'application/vnd.ni-identity.v1+json');
+      request.setRequestHeader("Authorization", 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==');
+    },
+    url: 'https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token',
+    method: 'POST',
+    async:true,
+    dataType : 'jsonp',   //you may use jsonp for cross origin request
+    crossDomain:true,
+    success:function(res){
+      console.log('this is the response')
+      console.log(res)
+    }
+
+  }) // end of ajax
 });
 
 
