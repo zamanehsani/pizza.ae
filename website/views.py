@@ -219,3 +219,41 @@ class Dine_CartView(TemplateView):
 
         return JsonResponse(1, safe=False)
 
+
+
+def Access_token(request):
+    import requests
+    url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
+    headers = {
+        "Accept": "application/vnd.ni-identity.v1+json",
+        "Authorization": "Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==",
+        "Content-Type" : "application/vnd.ni-identity.v1+json"
+    }
+    response = requests.request("POST", url, headers=headers)
+    import json 
+    y = json.loads(response.text)
+    # print(y['access_token'])
+    # print(y['refresh_token'])
+
+    # now requesting an order 
+    print('requesting order...')    
+
+    order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
+    
+    payload = "{\"amount\":{\"currencyCode\":\"AED\",\"value\":2302},\"action\":\"PURCHASE\"}"
+    
+    auth = "Bearer "+y['access_token']
+    order_headers = {
+        "Accept": "application/vnd.ni-payment.v2+json",
+        "Content-Type": "application/vnd.ni-payment.v2+json",
+        "Authorization": auth,
+    }
+    res = requests.request("POST", order_url, data=payload, headers=order_headers)
+    res_res = json.loads(res.text)
+
+    print(res_res)
+    
+    link = res_res["_links"]["payment"]["href"]
+    print(link)
+    # print(type(link))
+    return JsonResponse(link, safe=False)

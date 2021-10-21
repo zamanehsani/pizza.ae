@@ -21,5 +21,6 @@ urlpatterns = [
     path('dine-in-cart/', views.Dine_CartView.as_view(), name="dine_in_cart"),
     path('pizza-logo/', TemplateView.as_view(template_name="website/pizza-log.html"), name="pizza_png_log"),
     path('pizza-check/', TemplateView.as_view(template_name="website/pizza-check.html"), name="pizza_png_check"),
+    path('access_token', views.Access_token, name="access_token"),
 
 ]

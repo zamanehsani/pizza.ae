@@ -25,7 +25,7 @@
             <img src="https://svg-clipart.com/svg/logo/rzd7tfu-apple-logo-white-vector.svg" height="25" class="my-auto pb-1 mr-2" alt=""> Pay</button>
           <button type="submit" id="payments" class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Payments</button>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -40,11 +40,11 @@
 
 <script>
 
-  $(document).ready(function(){
-    $('#apply_pay').click(function(){
-      alert("comming soon. You can try other payment options")
-    })
-  })
+  // $(document).ready(function(){
+  //   $('#apply_pay').click(function(){
+  //     alert("comming soon. You can try other payment options")
+  //   })
+  // })
   
   $(document).ready(function(){
     $('#payments').click(function(){
@@ -111,37 +111,40 @@ function load_order(){
   });
 }
 
+
+
 $(document).ready(function(){
-  console.log("requesting the access token")
-//   const options = {
-//   method: 'POST',
-//   headers: {
-//     Accept: 'application/vnd.ni-identity.v1+json',
-//     'Content-Type': 'application/vnd.ni-identity.v1+json',
-//     Authorization: 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=='
-//   }
-// };
+  $("#apply_pay").click(function(){
+    $.ajax({
+      url :'{% url "website:access_token" %}',
+      method:'GET',
+      success:function(res){
+        console.log(res)
+        window.location.href = res
+      },
+    })
 
-// fetch('https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token', options)
-//   .then(response => response.json())
-//   .then(response => console.log(response))
-//   .catch(err => console.error(err));
 
-  $.ajax({
-    beforeSend: function(request) {
-      request.setRequestHeader( "Accept", 'application/vnd.ni-identity.v1+json');
-      request.setRequestHeader("Content-Type", 'application/vnd.ni-identity.v1+json');
-      request.setRequestHeader("Authorization", 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==');
-    },
-    url: 'https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token',
-    method: 'POST',
-    async:true,
-    dataType : 'jsonp',   //you may use jsonp for cross origin request
-    crossDomain:true,
-    success:function(res){
-      console.log('this is the response')
-      console.log(res)
-    }
+  // this is my function
+
+    // console.log("requesting the access token")
+    // $.ajax({
+    // // beforeSend: function(request) {
+    // //   request.setRequestHeader("Content-Type", 'application/vnd.ni-identity.v1+json');
+    // //   request.setRequestHeader("Authorization", 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==');
+    // // },
+    // headers: {
+    //     'Authorization':'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==',
+    //     'Content-Type':'application/vnd.ni-identity.v1+json'
+    // },
+    // dataType: 'jsonp',
+
+    // method: 'POST',
+    // url: 'https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token',
+    // success:function(res){
+    //   console.log('this is the response')
+    //   console.log(res)
+    // }
 
   }) // end of ajax
 });
