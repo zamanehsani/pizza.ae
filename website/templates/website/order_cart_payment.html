@@ -15,13 +15,7 @@
     <h2 class="mx-auto mt-2">Payment Methods:</h2>
     <div class="row">
       <div class="col-sm-12">
-        <div class="card rounded-0  my-2 py-3 px-2 text" id="online">
-          <h6 class="p-0 my-auto"> 
-            <span class="iconify" data-icon="logos:visaelectron"></span> 
-            <span class="iconify" data-icon="logos:mastercard"></span> 
-            &nbsp;Online Payment
-          </h6 >
-        </div> 
+       
         <div class="card rounded-0 my-2 py-3 px-2 text" id="cash">
           <h6 class="p-0 my-auto">  &nbsp;
             <span class="iconify" data-icon="fa-solid:money-bill-wave"></span>    &nbsp; &nbsp;&nbsp;Cash on Delivery
@@ -33,7 +27,16 @@
             <span class="iconify" data-icon="fontisto:shopping-pos-machine" data-rotate="90deg"></span>  &nbsp;  &nbsp;Card on Delivery
           </h6 >
         </div> 
-      
+
+        <div class="card rounded-0  my-2 py-3 px-2 text" id="online">
+          <h6 class="p-0 my-auto"> 
+            <span class="iconify" data-icon="logos:visaelectron"></span> 
+            <span class="iconify" data-icon="logos:mastercard"></span> 
+            &nbsp;Online Payment
+          </h6 >
+        </div> 
+        <div class="" id="pay_here">  </div>
+
         <div class="row mx-1 my-2">
           <button type="submit" id="pay"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
         </div>
@@ -51,14 +54,14 @@
 
 <script>
 
-  $(document).ready(function(){
-    $('#online').click(function(){
-      $('#online').toggleClass('bg-success')
-      $('#cash').removeClass('bg-success')
-     $('#card').removeClass('bg-success')
-     localStorage.setItem('pay_method', 'online')
-    })
-  })
+  // $(document).ready(function(){
+  //   $('#online').click(function(){
+  //     $('#online').toggleClass('bg-success')
+  //     $('#cash').removeClass('bg-success')
+  //     $('#card').removeClass('bg-success')
+  //     localStorage.setItem('pay_method', 'online')
+  //   })
+  // })
   
   $(document).ready(function(){
     $('#cash').click(function(){
@@ -187,6 +190,80 @@ $(document).ready(function(){
     })
   });
 });
+
+
+$(document).ready(function(){
+// $('#pay_here').hide()
+  $("#online").click(function(){
+    $('#online').toggleClass('bg-success')
+    $('#cash').removeClass('bg-success')
+    $('#card').removeClass('bg-success')
+    localStorage.setItem('pay_method', 'online')
+
+    console.log( "preceeding with the ordering...")
+
+    data = {};
+    data['name'] = localStorage.getItem('full_name');
+    data['number'] = localStorage.getItem('number')
+    data['address'] = localStorage.getItem('address_details') + ", " + localStorage.getItem('address')
+    data['area']    = localStorage.getItem('delivery_id')
+    var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
+    data['location'] = location;
+    data['sms'] = false
+    data['payment'] = localStorage.getItem('pay_method');
+    data['order'] = localStorage.getItem('order');
+    $.ajax({
+      url: "{% url 'website:cart_view' %}",
+      method: 'POST',
+      data : data,
+      success:function(response){
+        if(typeof parseInt(response) == 'number'){
+          order_id = parseInt(response)
+          console.log(order_id + " this is the pk")
+          $.ajax({
+            url :'{% url "website:access_token" %}',
+            method:'GET',
+            data: {id:order_id},
+            success:function(res){
+            // createFrame(res);
+              window.location.href = res
+            },
+          }) // endof ajax
+          // localStorage.setItem("order_ref" , order_id)
+        }else{
+          console.log("not true the condidtion")
+        }
+      }
+    })
+
+    // order_pk = localStorage.getItem("order_ref")
+
+    // console.log(" this is order id: " + order_pk)
+    // console.log(order_pk+1 + " has been created\nNow preceeding with the payment...")
+    
+  }) // end of ajax
+});
+
+// function createFrame(res) {
+//     frame= document.createElement("iframe");
+//     frame.setAttribute("src",res);
+//     frame.setAttribute("name", "Hello");
+//     frame.setAttribute("id", "frame");
+//     frame.frameBorder = 0;
+//     frame.style.width = 100 + "%";
+//     frame.style.height = 1000 + "px";
+//     frame.style.marginTop = 10 + "px";
+//     document.getElementById("pay_here").appendChild(frame);
+//   }
+  
+// placing an order
+
+
+function porder(){
+  console.log("this is order")
+   
+
+  }
 
 </script>
 {% endblock js %}

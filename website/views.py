@@ -1,4 +1,6 @@
 import random
+
+from requests.api import get
 from dashboard.forms import OrderForm
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -71,10 +73,11 @@ class CartView(TemplateView):
         order_obj.save()
 
         # send sms here
-        from dashboard.requests import sendsms
-        # send a notification to the owner
-        text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-        sendsms(text, order_obj.number)
+        if request.POST.get('sms') == True:    
+            from dashboard.requests import sendsms
+            # send a notification to the owner
+            text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
+            sendsms(text, order_obj.number)
 
         # update the order it no area
         if request.POST.get('area'):
@@ -147,10 +150,8 @@ class Order_cart_OTP(TemplateView):
         data['page_title'] = 'Order'
         return data
 
-
 class Order_Location(TemplateView):
     template_name = "website/order_cart_Add.html"
-
 
 def resend_otp(request):
     if request.method =="GET":
@@ -170,7 +171,6 @@ def resend_otp(request):
     else:
         return JsonResponse(False, safe=False) 
 
-
 class Order_summary(TemplateView):
     template_name = 'website/order_cart_summary.html'
 
@@ -181,9 +181,14 @@ class Order_payment(TemplateView):
 class TrackOrder(DeleteView):
     model = models.Order
     template_name = "website/track_order.html"
+    def get(self, request, *args, **kwargs):
+        ref = request.GET.get('ref')
 
+        print("this is ref ", ref)
+        return ref
     def get_context_data(self, *args, **kwargs):
         data = super(TrackOrder, self).get_context_data(*args, **kwargs)
+
         data['page_title'] = 'Track Order'
         return data
 
@@ -222,6 +227,14 @@ class Dine_CartView(TemplateView):
 
 
 def Access_token(request):
+    # ord = 0
+    # if request.method == "POST":
+    #     ord = Placing_order(request)
+    print(request.GET.get('id'))
+    id = int(request.GET.get('id'))
+    print("this is the id: ", id)
+    obj = get_object_or_404(models.Order, pk = id)
+    print(obj.date, " is thee obj")
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
     headers = {
@@ -237,11 +250,9 @@ def Access_token(request):
 
     # now requesting an order 
     print('requesting order...')    
-
+    # obj = get_object_or_404(models.Order, pk = ord)
     order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
-    
-    payload = "{\"amount\":{\"currencyCode\":\"AED\",\"value\":2302},\"action\":\"PURCHASE\"}"
-    
+    payload = '{"merchantAttributes":{"redirectUrl":"https://www.pizza.ae/track/order/'+str(obj.pk)+'","skipConfirmationPage":true},"amount":{"currencyCode":"AED","value":2300},"action":"PURCHASE"}'    
     auth = "Bearer "+y['access_token']
     order_headers = {
         "Accept": "application/vnd.ni-payment.v2+json",
@@ -251,9 +262,53 @@ def Access_token(request):
     res = requests.request("POST", order_url, data=payload, headers=order_headers)
     res_res = json.loads(res.text)
 
-    print(res_res)
-    
+    # print(res_res)
+    pay_id = res_res['_id']
     link = res_res["_links"]["payment"]["href"]
-    print(link)
+   
+    print("payment has been done... updating the order")
+    obj.order_pay_ref = pay_id
+    obj.save()
+
+    print("order has been updated")
+    print(pay_id)
+
     # print(type(link))
-    return JsonResponse(link, safe=False)
+    return JsonResponse(link+ "&slim=true", safe=False)
+
+
+def Placing_order(request):
+    print("order has been recieved, going to process.")
+    name_order = request.POST.get('name')
+    number_order = request.POST.get('number')
+    location_order = request.POST.get('location')
+    address_order = request.POST.get('address')
+    payment_order = request.POST.get('payment')
+
+    order_obj = models.Order(
+            name = name_order, number = int(number_order), 
+            location = location_order, status = 'ordered',
+            address = address_order, payment_method = payment_order,
+            order_source = 'online')
+    order_obj.save()
+
+    # send sms here
+    from dashboard.requests import sendsms
+    # send a notification to the owner
+    text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
+    sendsms(text, order_obj.number)
+
+    # update the order it no area
+    if request.POST.get('area'):
+        order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
+        order_obj.save()
+        
+    import json
+    order = request.POST.get('order').split(';')
+    for i in order:
+        item = json.loads(i)
+        menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
+        order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
+        order_item.save()
+    print("order has been proceded")
+    return order_obj.pk

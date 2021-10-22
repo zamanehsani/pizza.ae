@@ -9,7 +9,7 @@
 {% endblock css %}
 {% block content %}
 <div class="container-fluid" style="background-color: seashell;">
-<div class="row">
+<div class="row" id="content">
   <div class="col-sm-12 col-md-3"></div>
   <div class="col-sm-12 col-md-6">
     <h2 class="mx-auto mt-2">Order Summary</h2>
@@ -40,11 +40,11 @@
 
 <script>
 
-  // $(document).ready(function(){
-  //   $('#apply_pay').click(function(){
-  //     alert("comming soon. You can try other payment options")
-  //   })
-  // })
+  $(document).ready(function(){
+    $('#apply_pay').click(function(){
+      alert("comming soon. You can try other payment options")
+    })
+  })
   
   $(document).ready(function(){
     $('#payments').click(function(){
@@ -104,50 +104,34 @@ function load_order(){
       $("#address").append(address);
 
     }else{
-      // $('.table-responsive').hide();
-      // $("#empty-card").show();
-      // $("#regform_row").addClass('d-none');
+      var content = `
+      <div class="row">
+        <div class="col-sm-12 col-md-6 text-center mx-auto mb-1">
+          <img src="{% static 'img/pizza-empty.webp' %}" style="width: 100%;" alt="">
+          <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span> -->
+          <p class="body-font"> Your cart is empty.</p>
+          <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'website:menu' %}">Goto Menu</a>
+        </div>
+        </div>
+      `
+      $("#content").text('');
+      $("#content").append(content);
     }
   });
 }
 
 
-
-$(document).ready(function(){
-  $("#apply_pay").click(function(){
-    $.ajax({
-      url :'{% url "website:access_token" %}',
-      method:'GET',
-      success:function(res){
-        console.log(res)
-        window.location.href = res
-      },
-    })
-
-
-  // this is my function
-
-    // console.log("requesting the access token")
-    // $.ajax({
-    // // beforeSend: function(request) {
-    // //   request.setRequestHeader("Content-Type", 'application/vnd.ni-identity.v1+json');
-    // //   request.setRequestHeader("Authorization", 'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==');
-    // // },
-    // headers: {
-    //     'Authorization':'Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==',
-    //     'Content-Type':'application/vnd.ni-identity.v1+json'
-    // },
-    // dataType: 'jsonp',
-
-    // method: 'POST',
-    // url: 'https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token',
-    // success:function(res){
-    //   console.log('this is the response')
-    //   console.log(res)
-    // }
-
-  }) // end of ajax
-});
+// $(document).ready(function(){
+//   $("#apply_pay").click(function(){
+//     $.ajax({
+//       url :'{% url "website:access_token" %}',
+//       method:'GET',
+//       success:function(res){
+//         window.location.href = res
+//       },
+//     })
+//   }) // end of ajax
+// });
 
 
 </script>
