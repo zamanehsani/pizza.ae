@@ -1,3 +1,4 @@
+import decimal
 from os import truncate
 from django.db import models
 from django.contrib.auth.models import User
@@ -154,6 +155,7 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=100, blank=True, null=True)
     order_source    = models.CharField(max_length=70, blank=True, null=True)
     order_pay_ref   = models.CharField(max_length=150, blank=True, null=True)
+    is_complete     = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return  str(self.name)

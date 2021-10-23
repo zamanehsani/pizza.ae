@@ -181,11 +181,12 @@ class Order_payment(TemplateView):
 class TrackOrder(DeleteView):
     model = models.Order
     template_name = "website/track_order.html"
-    def get(self, request, *args, **kwargs):
-        ref = request.GET.get('ref')
+    # def get(self, request, *args, **kwargs):
+    #     data = request.GET.get('ref')
+    #     print(request.GET)
+    #     print(data)
+    #     return render(request, 'website/track_order.html')
 
-        print("this is ref ", ref)
-        return ref
     def get_context_data(self, *args, **kwargs):
         data = super(TrackOrder, self).get_context_data(*args, **kwargs)
 
@@ -224,17 +225,22 @@ class Dine_CartView(TemplateView):
 
         return JsonResponse(1, safe=False)
 
-
-
 def Access_token(request):
-    # ord = 0
-    # if request.method == "POST":
-    #     ord = Placing_order(request)
-    print(request.GET.get('id'))
     id = int(request.GET.get('id'))
-    print("this is the id: ", id)
     obj = get_object_or_404(models.Order, pk = id)
-    print(obj.date, " is thee obj")
+    payment_amount = 0
+    tot = models.Order_items.objects.filter(order = obj.pk)
+    for i in tot:
+        payment_amount += i.quantity * i.menu_item.price
+    print("pa: ", payment_amount)
+    delivery = obj.area.charge
+    payment_amount += delivery
+    print("pa + del: ", payment_amount)
+
+    vat = (payment_amount * 5) / 100
+    payment_amount += vat
+    print("pa + vat: ", payment_amount)
+
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
     headers = {
@@ -247,68 +253,83 @@ def Access_token(request):
     y = json.loads(response.text)
     # print(y['access_token'])
     # print(y['refresh_token'])
+    payment_amount = "{:.2f}".format(payment_amount) 
+    arr = str(payment_amount).split('.')
 
-    # now requesting an order 
-    print('requesting order...')    
-    # obj = get_object_or_404(models.Order, pk = ord)
+    print("arr: ",arr)
+    print("final: ", (int(arr[0])*100)+int(arr[1]))
     order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
-    payload = '{"merchantAttributes":{"redirectUrl":"https://www.pizza.ae/track/order/'+str(obj.pk)+'","skipConfirmationPage":true},"amount":{"currencyCode":"AED","value":2300},"action":"PURCHASE"}'    
+
+    payload = {
+        "merchantAttributes":{
+            "redirectUrl":'https:pizza.ae/order-payment-status?id='+str(obj.pk),
+            "skipConfirmationPage":True
+            },
+            "amount":{
+                "currencyCode":"AED",
+                "value":(int(arr[0])*100)+int(arr[1])
+            },
+            "action":"PURCHASE"
+        }
+
+    data_obj = json.dumps(payload)
+
+    # payloads = '{"merchantAttributes":{"redirectUrl":"https://www.pizza.ae/track/order/'+str(obj.pk)+'","skipConfirmationPage":true},"amount":{"currencyCode":"AED","value":27444},"action":"PURCHASE"}'    
+
     auth = "Bearer "+y['access_token']
     order_headers = {
         "Accept": "application/vnd.ni-payment.v2+json",
         "Content-Type": "application/vnd.ni-payment.v2+json",
         "Authorization": auth,
     }
-    res = requests.request("POST", order_url, data=payload, headers=order_headers)
-    res_res = json.loads(res.text)
 
-    # print(res_res)
+    res = requests.request("POST", order_url, data=data_obj, headers=order_headers)
+    res_res = json.loads(res.text)
     pay_id = res_res['_id']
     link = res_res["_links"]["payment"]["href"]
-   
-    print("payment has been done... updating the order")
     obj.order_pay_ref = pay_id
+    obj.is_complete = False
     obj.save()
-
-    print("order has been updated")
-    print(pay_id)
 
     # print(type(link))
     return JsonResponse(link+ "&slim=true", safe=False)
 
 
-def Placing_order(request):
-    print("order has been recieved, going to process.")
-    name_order = request.POST.get('name')
-    number_order = request.POST.get('number')
-    location_order = request.POST.get('location')
-    address_order = request.POST.get('address')
-    payment_order = request.POST.get('payment')
+def online_pay_complete(request):
+    id = request.GET.get('id')
+    ref = request.GET.get('ref')
+    print(id)
+    print(ref)
 
-    order_obj = models.Order(
-            name = name_order, number = int(number_order), 
-            location = location_order, status = 'ordered',
-            address = address_order, payment_method = payment_order,
-            order_source = 'online')
-    order_obj.save()
+    # get access token
+    import requests
+    url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
+    headers = {
+        "Accept": "application/vnd.ni-identity.v1+json",
+        "Authorization": "Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==",
+        "Content-Type" : "application/vnd.ni-identity.v1+json"
+    }
+    response = requests.request("POST", url, headers=headers)
+    import json 
+    token = json.loads(response.text)
+    print(token['access_token'])
 
-    # send sms here
+    # requesting for status
+    status_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders/"+ref
+    
+    res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
+    print(res)
+    # res_res = json.loads(res.text)
+    # pay_id = res_res['_id']
+
+    # check for the payment gatway and retrife urn id and payment amount
+    # update the obj with the urn id and payment amount recieved 
+
+    # send sms to customer
+    obj = get_object_or_404(models.Order, pk = id)
     from dashboard.requests import sendsms
-    # send a notification to the owner
     text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-    sendsms(text, order_obj.number)
+    sendsms(text, obj.number)
 
-    # update the order it no area
-    if request.POST.get('area'):
-        order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
-        order_obj.save()
-        
-    import json
-    order = request.POST.get('order').split(';')
-    for i in order:
-        item = json.loads(i)
-        menu_item_obj = get_object_or_404(models.Menu ,pk = int(item['id']))
-        order_item = models.Order_items(order = order_obj, menu_item = menu_item_obj, quantity = int(item['quantity']))
-        order_item.save()
-    print("order has been proceded")
-    return order_obj.pk
+    # redirect it to final page
+    return redirect('website:track_order', pk=id)
