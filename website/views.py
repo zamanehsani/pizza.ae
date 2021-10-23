@@ -262,7 +262,7 @@ def Access_token(request):
 
     payload = {
         "merchantAttributes":{
-            "redirectUrl":'https:pizza.ae/order-payment-status?id='+str(obj.pk),
+            "redirectUrl":'https:www.pizza.ae/order-payment-status?id='+str(obj.pk),
             "skipConfirmationPage":True
             },
             "amount":{
