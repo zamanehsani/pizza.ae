@@ -79,10 +79,13 @@ function load_order(){
         </div> `;  
       }
 
-
       vat = (total_order * 5) /100
-      delivery = parseFloat(localStorage.getItem('delivery_charge'))
+      delivery = 0;
+      if(localStorage.getItem("delivery_charge")){
+        delivery = parseFloat(localStorage.getItem('delivery_charge'))
+      }
       total_of_total = total_order + vat + delivery
+
       var prices = `
       <div class="card py-1 px-1 rounded-0">
           <P class="m-0"> <b class="">ORDER:</b>     <b style="float: right;">${total_order} AED</b></P>

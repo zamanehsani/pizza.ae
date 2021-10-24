@@ -31,12 +31,13 @@
                   <div class="col-sm-12 col-md-6">
                     <input type="hidden" name="otp" value="{{otp.pk}}">
                     <input name="otp_validation" type="hidden">
-                    <div id="otp" class="d-flex">
+                    <input type="tel" style="border-radius: 0px; " name="opt_code" id="opt">
+                    <!-- <div id="otp" class="d-flex">
                       <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="first"  type="tel" id="first"  maxlength="1" />
                       <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="second" type="tel" id="second" maxlength="1" />
                       <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="third"  type="tel" id="third"  maxlength="1" />
                       <input class="m-3 rounded-0 text-center" style="border-width: 1px;" name="fourth" type="tel" id="fourth" maxlength="1" />
-                    </div>                    
+                    </div>                     -->
                   </div>
                   <div class="col-sm-4 col-md-3"></div>
                 </div>
@@ -129,7 +130,7 @@ function OTPInput() {
     });
   }
 }
-OTPInput();
+// OTPInput();
 </script>
 {% endblock js %}
 

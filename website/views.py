@@ -101,10 +101,12 @@ class Order_cart(TemplateView):
         # if the post request has otp_validation in it, it means that otp post form is being submitted
         if "otp_validation" in request.POST:
             otp = get_object_or_404(models.OTP, pk = request.POST.get('otp'))
-            OTP_complate =  request.POST.get('first')
-            OTP_complate += request.POST.get('second')
-            OTP_complate += request.POST.get('third')
-            OTP_complate += request.POST.get('fourth')
+            # OTP_complate =  request.POST.get('first')
+            # OTP_complate += request.POST.get('second')
+            # OTP_complate += request.POST.get('third')
+            # OTP_complate += request.POST.get('fourth')
+
+            OTP_complate =  request.POST.get('opt_code')
             if OTP_complate == otp.otp:    
                 data = {"otp_com" : OTP_complate, "otp":otp , 'number':otp.number}
                 return render(request, 'website/order_cart_Add.html', data)
@@ -282,7 +284,7 @@ def Access_token(request):
     res_res = json.loads(res.text)
     pay_id = res_res['_id']
     link = res_res["_links"]["payment"]["href"]
-    obj.order_pay_ref = pay_id[9:]
+    obj.order_pay_ref = pay_id[10:]
     obj.is_complete = False
     obj.save()
 
@@ -327,7 +329,8 @@ def online_pay_complete(request):
 
     # mark as true after saving the amount paied and ref saving
     obj.is_complete = True
-    
+    print(obj.is_complete)
+
     from dashboard.requests import sendsms
     text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
     sendsms(text, obj.number)
