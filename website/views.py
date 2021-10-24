@@ -232,14 +232,11 @@ def Access_token(request):
     tot = models.Order_items.objects.filter(order = obj.pk)
     for i in tot:
         payment_amount += i.quantity * i.menu_item.price
-    print("pa: ", payment_amount)
+   
     delivery = obj.area.charge
     payment_amount += delivery
-    print("pa + del: ", payment_amount)
-
     vat = (payment_amount * 5) / 100
     payment_amount += vat
-    print("pa + vat: ", payment_amount)
 
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
@@ -255,39 +252,37 @@ def Access_token(request):
     # print(y['refresh_token'])
     payment_amount = "{:.2f}".format(payment_amount) 
     arr = str(payment_amount).split('.')
+    # print("arr: ",arr)
+    # print("final: ", (int(arr[0])*100)+int(arr[1]))
 
-    print("arr: ",arr)
-    print("final: ", (int(arr[0])*100)+int(arr[1]))
     order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
 
     payload = {
         "merchantAttributes":{
-            "redirectUrl":'https:www.pizza.ae/order-payment-status?id='+str(obj.pk),
+            "redirectUrl":"https://www.pizza.ae/order-payment-status?id="+str(obj.pk),
             "skipConfirmationPage":True
             },
             "amount":{
                 "currencyCode":"AED",
-                "value":(int(arr[0])*100)+int(arr[1])
+                "value":int(arr[0]+arr[1])
             },
             "action":"PURCHASE"
         }
 
+    # print(payload)
     data_obj = json.dumps(payload)
-
-    # payloads = '{"merchantAttributes":{"redirectUrl":"https://www.pizza.ae/track/order/'+str(obj.pk)+'","skipConfirmationPage":true},"amount":{"currencyCode":"AED","value":27444},"action":"PURCHASE"}'    
-
-    auth = "Bearer "+y['access_token']
     order_headers = {
         "Accept": "application/vnd.ni-payment.v2+json",
         "Content-Type": "application/vnd.ni-payment.v2+json",
-        "Authorization": auth,
+        "Authorization": "Bearer "+y['access_token'],
     }
 
     res = requests.request("POST", order_url, data=data_obj, headers=order_headers)
+    print(res)
     res_res = json.loads(res.text)
     pay_id = res_res['_id']
     link = res_res["_links"]["payment"]["href"]
-    obj.order_pay_ref = pay_id
+    obj.order_pay_ref = pay_id[9:]
     obj.is_complete = False
     obj.save()
 
@@ -298,8 +293,9 @@ def Access_token(request):
 def online_pay_complete(request):
     id = request.GET.get('id')
     ref = request.GET.get('ref')
-    print(id)
-    print(ref)
+
+    print("id: ",id)
+    print("ref: ",ref)
 
     # get access token
     import requests
@@ -318,6 +314,7 @@ def online_pay_complete(request):
     status_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
+    print("this is the status of pay order:")
     print(res)
     # res_res = json.loads(res.text)
     # pay_id = res_res['_id']
@@ -327,9 +324,13 @@ def online_pay_complete(request):
 
     # send sms to customer
     obj = get_object_or_404(models.Order, pk = id)
+
+    # mark as true after saving the amount paied and ref saving
+    obj.is_complete = True
+    
     from dashboard.requests import sendsms
     text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
     sendsms(text, obj.number)
 
     # redirect it to final page
-    return redirect('website:track_order', pk=id)
+    return redirect('website:track_order', pk=obj.pk)
