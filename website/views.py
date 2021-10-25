@@ -1,3 +1,4 @@
+import decimal
 import random
 
 from requests.api import get
@@ -230,15 +231,24 @@ class Dine_CartView(TemplateView):
 def Access_token(request):
     id = int(request.GET.get('id'))
     obj = get_object_or_404(models.Order, pk = id)
+
+    # calculate the prices and all
     payment_amount = 0
     tot = models.Order_items.objects.filter(order = obj.pk)
     for i in tot:
         payment_amount += i.quantity * i.menu_item.price
-   
     delivery = obj.area.charge
-    payment_amount += delivery
     vat = (payment_amount * 5) / 100
+    payment_amount += delivery
     payment_amount += vat
+
+    # changing it to decimal
+    # from decimal import Decimal
+    # dec = Decimal(payment_amount)
+
+    # doing it this way now
+    payment_amount = "{:.2f}".format(payment_amount) 
+    arr = str(payment_amount).split('.')
 
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
@@ -252,10 +262,6 @@ def Access_token(request):
     y = json.loads(response.text)
     # print(y['access_token'])
     # print(y['refresh_token'])
-    payment_amount = "{:.2f}".format(payment_amount) 
-    arr = str(payment_amount).split('.')
-    # print("arr: ",arr)
-    # print("final: ", (int(arr[0])*100)+int(arr[1]))
 
     order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
 
@@ -280,7 +286,7 @@ def Access_token(request):
     }
 
     res = requests.request("POST", order_url, data=data_obj, headers=order_headers)
-    print(res)
+    # print(res)
     res_res = json.loads(res.text)
     pay_id = res_res['_id']
     link = res_res["_links"]["payment"]["href"]
@@ -296,8 +302,8 @@ def online_pay_complete(request):
     id = request.GET.get('id')
     ref = request.GET.get('ref')
 
-    print("id: ",id)
-    print("ref: ",ref)
+    # print("id: ",id)
+    # print("ref: ",ref)
 
     # get access token
     import requests
@@ -316,7 +322,7 @@ def online_pay_complete(request):
     status_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
-    print("this is the status of pay order:")
+    # print("this is the status of pay order:")
     # print(res)
     # print(res.text)
     res_res = json.loads(res.text)
@@ -327,13 +333,13 @@ def online_pay_complete(request):
     obj = get_object_or_404(models.Order, pk = id)
 
     if obj.order_pay_ref == ref:
-        print("both are the same")
+        # print("both are the same")
         val = res_res['amount']['value']
-        print("this mapymnet was : ", val)
+        # print("this mapymnet was : ", val)
         obj.payment = float(val)
         obj.is_complete = True
         obj.save()
-        print(obj.is_complete," obj saved. reedirecting ....")
+        # print(obj.is_complete," obj saved. reedirecting ....")
         return redirect('website:track_order', pk=obj.pk)
     else:
         return JsonResponse(res.text, safe=False)
