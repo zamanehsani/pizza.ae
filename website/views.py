@@ -310,30 +310,45 @@ def online_pay_complete(request):
     response = requests.request("POST", url, headers=headers)
     import json 
     token = json.loads(response.text)
-    print(token['access_token'])
+    # print(token['access_token'])
 
     # requesting for status
     status_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
     print("this is the status of pay order:")
-    print(res)
-    # res_res = json.loads(res.text)
-    # pay_id = res_res['_id']
+    # print(res)
+    # print(res.text)
+    res_res = json.loads(res.text)
+    # print(res_res)
+
+    pay_id = res_res['_id']
+    pay_id = pay_id[10:]
+    obj = get_object_or_404(models.Order, pk = id)
+
+    if obj.order_pay_ref == ref:
+        print("both are the same")
+        val = res_res['amount']['value']
+        print("this mapymnet was : ", val)
+        obj.payment = float(val)
+        obj.is_complete = True
+        obj.save()
+        print(obj.is_complete," obj saved. reedirecting ....")
+        return redirect('website:track_order', pk=obj.pk)
+    else:
+        return JsonResponse(res.text, safe=False)
 
     # check for the payment gatway and retrife urn id and payment amount
     # update the obj with the urn id and payment amount recieved 
 
     # send sms to customer
-    obj = get_object_or_404(models.Order, pk = id)
 
     # mark as true after saving the amount paied and ref saving
-    obj.is_complete = True
-    print(obj.is_complete)
+    # obj.is_complete = True
+    # print(obj.is_complete)
 
-    from dashboard.requests import sendsms
-    text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-    sendsms(text, obj.number)
+    # from dashboard.requests import sendsms
+    # text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
+    # sendsms(text, obj.number)
 
     # redirect it to final page
-    return redirect('website:track_order', pk=obj.pk)
