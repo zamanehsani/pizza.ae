@@ -338,7 +338,11 @@ def online_pay_complete(request):
         # print("this mapymnet was : ", val)
         obj.payment = float(val)
         obj.is_complete = True
+
         obj.save()
+        from dashboard.requests import sendsms
+        text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
+        sendsms(text, obj.number)
         # print(obj.is_complete," obj saved. reedirecting ....")
         return redirect('website:track_order', pk=obj.pk)
     else:
@@ -350,11 +354,6 @@ def online_pay_complete(request):
     # send sms to customer
 
     # mark as true after saving the amount paied and ref saving
-    # obj.is_complete = True
-    # print(obj.is_complete)
 
-    # from dashboard.requests import sendsms
-    # text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-    # sendsms(text, obj.number)
 
     # redirect it to final page

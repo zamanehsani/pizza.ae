@@ -90,6 +90,7 @@ service.getDistanceMatrix(
         var element = results[j];
         var distance = element.distance.text;
         var duration = element.duration.text;
+        console.log(duration)
         $('#duration').text(duration)
         var from = origins[i];
         var to = destinations[j];

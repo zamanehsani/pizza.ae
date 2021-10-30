@@ -134,7 +134,7 @@ function initAutocomplete() {
       localStorage.setItem('lat', place.geometry.location.lat())
       localStorage.setItem('lng', place.geometry.location.lng())
       user_location_calculation(place.geometry.location.lng(), place.geometry.location.lat())
-
+    
       markers.push(
         new google.maps.Marker({
           map,
@@ -164,8 +164,10 @@ function initAutocomplete() {
         (position) => {
           pos = {lat: position.coords.latitude,lng: position.coords.longitude};
           // For each place, get the icon, name and location.
-          new google.maps.Marker({ map, position: pos })
+          new google.maps.Marker({ position: pos })
           map.setCenter(pos);
+          map.setZoom(15)
+
           localStorage.setItem('lat', pos.lat)
           localStorage.setItem('lng', pos.lng)
           //  deocode
@@ -178,13 +180,19 @@ function initAutocomplete() {
           geocoder
             .geocode({ location: latlng })
             .then((response) => {
-              if (response.results[0]) {
-                map.setZoom(11);
+              if (response.results[0]) {      
+
+                markers.forEach((marker) => {
+                  marker.setMap(null);
+                });
+                markers = [];
+
                 const marker = new google.maps.Marker({
                   position: latlng,
-                  map: map,
                 });
-                
+
+                marker.setMap(map);
+
                 $('#deliver_to').text(response.results[0].formatted_address);
                 localStorage.setItem('address', response.results[0].formatted_address)  
                 // calculate the user location if inside areas
@@ -230,7 +238,6 @@ function user_location_calculation(lng,lat){
         }
       
       } //end of for loop
-      alert("no aread has found");
       console.log("no area. out of area location")
     } //end of success
 
