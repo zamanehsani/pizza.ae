@@ -298,7 +298,11 @@ def Access_token(request):
 def online_pay_complete(request):
     id = request.GET.get('id')
     ref = request.GET.get('ref')
+    print("print all ")
+    print(id)
+    print(ref)
     # get access token
+
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
     headers = {
@@ -336,6 +340,7 @@ def online_pay_complete(request):
         from dashboard.requests import sendsms
         text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
         sendsms(text, obj.number)
+        # print("redirecting")
         return redirect('website:confirmed', pk=obj.pk)
     else:
         return JsonResponse(res.text, safe=False)
