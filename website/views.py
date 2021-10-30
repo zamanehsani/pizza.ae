@@ -74,7 +74,7 @@ class CartView(TemplateView):
         order_obj.save()
 
         # send sms here
-        if request.POST.get('sms') == True:    
+        if request.POST.get('sms'):
             from dashboard.requests import sendsms
             # send a notification to the owner
             text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
@@ -131,7 +131,6 @@ class Order_cart(TemplateView):
             data = {"otp" : OTP_obj, "number":number }
             return render(request, 'website/order_cart_OTP.html', data)
 
-
 def otp_gen():
     import random
     otp_1 = random.randint(0,9)
@@ -183,12 +182,7 @@ class Order_payment(TemplateView):
 # order tracking
 class TrackOrder(DeleteView):
     model = models.Order
-    template_name = "website/track_order.html"
-    # def get(self, request, *args, **kwargs):
-    #     data = request.GET.get('ref')
-    #     print(request.GET)
-    #     print(data)
-    #     return render(request, 'website/track_order.html')
+    template_name = "website/confirmed_order.html"
 
     def get_context_data(self, *args, **kwargs):
         data = super(TrackOrder, self).get_context_data(*args, **kwargs)
@@ -228,6 +222,9 @@ class Dine_CartView(TemplateView):
 
         return JsonResponse(1, safe=False)
 
+
+
+# load the payment network international
 def Access_token(request):
     id = int(request.GET.get('id'))
     obj = get_object_or_404(models.Order, pk = id)
@@ -294,17 +291,13 @@ def Access_token(request):
     obj.is_complete = False
     obj.save()
 
-    # print(type(link))
     return JsonResponse(link+ "&slim=true", safe=False)
 
 
+# this is the function that runs after the payment is done
 def online_pay_complete(request):
     id = request.GET.get('id')
     ref = request.GET.get('ref')
-
-    # print("id: ",id)
-    # print("ref: ",ref)
-
     # get access token
     import requests
     url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
@@ -343,17 +336,6 @@ def online_pay_complete(request):
         from dashboard.requests import sendsms
         text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
         sendsms(text, obj.number)
-        # print(obj.is_complete," obj saved. reedirecting ....")
-        return redirect('website:track_order', pk=obj.pk)
+        return redirect('website:confirmed', pk=obj.pk)
     else:
         return JsonResponse(res.text, safe=False)
-
-    # check for the payment gatway and retrife urn id and payment amount
-    # update the obj with the urn id and payment amount recieved 
-
-    # send sms to customer
-
-    # mark as true after saving the amount paied and ref saving
-
-
-    # redirect it to final page

@@ -36,7 +36,6 @@
           </h6 >
         </div> 
         <div class="" id="pay_here">  </div>
-
         <div class="row mx-1 my-2">
           <button type="submit" id="pay"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
         </div>
@@ -53,15 +52,6 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-  // $(document).ready(function(){
-  //   $('#online').click(function(){
-  //     $('#online').toggleClass('bg-success')
-  //     $('#cash').removeClass('bg-success')
-  //     $('#card').removeClass('bg-success')
-  //     localStorage.setItem('pay_method', 'online')
-  //   })
-  // })
   
   $(document).ready(function(){
     $('#cash').click(function(){
@@ -154,6 +144,7 @@ $(document).ready(function(){
     data['area']    = localStorage.getItem('delivery_id')
     var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
     data['location'] = location;
+    data['sms'] = true
     data['payment'] = localStorage.getItem('pay_method');
     data['order'] = localStorage.getItem('order');
     $.ajax({
@@ -180,7 +171,7 @@ $(document).ready(function(){
           }
         }).then((result) => {
           /* Read more about handling dismissals below */
-          window.location = "/track-order/"+response+"";
+          window.location = "/confirmed/"+response+"";
           if (result.dismiss === Swal.DismissReason.timer) {
             console.log('I was closed by the timer')
           }
@@ -200,8 +191,6 @@ $(document).ready(function(){
     $('#card').removeClass('bg-success')
     localStorage.setItem('pay_method', 'online')
 
-    console.log( "preceeding with the ordering...")
-
     data = {};
     data['name'] = localStorage.getItem('full_name');
     data['number'] = localStorage.getItem('number')
@@ -209,7 +198,6 @@ $(document).ready(function(){
     data['area']    = localStorage.getItem('delivery_id')
     var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
     data['location'] = location;
-    data['sms'] = false
     data['payment'] = localStorage.getItem('pay_method');
     data['order'] = localStorage.getItem('order');
     $.ajax({
@@ -243,27 +231,6 @@ $(document).ready(function(){
     
   }) // end of ajax
 });
-
-// function createFrame(res) {
-//     frame= document.createElement("iframe");
-//     frame.setAttribute("src",res);
-//     frame.setAttribute("name", "Hello");
-//     frame.setAttribute("id", "frame");
-//     frame.frameBorder = 0;
-//     frame.style.width = 100 + "%";
-//     frame.style.height = 1000 + "px";
-//     frame.style.marginTop = 10 + "px";
-//     document.getElementById("pay_here").appendChild(frame);
-//   }
-  
-// placing an order
-
-
-function porder(){
-  console.log("this is order")
-   
-
-  }
 
 </script>
 {% endblock js %}

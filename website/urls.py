@@ -16,7 +16,7 @@ urlpatterns = [
     path('order/address', views.Order_Location.as_view(), name="order_cart_address"),
     path('order/summary', views.Order_summary.as_view(), name="order_summary"),
     path('order/payment', views.Order_payment.as_view(), name="order_payment"),
-    path('track-order/<int:pk>', views.TrackOrder.as_view(), name="track_order"),
+    path('confirmed/<int:pk>', views.TrackOrder.as_view(), name="confirmed"),
     path('dine-in-menu/', views.Dine_Menu.as_view(), name="dine_menu"),
     path('dine-in-cart/', views.Dine_CartView.as_view(), name="dine_in_cart"),
     path('pizza-logo/', TemplateView.as_view(template_name="website/pizza-log.html"), name="pizza_png_log"),
