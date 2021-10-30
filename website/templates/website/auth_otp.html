@@ -1,0 +1,68 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block css %}
+
+{% endblock css %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col -sm-12 col md-3"></div>
+    <div class="col-sm-12 col-md-6">
+      <div class="row mt-3">
+        <div class="col-sm-12 text-center mx-auto my-4">
+          <h2 class="mx-auto">Enter your Number</h2>
+          <img src="{% static 'img/otp.png' %}" alt="">         
+          <div class="container">  
+            <form id="OTP" method="POST"> {% csrf_token %}
+              <div class="row d-flex justify-content-center mb-2">
+                <div class="mb-6 text-center">
+                  <div class="row">
+                    <div class="col-sm-4 col-md-3"></div>
+                    <div class="col-sm-12 col-md-6">
+                      <input name="number" onfocus="number_focus(this)" placeholder="05--------" class="rounded-0" type="tel">                  
+                    </div>
+                    <div class="col-sm-4 col-md-3"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-md-6 mx-auto">
+                  <div class="row">
+                    <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Send OTP</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col -sm-12 col md-3"></div>
+  </div>
+  
+</div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  
+// on focus number input
+function number_focus(e) {
+  var val = '05'
+  if(e.value.length <= 0){
+    val+=e.value
+    e.value = val
+  }
+}
+
+</script>
+
+{% endblock js %}
+

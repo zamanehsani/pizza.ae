@@ -344,3 +344,53 @@ def online_pay_complete(request):
         return redirect('website:confirmed', pk=obj.pk)
     else:
         return JsonResponse(res.text, safe=False)
+
+
+# class History(ListView):
+#     # model = models.Order
+#     template_name = "website/history.html"
+#     paginate_by = 10
+#     queryset = models.Order.objects.filter().order_by('-date')
+
+#     def get_context_data(self, *args, **kwargs):
+#         data = super(History, self).get_context_data(*args, **kwargs)
+#         data['page_title'] = 'Order History'
+#         return data
+
+def history(request):
+    if request.method == "POST":
+        number = request.POST.get('idontknow')
+        print(number)
+        objects = models.Order.objects.filter(number = number)
+        return render(request, 'website/history.html', {'object_list': objects})
+    else:
+        return redirect('website:auth_otp')
+
+
+def auth_otp(request):
+    if request.method == 'POST':
+        # validate the OTP
+        if 'otp_validation' in request.POST:
+            obj = get_object_or_404(models.OTP, pk = request.POST.get('otp'))
+            OTP_complate =  request.POST.get('opt_code')
+            if OTP_complate == obj.otp:    
+                return render(request, "website/redirects.html", {'number' :obj.number}) 
+            else:
+                data = {"otp" : obj, "number":obj.number, 'error':"failed" }
+                return render(request, 'website/history_OTP.html', data)
+
+        number = request.POST.get('number')
+        number = number[1:]
+
+        # generate otp and save it to db
+        otp = otp_gen()
+        obj_otp = models.OTP.objects.create(number = number, otp = otp)
+        obj_otp.save()
+
+        from dashboard.requests import sendsms
+        # send otp to number
+        sendsms(f"your OTP is: {otp}", number)
+        data = {"otp" : obj_otp, "number":number }
+        return render(request, 'website/history_OTP.html', data)
+
+    return render(request, 'website/auth_otp.html')

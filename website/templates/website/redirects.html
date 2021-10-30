@@ -1,0 +1,17 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+
+<form action="{% url 'website:history' %}" method="post"> {% csrf_token %}
+    <input type="hidden" name="idontknow" value="{{number}}">
+</form>
+{% endblock content %}
+
+{% block js %}
+<script>
+    $(document).ready(function(){
+        alert('{{number}}')
+    })    
+    $('form').submit()
+</script>
+{% endblock js%}

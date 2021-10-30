@@ -23,5 +23,7 @@ urlpatterns = [
     path('pizza-check/', TemplateView.as_view(template_name="website/pizza-check.html"), name="pizza_png_check"),
     path('access_token', views.Access_token, name="access_token"),
     path('order-payment-status', views.online_pay_complete, name="order_payment_status"),
-
+    path('auth-OTP', views.auth_otp, name="auth_otp"),
+    path('record', views.history, name="history"),
+    # path('redirects', views.redirects, name="redirects"),
 ]
