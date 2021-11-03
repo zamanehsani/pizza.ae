@@ -13,11 +13,20 @@
 {% block content %}
 <div class="container" style="background-color: seashell;">
   <div class="row">
+
     <span>{{phone}}</span>
     <h2 class="my-3"> Select your location:</h2>
     <div class="col-sm-12 mb-4">
       <div class="row mx-4">
-        <input  id="places_input" class="rounded-0 my-3 border border-dark" type="text" style="width: 90%;" placeholder="Search Places"/>
+
+        <div class="input-group rounded-0 my-3 border border-dark" id="places_input" style="width: 90%;">
+          <input type="text" class="input_search form-control rounded-0 border-0" placeholder="Search Places">
+          <span class="input-group-text bg-white border-0" style="cursor: pointer;">
+            <span class="iconify" id="clear_search" data-icon="ci:close-big" data-width="35" data-height="35"></span> 
+          </span>
+        </div>
+
+        <!-- <input  class="rounded-0 my-3 border border-dark" type="text" style="width: 90%;" placeholder="Search Places"/>  -->
       </div>
       <div id="map"></div>
       <div class="row">
@@ -95,15 +104,22 @@ function initAutocomplete() {
   });
   // Create the search box and link it to the UI element.
   const input = document.getElementById("places_input");
-  const searchBox = new google.maps.places.SearchBox(input);
-
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+  // select the first child of inputGroup which is the input text
+  const searchBox = new google.maps.places.SearchBox(input.firstElementChild);
+  
   // Bias the SearchBox results towards current map's viewport.
   map.addListener("bounds_changed", () => {
     searchBox.setBounds(map.getBounds());
   });
 
   let markers = [];
+
+  // clear the serch input on the map
+  $('#clear_search').click(function(){
+    $('#places_input').children().first().val('')
+  })
 
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
