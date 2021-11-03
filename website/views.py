@@ -1,5 +1,6 @@
 import decimal
 import random
+from django.db.models.query import QuerySet
 
 from requests.api import get
 from dashboard.forms import OrderForm
@@ -346,16 +347,17 @@ def online_pay_complete(request):
         return JsonResponse(res.text, safe=False)
 
 
-# class History(ListView):
-#     # model = models.Order
-#     template_name = "website/history.html"
-#     paginate_by = 10
-#     queryset = models.Order.objects.filter().order_by('-date')
+class Delete(ListView):
+    # model = models.Order
+    template_name = "website/history.html"
+    paginate_by = 10
+    queryset = models.Order.objects.filter(number = '566652534').order_by('-date')
 
-#     def get_context_data(self, *args, **kwargs):
-#         data = super(History, self).get_context_data(*args, **kwargs)
-#         data['page_title'] = 'Order History'
-#         return data
+    def get_context_data(self, *args, **kwargs):
+        data = super(Delete, self).get_context_data(*args, **kwargs)
+        data['page_title'] = 'Order History'
+        return data
+
 
 def history(request):
     if request.method == "POST":
@@ -365,7 +367,6 @@ def history(request):
         return render(request, 'website/history.html', {'object_list': objects})
     else:
         return redirect('website:auth_otp')
-
 
 def auth_otp(request):
     if request.method == 'POST':

@@ -25,5 +25,6 @@ urlpatterns = [
     path('order-payment-status', views.online_pay_complete, name="order_payment_status"),
     path('auth-OTP', views.auth_otp, name="auth_otp"),
     path('record', views.history, name="history"),
+    path('delete', views.Delete.as_view(), name="delete"),
     # path('redirects', views.redirects, name="redirects"),
 ]
