@@ -167,7 +167,7 @@ class Order(models.Model):
     def get_totol(self):
         "get the price order"
         price = self.order_item_list.all()
-        tot = 0;
+        tot = 0
         for i in price:
             tot += i.quantity * i.menu_item.price    
         return '%s' % (tot)

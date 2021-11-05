@@ -14,7 +14,23 @@
         <div class="card-body">
           <h5 class="card-title">{{object.date|date:"D d M Y"}}</h5>
           <p class="my-0 card-text">{{object.address}}</p>
+          <hr class="my-0">
+          {% for i in object.order_item_list.all %}
+          <p class="my-2 ">
+            <span class="rounded-0 py-1 px-2 my-auto mx-1" style="border: 1px solid #FF5400;">{{i.quantity}}</span>
+            x 
+            <b class="px-2">{{i.menu_item}}</b>
+            <span class="active" style="float: right;">{{i.menu_item.price}} <span class="text-dark">AED</span> </span> 
+            </p>
+          {% endfor %}
+          <hr class="my-0">
           <p class="my-0"><b>ID:</b> {{object.pk}}</p>
+          {% if object.payment_method == 'online' %}
+            <P class="my-0"><b>paied:</b> {{object.payment|default:""}}</P>
+          {% else %}
+            <P class="my-0"><b>Amount:</b> {{object.get_totol}}</P>
+          {% endif %}
+
           <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
         </div>
       </div>
