@@ -26,5 +26,6 @@ urlpatterns = [
     path('auth-OTP', views.auth_otp, name="auth_otp"),
     path('record', views.history, name="history"),
     path('delete', views.Delete.as_view(), name="delete"),
+    path('re-order', views.re_order, name="re_order"),
     # path('redirects', views.redirects, name="redirects"),
 ]

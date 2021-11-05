@@ -2,7 +2,7 @@ import decimal
 import random
 from django.db.models.query import QuerySet
 
-from requests.api import get
+from requests.api import get, request
 from dashboard.forms import OrderForm
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -336,7 +336,6 @@ def online_pay_complete(request):
         # print("this mapymnet was : ", val)
         obj.payment = float(val)
         obj.is_complete = True
-
         obj.save()
         from dashboard.requests import sendsms
         text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
@@ -395,3 +394,17 @@ def auth_otp(request):
         return render(request, 'website/history_OTP.html', data)
 
     return render(request, 'website/auth_otp.html')
+
+
+
+def re_order(request):
+    print(request.GET)
+    # get id and 
+    # find the order and change add a reorder by changeing its status and date
+    obj = get_object_or_404(models.Order, pk = request.GET.get('pk'))
+    print(obj)
+    obj.status = 'ordered'
+    obj.is_complete = True
+    obj.save()
+
+    return JsonResponse(obj.is_complete, safe=False)

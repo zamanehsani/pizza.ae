@@ -5,12 +5,13 @@
 {% endblock css %}
 {% block content %}
 
+
 <div class="container">
   <div class="row">
     <div class="col -sm-12 col md-3"></div>
     <div class="col-sm-12 col-md-6">
       {% for object in object_list %}
-      <div class="card my-3 rounded-0">
+      <div class="card my-3 rounded-0 " style="border-color: #FF5400; ">
         <div class="card-body">
           <h5 class="card-title">{{object.date|date:"D d M Y"}}</h5>
           <p class="my-0 card-text">{{object.address}}</p>
@@ -24,12 +25,28 @@
             </p>
           {% endfor %}
           <hr class="my-0">
-          <p class="my-0"><b>ID:</b> {{object.pk}}</p>
-          {% if object.payment_method == 'online' %}
-            <P class="my-0"><b>paied:</b> {{object.payment|default:""}}</P>
-          {% else %}
-            <P class="my-0"><b>Amount:</b> {{object.get_totol}}</P>
-          {% endif %}
+          <div class="row mt-2">
+            <div class="col text-center"> <p class="my-0"><b> ORDER ID:</b> {{object.pk}}</p></div>
+            <div class="col text-center">
+              {% if object.payment_method == 'online' %}
+              <P class="my-0"><b>Paid:</b> {{object.payment|default:""}}</P>
+              {% else %}
+              <P class="my-0"><b>Amount:</b> {{object.get_totol}}</P>
+              {% endif %}
+            </div>
+            <div class="col text-center">
+              <P class="my-0"><b>Via:</b> {{object.payment_method}}</P>              
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col col-sm-4"></div>
+            <div class="col col-sm-4 text-center">
+              <a class="btn mx-auto btn-orange rounded-0 re-order" data-id="{{object.pk}}"><b>RE-ORDER</b></a>
+            </div>
+            <div class="col col-sm-4"></div>
+          </div>
+         
+
 
           <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
         </div>
@@ -43,7 +60,7 @@
 </div>
 
 <div class="container">
-  <div class="row mt-2">
+  <div class="row pt-2">
     <div class="col d-flex justify-content-center ">
       {% if is_paginated %}
 
@@ -80,7 +97,36 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-  
+  $(document).ready(function(){
+    $('.re-order').each(function(){
+      $(this).click(function(){
+        let pk = $(this).attr('data-id');
+        $.ajax({
+          url: '{% url "website:re_order" %}',
+          method: 'get',
+          data:{pk:pk},
+          success: function(res){
+            if(res == true){
+              Swal.fire({
+              icon: 'success',
+              title: 'THANK YOU',
+              text: 'Your order has been recieved.',
+              showConfirmButton: false,
+              timer: 2000
+            })
+          }else{
+            Swal.fire({
+            icon: 'error',
+            title: 'please try again',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          }
+          }
+        })
+      }) //click
+    }) //re-order
+  })
 </script>
 
 {% endblock js %}
