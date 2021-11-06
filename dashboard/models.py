@@ -166,7 +166,11 @@ class Order(models.Model):
 
     @property
     def area_charge(self):
-        return float("{:.2f}".format(self.area.charge))
+        if self.area:
+            return float("{:.2f}".format(self.area.charge))
+        else:
+            return 0
+            
 
     @property
     def vat(self):
@@ -186,7 +190,9 @@ class Order(models.Model):
         vat = (tot * 5) /100
         tot += vat
         # add area charge as well
-        tot += self.area.charge  
+        if self.area:
+            tot += self.area.charge 
+             
         return  float("{:.2f}".format(tot))
 
     @property

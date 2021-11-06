@@ -200,7 +200,6 @@ class Dine_Menu(ListView):
         data['page_title'] = 'DINE IN'
         return data
 
-
 @method_decorator(csrf_exempt, name='dispatch')
 class Dine_CartView(TemplateView):
     template_name = "website/dine_in_cart_view.html"
@@ -222,8 +221,6 @@ class Dine_CartView(TemplateView):
             order_item.save()
 
         return JsonResponse(1, safe=False)
-
-
 
 # load the payment network international
 def Access_token(request):
@@ -250,6 +247,11 @@ def Access_token(request):
 
     import requests
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
+    ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+
+    api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
+    ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
+
     url = "https://api-gateway.ngenius-payments.com/identity/auth/access-token"
     headers = {
         "Accept": "application/vnd.ni-identity.v1+json",
@@ -261,11 +263,7 @@ def Access_token(request):
     y = json.loads(response.text)
     # print(y['access_token'])
     # print(y['refresh_token'])
-    
-    ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
-    api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
 
-    ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
     order_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+ref+"/orders"
 
     payload = {
@@ -287,7 +285,6 @@ def Access_token(request):
         "Content-Type": "application/vnd.ni-payment.v2+json",
         "Authorization": "Bearer "+y['access_token'],
     }
-
     res = requests.request("POST", order_url, data=data_obj, headers=order_headers)
     # print(res)
     res_res = json.loads(res.text)
@@ -296,9 +293,7 @@ def Access_token(request):
     obj.order_pay_ref = pay_id[10:]
     obj.is_complete = False
     obj.save()
-
     return JsonResponse(link+ "&slim=true", safe=False)
-
 
 # this is the function that runs after the payment is done
 def online_pay_complete(request):
@@ -311,7 +306,13 @@ def online_pay_complete(request):
 
     import requests
     url = "https://api-gateway.ngenius-payments.com/identity/auth/access-token"
+
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
+    reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+
+    api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
+    ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
+
     headers = {
         "Accept": "application/vnd.ni-identity.v1+json",
         "Authorization": "Basic "+api,
@@ -323,7 +324,6 @@ def online_pay_complete(request):
     # print(token['access_token'])
 
     # requesting for status
-    reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
     status_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+reference+"/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
@@ -332,7 +332,6 @@ def online_pay_complete(request):
     # print(res.text)
     res_res = json.loads(res.text)
     # print(res_res)
-
     pay_id = res_res['_id']
     pay_id = pay_id[10:]
     obj = get_object_or_404(models.Order, pk = id)
@@ -352,13 +351,11 @@ def online_pay_complete(request):
     else:
         return JsonResponse(res.text, safe=False)
 
-
 class Delete(ListView):
     # model = models.Order
     template_name = "website/history.html"
     paginate_by = 10
     queryset = models.Order.objects.filter(number = '566652534').order_by('-date')
-
     def get_context_data(self, *args, **kwargs):
         data = super(Delete, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Order History'
@@ -388,10 +385,8 @@ def auth_otp(request):
             else:
                 data = {"otp" : obj, "number":obj.number, 'error':"failed" }
                 return render(request, 'website/history_OTP.html', data)
-
         number = request.POST.get('number')
         number = number[1:]
-
         # generate otp and save it to db
         otp = otp_gen()
         obj_otp = models.OTP.objects.create(number = number, otp = otp)
@@ -405,8 +400,6 @@ def auth_otp(request):
 
     return render(request, 'website/auth_otp.html')
 
-
-
 def re_order(request):
     print(request.GET)
     # get id and 
@@ -416,5 +409,4 @@ def re_order(request):
     obj.status = 'ordered'
     obj.is_complete = True
     obj.save()
-
     return JsonResponse(obj.is_complete, safe=False)
