@@ -3,6 +3,7 @@ from os import truncate
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 def customer_profile_location(instance, filename):
@@ -164,13 +165,29 @@ class Order(models.Model):
         return reverse('dashboard:order')
 
     @property
+    def area_charge(self):
+        return float("{:.2f}".format(self.area.charge))
+
+    @property
+    def vat(self):
+        # float("{:.2f}".format(13.949999999999999))
+        vat = (float(self.get_totol) * 5) / 100
+        return float("{:.2f}".format(vat))
+
+    @property
     def get_totol(self):
         "get the price order"
         price = self.order_item_list.all()
         tot = 0
         for i in price:
-            tot += i.quantity * i.menu_item.price    
-        return '%s' % (tot)
+            tot += i.quantity * i.menu_item.price  
+
+        # get the vat without the delivery charge (objects vat only)
+        vat = (tot * 5) /100
+        tot += vat
+        # add area charge as well
+        tot += self.area.charge  
+        return  float("{:.2f}".format(tot))
 
     @property
     def coordinate(self):
