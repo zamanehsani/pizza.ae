@@ -249,10 +249,11 @@ def Access_token(request):
     arr = str(payment_amount).split('.')
 
     import requests
-    url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
+    api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
+    url = "https://api-gateway.ngenius-payments.com/identity/auth/access-token"
     headers = {
         "Accept": "application/vnd.ni-identity.v1+json",
-        "Authorization": "Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==",
+        "Authorization": "Basic "+api,
         "Content-Type" : "application/vnd.ni-identity.v1+json"
     }
     response = requests.request("POST", url, headers=headers)
@@ -260,8 +261,12 @@ def Access_token(request):
     y = json.loads(response.text)
     # print(y['access_token'])
     # print(y['refresh_token'])
+    
+    ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
+    api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
 
-    order_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders"
+    ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+    order_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+ref+"/orders"
 
     payload = {
         "merchantAttributes":{
@@ -305,10 +310,11 @@ def online_pay_complete(request):
     # get access token
 
     import requests
-    url = "https://api-gateway.sandbox.ngenius-payments.com/identity/auth/access-token"
+    url = "https://api-gateway.ngenius-payments.com/identity/auth/access-token"
+    api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
     headers = {
         "Accept": "application/vnd.ni-identity.v1+json",
-        "Authorization": "Basic MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw==",
+        "Authorization": "Basic "+api,
         "Content-Type" : "application/vnd.ni-identity.v1+json"
     }
     response = requests.request("POST", url, headers=headers)
@@ -317,7 +323,8 @@ def online_pay_complete(request):
     # print(token['access_token'])
 
     # requesting for status
-    status_url = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/71a92b33-a43c-42f0-8996-df7933c7c9c7/orders/"+ref
+    reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+    status_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+reference+"/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
     # print("this is the status of pay order:")
@@ -357,13 +364,16 @@ class Delete(ListView):
         data['page_title'] = 'Order History'
         return data
 
-
+from django.core.paginator import Paginator
 def history(request):
     if request.method == "POST":
         number = request.POST.get('idontknow')
-        print(number)
         objects = models.Order.objects.filter(number = number)
-        return render(request, 'website/history.html', {'object_list': objects})
+        paginator = Paginator(objects, 5) # Show 5 contacts per page.
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'website/history.html', {'object_list': page_obj})
+        # return render(request, 'website/history.html', {'object_list': objects})
     else:
         return redirect('website:auth_otp')
 
