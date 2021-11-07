@@ -248,6 +248,7 @@ def Access_token(request):
     import requests
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
     ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+    outlet = "bdb4201b-8573-4fb8-8446-9709edae2167"
 
     api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
     ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
@@ -264,7 +265,7 @@ def Access_token(request):
     # print(y['access_token'])
     # print(y['refresh_token'])
 
-    order_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+ref+"/orders"
+    order_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+outlet+"/orders"
 
     payload = {
         "merchantAttributes":{
@@ -309,7 +310,8 @@ def online_pay_complete(request):
 
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
     reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
-
+    outlet = "bdb4201b-8573-4fb8-8446-9709edae2167"
+    
     api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
     ref_sandbox = "71a92b33-a43c-42f0-8996-df7933c7c9c7"
 
@@ -324,7 +326,7 @@ def online_pay_complete(request):
     # print(token['access_token'])
 
     # requesting for status
-    status_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+reference+"/orders/"+ref
+    status_url = "https://api-gateway.ngenius-payments.com/transactions/outlets/"+outlet+"/orders/"+ref
     
     res = requests.request("GET", status_url, headers= {"Authorization": "Bearer "+token['access_token']})
     # print("this is the status of pay order:")
