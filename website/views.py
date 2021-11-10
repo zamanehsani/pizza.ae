@@ -1,5 +1,6 @@
 import decimal
 import random
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 
 from requests.api import get, request
@@ -8,6 +9,8 @@ from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from dashboard import models
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
+
+from dashboard.views import Order
 
 
 class Menu(ListView):
@@ -356,25 +359,27 @@ def online_pay_complete(request):
 class Delete(ListView):
     # model = models.Order
     template_name = "website/history.html"
-    paginate_by = 10
-    queryset = models.Order.objects.filter(number = '566652534').order_by('-date')
+    paginate_by = 3
+    
+    def get_queryset(self):
+        if self.request.session['number']:
+            return models.Order.objects.filter(number = self.request.session['number']).order_by('-date')
+        else:
+            return 0
+
     def get_context_data(self, *args, **kwargs):
         data = super(Delete, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Order History'
+        if self.request.session['number']:
+            data['sessioned'] = True
         return data
 
-from django.core.paginator import Paginator
-def history(request):
-    if request.method == "POST":
-        number = request.POST.get('idontknow')
-        objects = models.Order.objects.filter(number = number)
-        paginator = Paginator(objects, 5) # Show 5 contacts per page.
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'website/history.html', {'object_list': page_obj})
-        # return render(request, 'website/history.html', {'object_list': objects})
+def signout(request):
+    if request.method == 'GET':
+        request.session.flush()
+        return redirect('website:menu')
     else:
-        return redirect('website:auth_otp')
+        return redirect('website:delete')
 
 def auth_otp(request):
     if request.method == 'POST':
@@ -382,8 +387,10 @@ def auth_otp(request):
         if 'otp_validation' in request.POST:
             obj = get_object_or_404(models.OTP, pk = request.POST.get('otp'))
             OTP_complate =  request.POST.get('opt_code')
-            if OTP_complate == obj.otp:    
-                return render(request, "website/redirects.html", {'number' :obj.number}) 
+            if OTP_complate == obj.otp:  
+                # set the session by the number is into the db.
+                request.session['number'] = obj.number 
+                return redirect('website:delete')
             else:
                 data = {"otp" : obj, "number":obj.number, 'error':"failed" }
                 return render(request, 'website/history_OTP.html', data)
@@ -401,6 +408,8 @@ def auth_otp(request):
         return render(request, 'website/history_OTP.html', data)
 
     return render(request, 'website/auth_otp.html')
+
+
 
 def re_order(request):
     print(request.GET)

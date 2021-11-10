@@ -133,6 +133,27 @@ class Menu(models.Model):
         verbose_name_plural = "Menu"
 
 
+class Ingrediants(models.Model):
+    name    = models.CharField(max_length=100, null=True, blank=True)
+    amount  = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('dashboard:dashboard')
+
+    class Meta:
+        verbose_name_plural = "Ingrediant"
+
+class Menu_tags(models.Model):
+    menu        = models.ManyToManyField(Menu)
+    ingrediant  = models.ManyToManyField(Ingrediants)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class OTP(models.Model):
     date = models.DateTimeField(auto_now=True)
     otp = models.CharField(max_length=10, null=True, blank=True)
@@ -140,7 +161,7 @@ class OTP(models.Model):
 
     def __str__(self) ->str:
         return str(self.otp)
-
+        
 
 class Order(models.Model):
     name        = models.CharField(max_length=200, null=True, blank=True)

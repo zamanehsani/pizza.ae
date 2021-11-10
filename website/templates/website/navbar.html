@@ -35,7 +35,11 @@
                  style="background-color: #FF5400; color: white;">In Cart | <span id="in_cart_header"></span> </a>
           </li>
           <li class="me-4 text-center">
+            {% if sessioned %}
+            <a href="{% url 'website:signout' %}" class="btn px-4 fw-bold btn-success rounded-0 header-font" style="background-color: #219653;">Sign out</a>
+            {% else %}
             <a href="{% url 'website:customer_login' %}" class="btn px-4 fw-bold btn-success rounded-0 header-font" style="background-color: #219653;">Sign In</a>
+            {% endif %}
           </li>
           <!-- <li class="me-4 text-center">
               <a href="{% url 'website:customer_sign_up' %}" class="btn px-4 fw-bold btn-success rounded-0 header-font" style="background-color: #219653;">Sign Up</a>
