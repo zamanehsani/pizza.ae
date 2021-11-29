@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rest_framework",
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -137,6 +138,26 @@ EMAIL_HOST_PASSWORD = 'oihkdhdvesqiiuuk' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'PIZZA.AE'
+
+
+
+# from botocore.client import Config
+# id="AKIAXCV36EXFSDCJLLXZ"
+# key="wE2IP5jCH0vhlsG7iIjqzsaZrcXoAA1PhWIHW5Pi"
+AWS_ACCESS_KEY_ID = 'AKIAXCV36EXFSDCJLLXZ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'pizza-menu-item'
+
+# config=Config(signature_version='s3v4')
+
+# this was the error case.
+AWS_S3_REGION_NAME = "ap-south-1"
+DEFAULT_FILE_STORAGE  = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_DEFAULT_ACL       = None
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL='public-read'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
 
 from django.contrib import messages
 MESSAGE_TAGS = {
