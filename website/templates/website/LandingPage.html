@@ -21,85 +21,75 @@
 -webkit-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
 -moz-box-shadow: 25px 30px 80px 20px rgba(0,0,0,1);
 }
-
+/* 
    html, body {
     height: 100%;
     margin: 0;
-    }
+    } */
 
-    .box {
+    /* .box {
     display: flex;
     flex-flow: column;
     height: 100%;
     margin: 0 0;
-    }
+    } */
 
-    .box .header {
+    /* .box .header {
     flex: 0 1 auto;
-    /* The above is shorthand for:
-    flex-grow: 0,
-    flex-shrink: 1,
-    flex-basis: auto
-    */
-    }
 
+    } */
+/* 
     .box .content {
-    /* flex: 1 1 auto; */
     height: 100%;
     }
     .box .footer {
     flex: 0 1 40px;
-    }
+    } */
 
  
     /* for mobile */
   @media screen and (max-width: 900px) {
-    .call_24_7{
-      position: absolute;
-      bottom: 4em;
-      left: 55%;
-      /* width: 20em; */
-      /* -webkit-transform: translateX(-50%);
-      transform: translateX(-50%) */
-    } 
-    .store_icon{
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 20em; 
+    .box{
+      height: 30em;
+      align-items: center;
+    }
+  
   }
-  .my-margin-top{margin-top: 35%;}
 
+
+  .box{
+    background-color: #FF5400;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .al{
+   margin-top: auto;
+  }
+
+  .live{
+    margin-top: auto;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    align-self: flex-end;
   }
 
   /* for big screen */
   @media screen and (min-width: 901px) {
     .store_icon{
-    /* position: absolute; */
-    bottom: 2em;
-    left: 15em;
-    width: 20em; 
-  }
+      /* position: absolute; */
+      bottom: 2em;
+      left: 15em; 
+    }
 
-  .call_24_7{
-    /* position: absolute; */
-    bottom: 2em;
-    right: 2em;
-    width: 10em; 
-  }
-  .my-margin-top{margin-top: 20%;}
-  }
-
-
-  /* .pizza-background{
-    z-index: -2;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    height: 70vh;
-  } */
+    .box{
+      height: 46em;
+     
+    }
+  } 
 
 .active{
-  color: #F05A23!important;
+  color: #FF5400!important;
 }
 
 </style>
@@ -107,35 +97,28 @@
 {% endblock css %}
 {% block content %}
 
-<div class="box">
-    <div class="content rotated-background-image">
-      <div class="container">
-        <!-- <div class="pizza-background img-thumbnail">
-          <img src="{% static 'img/makhsos.png' %}" class="img-fluid ">
-        </div> -->
-        <div class="container my-margin-top">
-          <div class="row align-self-center ">
-            <div class="col" >
-              <a href="{% url 'website:menu' %}" class="text-decoration-none">
-                <button class="mx-auto py-3 fw-bold btn btn-success px-5 fs-4 rounded-pill d-block mb-3">Order From Menu</button>
-              </a>
-                <button class="mx-auto py-3 fw-bold btn btn-warning px-5 rounded-pill fs-4 d-block mb-3" style="border:none;background-color: #F05A23; color: white;">Make Your Own</button>
-                <button class="mx-auto py-3 fw-bold btn btn-success px-5  fs-4 rounded-pill d-block mb-3">Made By You</button>
-            </div>
-        </div>
-        
-        </div>
-        
-      </div>
-        <img class=" store_icon position-absolute bottom-5 start-10 translate-middle bottom-5 "   src="{% static 'img/store.png' %}" alt="">
-        <a href="https://wa.me/message/GYU3UVTPAADHM1" class="call_24_7 position-absolute bottom-5 end-0 translate-middle fw-bold fs-5 text-decoration-none text-white">
-          Live Chat 24/7
-        </a>
-    </div>
+<div class="box content ">   
+    <a href="{% url 'website:menu' %}" class="al text-decoration-none">
+      <button class="mx-auto py-3 fw-bold btn btn-success px-5 fs-4 rounded-0 d-block mb-3">Order From Menu</button>
+    </a>
+
+    <button  class=" mx-auto py-3 fw-bold btn btn-secondary px-5 rounded-0 fs-4 d-block mb-3" style="border:none; color: white;">&nbsp Make Your Own &nbsp </button>
+    <button  class=" mx-auto py-3 fw-bold btn btn-secondary px-5  fs-4 rounded-0 d-block mb-3"> &nbsp &nbsp Made By You &nbsp &nbsp</button>
+
+    <a href="https://wa.me/message/GYU3UVTPAADHM1" class="live fw-bold fs-5 text-decoration-none text-white">
+      Live Chat 24/7
+    </a>
 </div>
 
 {% endblock content %}
 {% block js %}
 
+<script>
+  $(document).ready(function(){
+    $('.btn-secondary').click(function(){
+      alert("cooming soon")
+    })
+  })
+</script>
 
 {% endblock js %}

@@ -105,7 +105,7 @@
 
 .content {
     background-image: url("../img/piz-bg.png"), url("../img/piz-bg-still.png");
-    background-color: #FF5400;
+   
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */    
