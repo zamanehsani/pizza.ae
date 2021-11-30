@@ -139,6 +139,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'PIZZA.AE'
 
+
+
 from django.contrib import messages
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',

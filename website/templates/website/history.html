@@ -16,6 +16,7 @@
           <h5 class="card-title">{{object.date|date:"D d M Y"}}</h5>
           <p class="my-0 card-text">{{object.address}}</p>
           <hr class="my-0">
+          
           {% for i in object.order_item_list.all %}
           <p class="my-2 ">
             <span class="rounded-0 py-1 px-2 my-auto mx-1" style="border: 1px solid #FF5400;">{{i.quantity}}</span>
