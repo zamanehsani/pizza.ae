@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rest_framework",
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticatedOrReadOnly',)
 }
+
+
+AWS_S3_ACCESS_KEY_ID ="AKIAXCV36EXFTOLROU4B"
+AWS_S3_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "pizza-items"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_S3_ADDRESSING_STYLE = "virtual"
