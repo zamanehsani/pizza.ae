@@ -230,12 +230,16 @@ def Access_token(request):
     id = int(request.GET.get('id'))
     obj = get_object_or_404(models.Order, pk = id)
 
+    print("this is obj,", obj)
     # calculate the prices and all
     payment_amount = 0
     tot = models.Order_items.objects.filter(order = obj.pk)
     for i in tot:
         payment_amount += i.quantity * i.menu_item.price
-    delivery = obj.area.charge
+    delivery = 0
+    if obj.area:
+        delivery = obj.area.charge
+
     vat = (payment_amount * 5) / 100
     payment_amount += delivery
     payment_amount += vat
