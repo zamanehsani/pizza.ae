@@ -16,28 +16,31 @@
     <div class="row">
       <div class="col-sm-12">
        
-        <div class="card rounded-0 my-2 py-3 px-2 text" id="cash">
-          <h6 class="p-0 my-auto">  &nbsp;
-            <span class="iconify" data-icon="fa-solid:money-bill-wave"></span>    &nbsp; &nbsp;&nbsp;Cash on Delivery
+        <div class="border border-secondary rounded-0 my-2 py-3 px-2 text" id="cash" style="display: flex; justify-content: space-between;">
+          <h6 class="p-0 my-auto ">  &nbsp;
+            <span class="iconify" data-icon="fa-solid:money-bill-wave"></span>  &nbsp; &nbsp;&nbsp;Cash on Delivery
           </h6 >
+          <span class="iconify cash_pay d-none" data-icon="bi:check-circle-fill" style="color: #ff5400;" data-width="30" data-height="30"></span>
         </div> 
         
-        <div class="card rounded-0 my-2 py-3 px-2 text" id="card">
+        <div class="border border-secondary rounded-0 my-2 py-3 px-2 text" id="card" style="display: flex; justify-content: space-between;">
           <h6 class="p-0 my-auto">  &nbsp;
             <span class="iconify" data-icon="fontisto:shopping-pos-machine" data-rotate="90deg"></span>  &nbsp;  &nbsp;Card on Delivery
           </h6 >
+          <span class="iconify card_pay d-none" data-icon="bi:check-circle-fill" style="color: #ff5400;" data-width="30" data-height="30"></span>
         </div> 
 
         <!-- uncomment this part -->
-        <div class="card rounded-0  my-2 py-3 px-2 text" id="online">
+        <div class=" border border-secondary rounded-0  my-2 py-3 px-2 text" id="online" style="display: flex; justify-content: space-between;">
           <h6 class="p-0 my-auto"> 
             <span class="iconify" data-icon="logos:visaelectron"></span> 
             <span class="iconify" data-icon="logos:mastercard"></span> 
             &nbsp;Online Payment
           </h6 >
+          <span class="iconify online_pay d-none"  data-icon="bi:check-circle-fill" style="color: #ff5400;" data-width="30" data-height="30"></span>
         </div> 
         <div class="" id="pay_here">  </div>
-        
+
         <div class="row mx-1 my-2">
           <button type="submit" id="pay"  class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Pay</button>
         </div>
@@ -60,15 +63,21 @@
      $('#cash').toggleClass('bg-success')
      $('#online').removeClass('bg-success')
      $('#card').removeClass('bg-success')
+     $('#cash .cash_pay').toggleClass('d-none')
+     $('#card .card_pay').addClass('d-none')
+    $('#online .online_pay').addClass('d-none')
      localStorage.setItem('pay_method', 'cash')
-
     })
   })
+  
   
   $(document).ready(function(){
     $('#card').click(function(){
       $('#card').toggleClass('bg-success')
       $('#cash').removeClass('bg-success')
+      $('#card .card_pay').toggleClass('d-none')
+      $('#online .online_pay').addClass('d-none')
+      $('#cash .cash_pay').addClass('d-none')
      $('#online').removeClass('bg-success')
      localStorage.setItem('pay_method', 'card')
     })
@@ -77,6 +86,7 @@
 //  set payment method defualt cash
 $(document).ready(function(){
   $('#cash').addClass('bg-success')
+  $('#cash .cash_pay').removeClass('d-none')
   localStorage.setItem('pay_method', 'cash')
 });
 
@@ -191,6 +201,11 @@ $(document).ready(function(){
     $('#online').toggleClass('bg-success')
     $('#cash').removeClass('bg-success')
     $('#card').removeClass('bg-success')
+    $('#cash .online_pay').toggleClass('d-none')
+
+    $('#card .card_pay').addClass('d-none')
+    $('#cash .cash_pay').addClass('d-none')
+
     localStorage.setItem('pay_method', 'online')
 
     data = {};

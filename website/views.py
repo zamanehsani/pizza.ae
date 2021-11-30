@@ -83,7 +83,7 @@ class CartView(TemplateView):
             # send a notification to the owner
             text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
             sendsms(text, order_obj.number)
-
+            sendsms("You have recieved a new order.", '555590513')
         # update the order it no area
         if request.POST.get('area'):
             order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
@@ -128,6 +128,7 @@ class Order_cart(TemplateView):
             from dashboard.requests import sendsms
             text = f'your OTP is {otp}'
             sendsms(text, number)
+
             # save otp generated for number
             OTP_obj = models.OTP.objects.create(number = number, otp = otp)
             OTP_obj.save()
@@ -230,7 +231,6 @@ def Access_token(request):
     id = int(request.GET.get('id'))
     obj = get_object_or_404(models.Order, pk = id)
 
-    print("this is obj,", obj)
     # calculate the prices and all
     payment_amount = 0
     tot = models.Order_items.objects.filter(order = obj.pk)
@@ -254,7 +254,7 @@ def Access_token(request):
 
     import requests
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
-    ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+    # ref = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
     outlet = "bdb4201b-8573-4fb8-8446-9709edae2167"
 
     api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
@@ -307,16 +307,16 @@ def Access_token(request):
 def online_pay_complete(request):
     id = request.GET.get('id')
     ref = request.GET.get('ref')
-    print("print all ")
-    print(id)
-    print(ref)
+    # print("print all ")
+    # print(id)
+    # print(ref)
     # get access token
 
     import requests
     url = "https://api-gateway.ngenius-payments.com/identity/auth/access-token"
 
     api = "OGFlNGUwOTUtMjZlOS00YTcyLWIzNjEtZjhjZDExYjllN2NiOjM3OTk4ODhmLWFiZmMtNDg4ZS1hOTAzLWRkM2Q5N2QzYWEwOQ=="
-    reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
+    # reference = "e10fde8b-58bb-4446-b685-bebc8f8b243b"
     outlet = "bdb4201b-8573-4fb8-8446-9709edae2167"
     
     api_sandbox = "MmI3MDRiZTktZTVkMy00NmU3LWI5MzUtYmVmNWJjYTY0YTg3OjMyY2IzNDA2LWY0M2ItNDdiZS1iMDdlLWFjNzg2ZWExYzMxNw=="
@@ -355,6 +355,7 @@ def online_pay_complete(request):
         from dashboard.requests import sendsms
         text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
         sendsms(text, obj.number)
+        sendsms("You have recieved a new order.", '555590513')
         # print("redirecting")
         return redirect('website:confirmed', pk=obj.pk)
     else:
