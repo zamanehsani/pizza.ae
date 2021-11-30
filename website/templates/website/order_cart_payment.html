@@ -224,7 +224,7 @@ $(document).ready(function(){
       success:function(response){
         if(typeof parseInt(response) == 'number'){
           order_id = parseInt(response)
-          console.log(order_id + " this is the pk")
+          // console.log(order_id + " this is the pk")
           $.ajax({
             url :'{% url "website:access_token" %}',
             method:'GET',
@@ -236,7 +236,7 @@ $(document).ready(function(){
           }) // endof ajax
           // localStorage.setItem("order_ref" , order_id)
         }else{
-          console.log("not true the condidtion")
+          // console.log("not true the condidtion")
         }
       }
     })
