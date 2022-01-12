@@ -17,13 +17,15 @@ router.register("users", views.UserView)
 router.register("new-order", views.NewOrderView)
 router.register("order-item", views.OrderItemView)
 router.register("customer", views.CustomerView)
+# router.register('register-user', views.registeration_view)
+
 
 urlpatterns = [
     path('', include(router.urls)),
     # token of jwt 
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     # authentication
     path('api-auth', include("rest_framework.urls")),
+    path('register/', views.registeration_view, name="register_user" ),
 ]
