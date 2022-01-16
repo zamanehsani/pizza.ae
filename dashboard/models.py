@@ -186,6 +186,10 @@ class Order(models.Model):
         return reverse('dashboard:order')
 
     @property
+    def menu_items(self):
+        print(self.order_item_list.all())
+        return self.order_item_list.all()
+    @property
     def area_charge(self):
         if self.area:
             return float("{:.2f}".format(self.area.charge))
@@ -237,7 +241,7 @@ class Order_items(models.Model):
     menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
     quantity = models.SmallIntegerField(default=1)
     def __str__(self) -> str:
-        return  str(self.order)
+        return  str(self.order  ) + str(self.menu_item)
 
     def get_absolute_url(self):
         return reverse('dashboard:order')

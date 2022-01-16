@@ -24,18 +24,22 @@ class Menu_categorySerializer(serializers.HyperlinkedModelSerializer):
         fields = "__all__"
 
 class OrderItemSerializer(serializers.HyperlinkedModelSerializer):
-    # id = serializers.ReadOnlyField()
     class Meta:
         model = models.Order_items
-        fields = "__all__"
-        depth = 2
-class OrderSerializer(serializers.ModelSerializer):
-    # id = serializers.ReadOnlyField()
-    menu_item_set = OrderItemSerializer(read_only=True,many=True)
+        fields = ['url','id', 'quantity', 'menu_item']
+        depth=1
+        
+      
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    menu_items = OrderItemSerializer(many=True)
     class Meta:
         model = models.Order
-        fields = "__all__"
-        depth = 1
+        # fields = '__all__'
+        fields =['url','id','name','date','location','number','status','deliverer','area',
+        'description','address','payment','payment_method','order_source','order_pay_ref', 'is_complete','menu_items']
+        # depth = 3
+
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     # id = serializers.ReadOnlyField()

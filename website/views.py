@@ -82,8 +82,9 @@ class CartView(TemplateView):
             from dashboard.requests import sendsms
             # send a notification to the owner
             text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-            sendsms(text, order_obj.number)
-            sendsms("You have recieved a new order.", '555590513')
+            # commented by me    
+            # sendsms(text, order_obj.number)
+            # sendsms("You have recieved a new order.", '555590513')
         # update the order it no area
         if request.POST.get('area'):
             order_obj.area = get_object_or_404(models.Areas, pk = int(request.POST.get('area')))
@@ -354,8 +355,8 @@ def online_pay_complete(request):
         obj.save()
         from dashboard.requests import sendsms
         text = "THANK YOU FOR ORDERING WITH US. your order had been placed. we will call you once the order arrive."
-        sendsms(text, obj.number)
-        sendsms("You have recieved a new order.", '555590513')
+        # sendsms(text, obj.number)
+        # sendsms("You have recieved a new order.", '555590513')
         # print("redirecting")
         return redirect('website:confirmed', pk=obj.pk)
     else:
