@@ -32,7 +32,7 @@ class OrderItemSerializer(serializers.HyperlinkedModelSerializer):
       
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    menu_items = OrderItemSerializer(many=True)
+    menu_items = OrderItemSerializer(many=True,required=False)
     class Meta:
         model = models.Order
         # fields = '__all__'
