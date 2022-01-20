@@ -3,9 +3,12 @@
 import os
 import sys
 
+# imported the django-dotenv
+import dotenv
 
 def main():
     """Run administrative tasks."""
+    dotenv.read_dotenv()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pizza.settings')
     try:
         from django.core.management import execute_from_command_line

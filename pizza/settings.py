@@ -6,18 +6,22 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+
+import os
 from pathlib import Path
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-p$kk^ylq11+utti@skppm%4!ozxfos*fbpgxi#t8_kv@8l^xeu"
+
+SECRET_KEY = os.environ.get('SECRET_KEY') #"django-insecure-p$kk^ylq11+utti@skppm%4!ozxfos*fbpgxi#t8_kv@8l^xeu"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = eval(os.environ.get('DEBUG'))
+
 ALLOWED_HOSTS = ['127.0.0.1','10.125.101.61','192.168.1.100','www.pizza.ae','192.168.1.114','10.125.108.82','pizza.ae','192.168.0.141','192.168.1.191','pizza-ae.herokuapp.com']
 # Application definition
-import os
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -48,7 +52,6 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-
 ROOT_URLCONF = "pizza.urls"
 TEMPLATES = [
     {
@@ -70,23 +73,29 @@ WSGI_APPLICATION = "pizza.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": 'ddin8u6qrehkas',
-#         "USER":'knaxetupnyjnff',
-#         "POST": '5432',
-#         "PASSWORD": '9f09659c3378c1920338aab7975ab163823a819cbc63da3433f409c694bece99',
-#         'HOST':'ec2-54-74-77-126.eu-west-1.compute.amazonaws.com',
-#     }
-# }
+if eval(os.environ.get('DEBUG')):
+    print("debug is true, entering into dev env")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+            }
+        }
+else:
+    print("debug is false")
+    DATABASES = {
+        "default": {
+            "ENGINE": os.environ.get('DB_ENGINE'),
+            "NAME": os.environ.get('DB_NAME'),
+            "USER":os.environ.get('DB_USER'),
+            "POST": os.environ.get('DB_POST'),
+            "PASSWORD": os.environ.get('DB_PASSWORD'),
+            'HOST':os.environ.get('DB_HOST'),
+        }
+    }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -138,13 +147,13 @@ LOGOUT_REDIRECT_URL  = 'login'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Z2020z@98 is the email password
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '	info@pizza.ae'
-EMAIL_HOST_PASSWORD = 'oihkdhdvesqiiuuk' #past the key or password app here
-EMAIL_PORT = 587
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'PIZZA.AE'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 
 
@@ -163,12 +172,12 @@ REST_FRAMEWORK = {
 }
 
 
-AWS_S3_ACCESS_KEY_ID ="AKIAXCV36EXFTOLROU4B"
-AWS_S3_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "pizza-items"
+AWS_S3_ACCESS_KEY_ID =os.environ.get('AWS_S3_ACCESS_KEY_ID')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME =os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = 'ap-south-1'
-AWS_S3_ADDRESSING_STYLE = "virtual"
+DEFAULT_FILE_STORAGE = os.environ.get('DEFAULT_FILE_STORAGE')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+AWS_S3_ADDRESSING_STYLE = os.environ.get('AWS_S3_ADDRESSING_STYLE')
