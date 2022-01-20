@@ -75,7 +75,6 @@ WSGI_APPLICATION = "pizza.wsgi.application"
 
 
 if eval(os.environ.get('DEBUG')):
-    print("debug is true, entering into dev env")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -83,7 +82,6 @@ if eval(os.environ.get('DEBUG')):
             }
         }
 else:
-    print("debug is false")
     DATABASES = {
         "default": {
             "ENGINE": os.environ.get('DB_ENGINE'),
@@ -168,7 +166,7 @@ MESSAGE_TAGS = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
-    'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
+    'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.AllowAny',)
 }
 
 
