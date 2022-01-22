@@ -20,7 +20,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY') #"django-insecure-p$kk^ylq11+utti@skpp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(os.environ.get('DEBUG'))
 
-ALLOWED_HOSTS = ['127.0.0.1','10.125.101.61','192.168.1.100','www.pizza.ae','192.168.1.114','10.125.108.82','pizza.ae','192.168.0.141','192.168.1.191','pizza-ae.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','www.pizza.ae','pizza.ae','192.168.0.142','pizza-ae.herokuapp.com']
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",

@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <style>
   
-  p {
+  /* p {
     color:#F96302;
-  }
+  } */
 
   td,
 th,
@@ -90,22 +90,22 @@ img {
         <div class="container">
           
           <!-- Small boxes (Stat box) -->
-          <div class="card card-orange card-outline">
+          <div class="card card-outline rounded-0 border-0 shadow-none">
          
             <div class="card-header">
               <h3 class="card-title d-none d-lg-inline" onclick="text(2)" > <i class="fas fa-edit"></i>  Orders</h3>
               {% if perms.dashboard.add_order %}
-              <a href="{% url 'dashboard:dashboard'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add order</a>
+              <a href="{% url 'dashboard:dashboard'%}" style="background-color: #f96302;" class="btn text-white rounded-0 float-right pt-0 pb-0 mr-2"> Add order</a>
               {% endif %}
             </div>
 
             <!-- orders under process -->
-            <div class="card-body" style="background-color: antiquewhite;" id="card-body">
-              <p class="text-center text-success fw-bold"> Processing</p>
-              <hr class="bg-success " style="height: 3px;">
+            <div class="card-body border-0 " style="background-color: #f4f6f9;" id="card-body">
+              <!-- <p class="text-center text-success fw-bold"> Processing</p> -->
+              <!-- <hr class="bg-success " style="height: 3px;"> -->
               {% for order in object_list %}
                 {% if order.status == 'accepted' %}
-                  <div class="card new_order_card">
+                  <div class="card new_order_card rounded-0 border-0">
                     
                     <div class="card-body">
                       <div class="row">
@@ -152,7 +152,7 @@ img {
                                 </div>
                                 {% else %}
                                 <div class="col-sm-12 col-md-6">
-                                  <select name="deliverer" class="form-select form-select-md mb-3">
+                                  <select name="deliverer" class="form-select form-select-md mb-3 rounded-0">
                                     <option disabled selected>select deliverer</option>
                                     {% for u in deliveries.user_set.all %}
                                       <option value="{{u.pk}}">{{u.get_full_name}}</option>
@@ -160,7 +160,7 @@ img {
                                   </select>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
-                                  <button class="btn btn-info px-5 mx-3 btn-accept" name="finishing" data-id="{{order.id}}" type="submit">Finish</button>
+                                  <button class="btn btn-dark px-5 mx-3 btn-accept rounded-0 border-0" name="finishing" style="background-color: #f96302;" data-id="{{order.id}}" type="submit">Finish</button>
                                 </div>
                                 {% endif %}
                               </div>
@@ -173,17 +173,17 @@ img {
                       </div>
                       {% else %}
                         <div class="col-sm-12 col-md-4 my-auto">
-                          <div class="card" style="box-shadow: none; border-radius: 7px;">
+                          <div class="card shadow-none rounded-0">
                             <div class="card-header" style="background-color: transparent;">
                               <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
                             </div>
                             <div class="card-body text-center">
                               <p class="address">{{order.address}}</p>
                               <span class="iconify copy_location" data-icon="fluent:document-copy-16-regular" data-location="{{order.address}}"
-                                style="color: #f96302;" data-width="35" data-height="35"></span>
+                                style="color: #000;" data-width="35" data-height="35"></span>
                               <span class="mx-2"></span>
                               <a href="#!" data-location="{{order.location|default:'unknown'}}" class="copy_location text-decoration-none">
-                                <span class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                                <span class="iconify" data-icon="mdi-light:map-marker" style="color: #000;" data-width="38" data-height="38"></span>
                               </a>
                               <span class="mx-2"></span>
                               <p class="d-none for-whatsapp">
@@ -197,12 +197,12 @@ img {
                                 location: <a href="https://www.google.com/maps/place/{{order.coordinate}}">https://www.google.com/maps/place/{{order.coordinate}}</a>
                               </p>
                               <a href="#!" class="send_to_whatsapp text-decoration-none" data-order="{{order.address}}">
-                                <span class="iconify" data-icon="fa-brands:whatsapp-square" style="color: #f96302;" data-width="35" data-height="35"></span>
+                                <span class="iconify" data-icon="fa-brands:whatsapp-square" style="color: #000;" data-width="35" data-height="35"></span>
                               </a>
                               <span  class="mx-2"></span>
                               <!-- onclick prints the ticket div via printjs library -->
                               <a href="#!" onclick="printJS({ printable: '{{order.id}}', type: 'html' })" class=" text-decoration-none" data-order="{{order.address}}">
-                                <span class="iconify" data-icon="fluent:print-24-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
+                                <span class="iconify" data-icon="fluent:print-24-regular" style="color: #000;"  data-width="35" data-height="35"></span>
                                 <!-- <span class="iconify" data-icon="fa-brands:whatsapp-square" ></span> -->
                               </a>
 
@@ -254,13 +254,13 @@ img {
             </div>
 
             <!-- new order list -->
-            <div class="card-body" style="background-color: antiquewhite;" id="card-body">
-              <p class="text-center text-success fw-bold"> New Order</p>
-              <hr class="bg-success " style="height: 3px;">
+            <div class="card-body" style="background-color: #f4f6f9;"  id="card-body">
+              <!-- <p class="text-center text-success fw-bold"> New Order</p>
+              <hr class="bg-success " style="height: 3px;"> -->
 
               {% for order in object_list %}
                 {% if order.status == 'ordered' and order.status != 'rejected' and order.is_complete %}
-                <div class="card new_order_card">
+                <div class="card new_order_card rounded-0 border-0">
                   <!-- play a sound on new order controls is removed to hide -->
                   <audio  autoplay>
                     <source src="{% static 'sound/notification_sound.wav' %}" type="audio/wav">
@@ -299,8 +299,8 @@ img {
                           <span class="float-right">{{order.get_totol}} AED </span></p>
                         <hr>
                         <div class="text-center">
-                          <button class="btn btn-success px-5 mb-2 btn-accept"  data-id="{{order.id}}"  type="button">Accept</button>
-                          <button class="btn btn-outline-danger px-5 mb-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
+                          <button class="btn btn-success rounded-0 px-5 mb-2 btn-accept"  data-id="{{order.id}}"  type="button">Accept</button>
+                          <button class="btn btn-outline-danger rounded-0 px-5 mb-2 btn-reject" data-id="{{order.id}}" type="button">Reject</button>
                         </div>
                       </div>
                       {% if order.order_source == 'dine-in' %}
@@ -309,15 +309,15 @@ img {
                       </div>
                       {% else %}
                       <div class="col-sm-12 col-md-4 my-auto">
-                        <div class="card" style="box-shadow: none; border-radius: 7px;">
+                        <div class="card rounded-0" style="box-shadow: none; border-radius: 7px;">
                           <div class="card-header" style="background-color: transparent;">
                             <p class="mb-0 fs-5 fw-bold">ADDRESS</p>
                           </div>
                           <div class="card-body text-center">
                             <p class="address">{{order.address}}</p>
-                            <span class="iconify" data-icon="fluent:document-copy-16-regular" style="color: #f96302;" data-width="35" data-height="35"></span>
+                            <span class="iconify" data-icon="fluent:document-copy-16-regular" data-width="35" data-height="35"></span>
                             <span class="mx-2"></span>
-                            <span data-location="${json_obj[i].fields.location}" class="iconify" data-icon="mdi-light:map-marker" style="color: #f96302;" data-width="38" data-height="38"></span>
+                            <span data-location="${json_obj[i].fields.location}" class="iconify" data-icon="mdi-light:map-marker" data-width="38" data-height="38"></span>
                           </div>
                         </div>
                       </div>
@@ -349,9 +349,9 @@ img {
 
 <script>
 
-// setTimeout(function(){
-//    window.location.reload(1);
-// }, 10000);
+setTimeout(function(){
+   window.location.reload(1);
+}, 10000);
 
 // send order with url and details to whatsapp
 $(document).ready(function(){

@@ -34,14 +34,16 @@
           {% if perms.dashboard.view_order %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-warning rounded-0">
+      
               <div class="inner">
-                <h3>{{orders}}</h3>
-                <p>New Orders</p>
+                <h3 class="text-white">{{orders}}</h3>
+                <p class="text-white">New Orders</p>
               </div>
               <div class="icon">
                 <i class="fas fa-shopping-cart"></i>
               </div>
+            
               <a href="{% url 'dashboard:order' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
@@ -51,10 +53,10 @@
           {% if perms.dashboard.view_delivery %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box rounded-0 bg-success">
               <div class="inner">
-                <h3>45<sup style="font-size: 20px"></sup></h3>
-                <p>Delivery</p>
+                <h3 class="text-white">45<sup style="font-size: 20px"></sup></h3>
+                <p class="text-white">Delivery</p>
               </div>
               <div class="icon">
                 <i class="fas fa-truck"></i>
@@ -67,11 +69,11 @@
           {% if perms.dashboard.view_menu %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>{{menus}}</h3>
+                <h3 class="text-white">{{menus}}</h3>
 
-                <p>Menu Dine-in</p>
+                <p class="text-white">Menu Dine-in</p>
               </div>
               <div class="icon">
                 <i class="fas fa-utensils"></i>
@@ -84,11 +86,11 @@
           {% if perms.dashboard.view_menu %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>{{menus}}</h3>
+                <h3 class="text-white">{{menus}}</h3>
 
-                <p> <a href="#" class="text-dark"> Menu Items</a> </p>
+                <p class="text-white"> <a href="#" class="text-dark"> Menu Items</a> </p>
               </div>
               <div class="icon">
                 <i class="fas fa-bars"></i>
@@ -101,10 +103,10 @@
           {% if perms.dashboard.view_stock %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>{{stocks}}</h3>
-                <p> Items in stock</p>
+                <h3 class="text-white">{{stocks}}</h3>
+                <p class="text-white"> Items in stock</p>
               </div>
               <div class="icon">
                 <i class="fas fa-archive"></i>
@@ -118,11 +120,11 @@
           {% if perms.dashboard.view_report %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box rounded-0 bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px"></sup></h3>
+                <h3 class="text-white">53<sup style="font-size: 20px"></sup></h3>
 
-                <p>Reports</p>
+                <p class="text-white">Reports</p>
               </div>
               <div class="icon">
                 <i class="fas fa-file"></i>
@@ -135,11 +137,11 @@
           {% if perms.dashboard.view_staff_salary %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>{{salaries}}</h3>
+                <h3 class="text-white">{{salaries}}</h3>
 
-                <p>month of {% now "M" %}</p>
+                <p class="text-white">month of {% now "M" %}</p>
               </div>
               <div class="icon">
                 <i class="fa fa-money-bill"></i>
@@ -154,11 +156,11 @@
             {% if perms.dashboard.view_user %}
             <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>{{users}}</h3>
+                <h3 class="text-white">{{users}}</h3>
 
-                <p>Users</p>
+                <p class="text-white">Users</p>
               </div>
               <div class="icon">
                 <i class="fas fa-user"></i>
@@ -173,11 +175,11 @@
             {% if perms.dashboard.view_user %}
             <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>3</h3>
+                <h3 class="text-white">3</h3>
 
-                <p>Area</p>
+                <p class="text-white">Area</p>
               </div>
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
@@ -191,11 +193,11 @@
           {% if perms.dashboard.view_customer %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>0</h3>
+                <h3 class="text-white">0</h3>
 
-                <p>Customer</p>
+                <p class="text-white">Customer</p>
               </div>
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
@@ -208,11 +210,11 @@
           {% if perms.dashboard %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box rounded-0 bg-orange">
               <div class="inner">
-                <h3>0</h3>
+                <h3 class="text-white">0</h3>
 
-                <p>Company</p>
+                <p class="text-white">Company</p>
               </div>
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
