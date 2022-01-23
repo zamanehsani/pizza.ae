@@ -15,7 +15,7 @@ from rest_framework.decorators import api_view
 class AreaView(viewsets.ModelViewSet):
     queryset = models.Areas.objects.all()
     serializer_class = serializers.AreaSerializer
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.AllowAny,)
 
 class MenuView(viewsets.ModelViewSet):
     queryset = models.Menu.objects.all()

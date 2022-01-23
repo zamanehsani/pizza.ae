@@ -48,11 +48,11 @@ crossorigin=""/>
       <div class="content">
         <div class="container">
           <!-- Small boxes (Stat box) -->
-          <div class="card card-orange card-outline">
+          <div class="card border-0 shadow-none card-outline">
             <div class="card-header">
               <h3 class="card-title d-none d-lg-inline" onclick="text(2)" > <i class="fas fa-edit"></i>  Coverage Areas</h3>
               {% if perms.dashboard.add_area %}
-              <a href="{% url 'dashboard:add_area'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add Area</a>
+              <a href="{% url 'dashboard:add_area'%}" style="background-color: #ff5400;" class="btn text-white float-right pt-0 pb-0 mr-2"> Add Area</a>
               {% endif %}
             </div>
             <div class="card-body">

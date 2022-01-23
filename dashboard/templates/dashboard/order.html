@@ -95,7 +95,7 @@ img {
             <div class="card-header">
               <h3 class="card-title d-none d-lg-inline" onclick="text(2)" > <i class="fas fa-edit"></i>  Orders</h3>
               {% if perms.dashboard.add_order %}
-              <a href="{% url 'dashboard:dashboard'%}" style="background-color: #f96302;" class="btn text-white rounded-0 float-right pt-0 pb-0 mr-2"> Add order</a>
+              <a href="{% url 'dashboard:manual_order'%}" style="background-color: #f96302;" class="btn text-white rounded-0 float-right pt-0 pb-0 mr-2"> Add order</a>
               {% endif %}
             </div>
 
@@ -196,8 +196,8 @@ img {
                                 total: {{order.get_totol}},
                                 location: <a href="https://www.google.com/maps/place/{{order.coordinate}}">https://www.google.com/maps/place/{{order.coordinate}}</a>
                               </p>
-                              <a href="#!" class="send_to_whatsapp text-decoration-none" data-order="{{order.address}}">
-                                <span class="iconify" data-icon="fa-brands:whatsapp-square" style="color: #000;" data-width="35" data-height="35"></span>
+                              <a href="#!" class="send_to_whatsapp text-decoration-none"  data-order="{{order.address}}">
+                                <span class="iconify" data-icon="akar-icons:whatsapp-fill" style="color: #000;" data-width="30" data-height="30"></span>
                               </a>
                               <span  class="mx-2"></span>
                               <!-- onclick prints the ticket div via printjs library -->

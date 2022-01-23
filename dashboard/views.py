@@ -1,4 +1,5 @@
 
+from operator import mod
 from dashboard.requests import sendsms
 from json.encoder import JSONEncoder
 from django.db.models import fields
@@ -50,7 +51,6 @@ class Order(LoginRequiredMixin, ListView):
             messages.error(request, 'something went wrong.', fail_silently=True)
             return redirect('website:cart', pk=request.POST.get('menu_items'))
         
-    
 
     def get_context_data(self, *args, **kwargs):
         from django.contrib.auth.models import Group
@@ -59,6 +59,22 @@ class Order(LoginRequiredMixin, ListView):
         data['page_title'] = 'Order'
         data['deliveries'] = Deliveries
         return data
+
+class Order_manual(LoginRequiredMixin, ListView):
+    model = models.Menu_category
+    template_name = "dashboard/order_manual.html"
+    ordering = ['sort']
+    def get_context_data(self, *args, **kwargs):
+        # from django.contrib.auth.models import Group
+        data = super(Order_manual, self).get_context_data(*args, **kwargs)
+        # Deliveries = Group.objects.filter(name = 'delivery').first()
+        data['page_title'] = 'Manual Order'
+        # data['deliveries'] = Deliveries
+        return data
+
+class Manual_order_cart(TemplateView):
+    template_name="dashboard/manual_order_cart.html"
+    
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
@@ -231,7 +247,7 @@ class Area_add(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/Area_add.html'
 
     def post(self, request):
-        print(request.POST)
+       
         form = forms.AreaForm(request.POST)
         if form.is_valid():
             form.save()

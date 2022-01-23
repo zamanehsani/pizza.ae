@@ -7,9 +7,6 @@
 
 {% block content %}
 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container">
@@ -36,9 +33,9 @@
           <!-- left column -->
           <div class="col-sm-12 col-lg-6 align-items-center">
             <!-- general form elements -->
-            <div class="card card-orange">
-              <div class="card-header">
-                <h3 class="card-title">Add a new menu category </h3>
+            <div class="card">
+              <div class="card-header" style="background-color: #FF5400;">
+                <h3 class="card-title text-white">Add a new menu category </h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -47,7 +44,7 @@
                     {{form|crispy}}
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn bg-orange text-white px-5 float-right"> Submit</button>
+                  <button type="submit" style="background-color: #FF5400;" class="btn text-white px-5 float-right"> Submit</button>
                   <a  href="{% url 'dashboard:menulist' %}" class="btn btn-outline-secondary float-right mx-3"> Cancel</a>
                 </div>
               </form>
@@ -59,8 +56,6 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
 {% endblock content %}
 

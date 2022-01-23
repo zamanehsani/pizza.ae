@@ -1,122 +1,145 @@
-{% extends 'website/base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 
 {% block css %}
 <style>
 
-.text-on-line {
-   width: 100%; 
-   text-align: center; 
-   border-bottom: 1px solid #FF5400; 
-   line-height: 0.1em;
-   margin: 20px 0 30px; 
-} 
-
-/* for the heading line with text on it for category */
-.text-on-line span { 
-    background:#fff; 
-    padding:0 10px; 
-    color: #FF5400;
-}
-
-
-
-/*  hovering effects */
-.menu_item_hover .btn_order{
-    /* visibility: hidden; */
-    border:solid 1px #FF5400;
-        
-}
-.btn_order:focus{
-    background-color: yellowgreen;
-}
-
-.menu_item_hover:hover{
-    /* border-radius: 4px; */
-    /* border: 1px solid green; */
-    box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-    -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-    -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
-}
-
-.in-cart-item-counter{
-    /* visibility: hidden; */
-    display: none;
-}
-
-.menu_item_hover:hover .btn_order{
-    visibility: visible;
-    color: #FF5400;
-    background-color: wheat;
-    border: 1px solid #FF5400;
-   
-} 
-.menu_item_hover:hover .in-cart-item-counter{
-    visibility: visible;
-    display: inline;
-    position: absolute;
-}
-
-.btn_order{
-    color: #FF5400;
-}
-
-.menu_item_hover:hover .btn_order:hover{
-    background-color: #FF5400;
-    color:white;
-}
-
-/* for fab btn */
-.btn-group-fab {
-  position: fixed;
-  width: 50px;
-  height: auto;
-  right: 20px; bottom: 20px;
-}
-.btn-group-fab div {
-  position: relative; width: 100%;
-  height: auto;
-}
-.btn-group-fab .btn {
-  position: absolute;
-  bottom: 0;
-  border-radius: 50%;
-  display: block;
-  margin-bottom: 4px;
-  width: 40px; height: 40px;
-  margin: 4px auto;
-}
-.btn-group-fab .btn-main {
-  width: 50px; height: 50px;
-  right: 50%; margin-right: -25px;
-  z-index: 9;
-}
-
-.btn-order{
-    border: solid 1px #FF5400;
-    margin: 0px;
-    color: #FF5400;
-    font-weight: bold;
-}
-.menu_item_hover:hover .btn-order:hover{
-    background-color: #FF5400;
-    color:white;
-}
-
-.menu-links{
-    border: solid 1px #FFF;
-}
-/* .menu-links:hover{background-color: #FFF;} */
-
-.checked{color: #FF5400;}
-
-
-</style>
-
+    .text-on-line {
+       width: 100%; 
+       text-align: center; 
+       border-bottom: 1px solid #FF5400; 
+       line-height: 0.1em;
+       margin: 20px 0 30px; 
+    } 
+    
+    /* for the heading line with text on it for category */
+    .text-on-line span { 
+        background:#fff; 
+        padding:0 10px; 
+        color: #FF5400;
+    }
+    
+    
+    
+    /*  hovering effects */
+    .menu_item_hover .btn_order{
+        /* visibility: hidden; */
+        border:solid 1px #FF5400;
+            
+    }
+    .btn_order:focus{
+        background-color: yellowgreen;
+    }
+    
+    .menu_item_hover:hover{
+        /* border-radius: 4px; */
+        /* border: 1px solid green; */
+        box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+        -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+        -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+    }
+    
+    .in-cart-item-counter{
+        /* visibility: hidden; */
+        display: none;
+    }
+    
+    .menu_item_hover:hover .btn_order{
+        visibility: visible;
+        color: #FF5400;
+        background-color: wheat;
+        border: 1px solid #FF5400;
+       
+    } 
+    .menu_item_hover:hover .in-cart-item-counter{
+        visibility: visible;
+        display: inline;
+        position: absolute;
+    }
+    
+    .btn_order{
+        color: #FF5400;
+    }
+    
+    .menu_item_hover:hover .btn_order:hover{
+        background-color: #FF5400;
+        color:white;
+    }
+    
+    /* for fab btn */
+    .btn-group-fab {
+      position: fixed;
+      width: 50px;
+      height: auto; 
+      right: 20px; bottom: 20px;
+    }
+    .btn-group-fab div {
+      position: relative; width: 100%;
+      height: auto;
+    }
+    .btn-group-fab .btn {
+      position: absolute;
+      bottom: 0;
+      display: block;
+      margin-bottom: 4px;
+      width: 40px; height: 40px;
+      margin: 4px auto;
+      border-radius: 50%!important;
+    }
+    .btn-group-fab .btn-main {
+      width: 50px; height: 50px;
+      right: 50%; margin-right: -25px;
+      z-index: 9;
+    }
+    
+    .btn-order{
+        border: solid 1px #FF5400;
+        margin: 0px;
+        color: #FF5400;
+        font-weight: bold;
+    }
+    .menu_item_hover:hover .btn-order:hover{
+        background-color: #FF5400;
+        color:white;
+    }
+    
+    .menu-links{
+        border: solid 1px #FFF;
+    }
+    /* .menu-links:hover{background-color: #FFF;} */
+    
+    .checked{color: #FF5400;}
+    
+    
+    </style>
+    
 {% endblock css %}
-{% block content %}
 
-<!-- this is the sticky  -->
+
+{% block content %}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container">
+        <div class="row mb-2">
+        <div class="col-sm-6">
+            <h3 class="m-0"> Order <small>Select Items</small></h3>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active"> Add Order</li>
+            </ol>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<div class="content">
+    <div class="container">
+      <div class="card card-orange card-outline rounded-0 shadow-none">
+          <div class="card-body p-0">
+            <!-- this is the sticky  -->
 <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #FF5400;">
     <div class="container-fluid">
         <ul class="navbar-nav mx-auto my-lg-0" style="flex-direction: row;">
@@ -166,8 +189,8 @@
                 </div>
             {% endfor %}
         {% endfor %}
-        <div class="btn-group-fab shopping-cart" style="z-index: 1000; border-radius: 50%; " role="group" aria-label="FAB Menu">
-          <a href="{% url 'website:order_cart' %}">
+        <div class="btn-group-fab shopping-cart" style="z-index: 1000;" role="group" aria-label="FAB Menu">
+          <a href="{% url 'dashboard:manual_order_cart' %}">
             <button class="btn btn-main px-auto" style="height: 70px; width: 70px; background-color: #FF5400; color: #fff;"  title="Cart"> 
             <h2 id="order_counter" class="pt-1">0</h2>
             <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: white;" data-width="30" data-height="35"></span> -->
@@ -177,16 +200,19 @@
     </div>
 </div>
 </div>
+          
+          </div>
+      </div>
+    </div>
+</div>
 
-{% endblock content %}
+
+{%endblock content  %}
 
 {% block js %}
 
-<script src="{% static 'js/scripts.js' %}"></script>
-
 <script>
-
-// load the menu item in cart counter labal
+    // load the menu item in cart counter labal
 $(document).ready(function(){
     if(localStorage.getItem('order')){
       var orders = localStorage.getItem('order');
@@ -436,8 +462,6 @@ $(document).ready(function(){
     }else{ $('#order_counter').text(0) }
 });
 
+
 </script>
-{% endblock js %}
-
-
-
+{%endblock js%}

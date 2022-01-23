@@ -51,55 +51,37 @@ font-size: 13px;
       <!-- Main content -->
       <div class="content">
         <div class="container">
-          <div class="card card-orange card-outline">
+          <div class="card shadow-none card-outline">
             <div class="card-header">
-              <h3 class="card-title d-none d-lg-inline">add an area with clicking on the map area. double-click to finished your area.</h3>
+              <h4 class="card-title d-none d-lg-inline">Add an area with clicking on the map area. Double-click to finished your area.</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body ">
               <div class="row">
                 <!-- <h2>PIZZA.AE location</h2> -->
                 
                   <div id="map"></div>
-             
-                  <div class="row mt-3">
-                    <form method="POST"> {% csrf_token %}
+
+                    <form method="POST" class="mt-2"> {% csrf_token %}
                       <input type="hidden" name="geojson" id="geojson">
-      
-                      <div class="row mb-2">
-                        <div class="col">
-                          <div class="">
-                            <!-- <label  class="form-label">Name</label> -->
+                      <div class="row mx-auto mb-2">
+                        <div class="col-12 col-md-6 col-lg-3 py-1">
                             <input class="form-control" required placeholder="name of area" type="text" name="name">
-                          </div>
                         </div>
-                        <div class="col">
-                          <div class="">
-                            <!-- <label  class="form-label">minimum order</label> -->
-                            <input class="form-control" required placeholder="minimum order" type="number" name="min_order">
-                          </div>
+                        <div class="col-12 col-md-6 col-lg-2 py-1">
+                            <input class="form-control" required placeholder="minimum order" type="number" name="min_order">    
                         </div>
-                        <div class="col">
-                          <div class="">
-                            <!-- <label class="form-label">Charge</label> -->
+                        <div class="col-12 col-md-6 col-lg-2 py-1">
                             <input class="form-control" required placeholder="delivery charge" type="number" name="charge">
-                          </div>
                         </div>
-                        <div class="col">
-                          <div class="">
-                            <!-- <label class="form-label">Charge</label> -->
-                            <input class="form-control" required placeholder="color of area" type="text" name="color">
-                          </div>
+                        <div class="col-12 col-md-6 col-lg-2 py-1">
+                            <input class="form-control" required placeholder="color of area" type="text" name="color">                     
                         </div>
-                        <div class="col">
-                          <div class="">
-                            <input type="submit" class="btn btn-primary form-control" value="Add">
-                            
-                          </div>
-                          
+                        <div class="col-12 col-md-6 col-lg-3 py-1">
+                            <input type="submit" class="btn btn-primary form-control" value="Add">                        
                         </div>
                       </div>
                     </form>
-                  </div>
+                 
       
                   <!-- <div class="calculation-box">
                     <p>Click the map to draw a polygon.</p>

@@ -6,8 +6,6 @@
 
 {% block content %}
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container">
@@ -28,17 +26,16 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-sm-12 col-lg-6 align-items-center">
                 <!-- general form elements -->
-                <div class="card card-orange">
-                  <div class="card-header">
-                    <h3 class="card-title">Remove Menu Category</h3>
+                <div class="card">
+                  <div class="card-header" style="background-color: #FF5400;">
+                    <h3 class="card-title text-white">Remove Menu Category</h3>
                   </div>
-                  <!-- /.card-header -->
-                  <!-- form start -->
+              
                   <form method="POST"> {% csrf_token %}
                     <div class="card-body">
                         <p>Are you sure you want remove {{object|title}}?</p>
@@ -54,13 +51,9 @@
                 <!-- /.card -->
               </div>
         </div>
-        <!-- /.row -->
-        <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
 {% endblock content  %}
 
