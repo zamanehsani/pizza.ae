@@ -2,6 +2,47 @@
 {% load static %}
 
 {% block css %}
+<style>
+  .text-on-line {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #FF5400; 
+   line-height: 0.1em;
+   margin: 20px 0 30px; 
+}
+/* for the heading line with text on it for category */
+.text-on-line span { 
+    background:#fff; 
+    padding:0 10px; 
+    color: #FF5400;
+}
+/*  hovering effects */
+.menu_item_hover:hover{
+    /* border-radius: 4px; */
+    /* border: 1px solid green; */
+    box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+    -webkit-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+    -moz-box-shadow: 0px 8px 12px 5px rgba(171,160,160,0.48);
+}
+.bg-orange{
+  background-color: #FF5400!important;
+}
+.menu_item_hover:hover .btn_order{
+    visibility: visible;
+    color: #FF5400;
+    background-color: wheat;
+    border: 1px solid #FF5400;
+   
+} 
+.menu_item_hover:hover .in-cart-item-counter{
+    visibility: visible;
+    display: inline;
+    position: absolute;
+}
+
+
+
+</style>
 {% endblock css %}
 
 
@@ -26,19 +67,19 @@
 
 <div class="content">
     <div class="container">
-      <div class="card card-orange card-outline">
+      <div class="card border-0 shadow-none card-orange card-outline">
         <div class="card-header">
           <h3 class="card-title d-none d-lg-inline"> <i class="fas fa-edit"></i>  Menu Category</h3>
           {% if perms.dashboard.add_menu_category %}
-          <a href="{% url 'dashboard:add_menu_category'%}" class="btn bg-orange float-right pt-0 pb-0 mr-2"> Add Menu Category</a>
+          <a href="{% url 'dashboard:add_menu_category'%}" class="btn bg-orange text-white float-right pt-0 pb-0 mr-2"> Add Menu Category</a>
           {% endif %}
         </div>
         <div class="card-body">
           <div class="row">
             {% for menu in object_list %}
             <div class="col-sm-3">
-              <div class="info-box">
-                <span class="info-box-icon bg-orange"><i class="fas fa-utensils"></i></span>
+              <div class="info-box rounded-0 border-0">
+                <span class="info-box-icon bg-orange rounded-0 text-white"><i class="fas fa-utensils"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">{{menu.name}}
                     {% if perms.dashboard.change_menu or perms.dashboard.delete_menu_category %}
@@ -48,8 +89,8 @@
                       </a>
                     {%endif%}
                     {% if perms.dashboard.change_menu_category %}
-                      <a href="{% url 'dashboard:update_menu_category' menu.id %}" class="float-right mr-3 pt-0 pb-0 text-orange" title="make changes">
-                        <i class="fas fa-edit"></i>
+                      <a href="{% url 'dashboard:update_menu_category' menu.id %}" class="float-right mr-3 pt-0 pb-0" title="make changes">
+                        <i  style="color: #ff5400;" class="fas fa-edit"></i>
                       </a> 
                     {%endif%}
                   {%endif%}
@@ -69,29 +110,81 @@
         </div>
 
       </div>
-      <div class="card card-orange card-outline">
+      <div class="card card-orange card-outline rounded-0 shadow-none">
           <div class="card-header">
             <h3 class="card-title "> <i class="fas fa-edit"></i>  Menu Items</h3>
             {% if perms.dashboard.add_menu %}
-            <a href="{% url 'dashboard:add_menu'%}" class="btn bg-orange float-right pt-0 pb-0"> Add Menu Item</a>
+            <a href="{% url 'dashboard:add_menu'%}" class="btn bg-orange text-white float-right pt-0 pb-0"> Add Menu Item</a>
             {% endif %}
          
           </div>
-          <div class="card-body">
-            <!-- <h4>Left Sided</h4> -->
+          <div class="card-body p-0">
+            <!-- menu category nav -->
+            <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #FF5400;">
+              <div class="container-fluid">
+                  <ul class="navbar-nav mx-auto my-lg-0" style="flex-direction: row;">
+                  {% for category in object_list %}
+                    <li class=" mx-2 px-2 py-0 menu-links ">
+                      <a class="nav-link text-white title-fonts" style="padding-bottom: 0px;" href="#{{category}}">
+                          <h2 class=""><span>{{category|title}}</span></h2>
+                      </a>
+                    </li> 
+                  {% endfor %}
+                  </ul>
+              </div>
+          </nav>
+          <!-- menu item section -->
+          <div class="container">
             <div class="row">
+                {% for category in object_list %}
+                    <h2 class="text-on-line title-fonts" id="{{category}}"><span>{{category|title}}</span></h2>
+                    {% for obj in category.menu_set.all %}
+                    {%  if category.name == "Drinks" %}
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-2 py-3">
+                            {% else %}
+                        <div class="col-12 col-md-6 col-lg-3 px-3 py-3">
+                            {% endif %}
+                            <div class="menu_item_hover mb-3 pb-2 text-center" data-id="{{obj.pk}}" id="{{obj.pk}}">
+                              <img src="{{obj.photo.url}}" style="width: 100%;" alt="">
+                              <h4 class="text-center title-fonts"><span class="name title-fonts">{{obj.name|title}}</span> </h4>
+                              <p class="text-center body-text">{{obj.description|capfirst}}</p>
+                             
+                              <p class="text-center"><b class="price title-fonts"> {{obj.price}} AED </b></p>
+
+                              {% if perms.dashboard.change_menu or perms.dashboard.delete_menu %}
+                                {% if perms.dashboard.delete_menu %}
+                                <a href="{% url 'dashboard:delete_menu' obj.id %}" class=" text-decoration-none px-2 pt-0 pb-0 text-danger" 
+                                  title="Remove the Record."><i class="fas fa-trash"></i>
+                                </a>
+                                {%endif%}
+                                {% if perms.dashboard.change_menu %}
+                                <a href="{% url 'dashboard:update_menu' obj.id %}" class="text-decoration-none px-2 mr-3 pt-0 pb-0" title="make changes">
+                                  <i style="color: #FF5400;" class="fas fa-edit"></i>
+                                </a> 
+                                {%endif%}
+                              {%endif%}
+                              
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+             
+            </div>
+            </div>
+          </div>
+
+            <!-- <h4>Left Sided</h4> -->
+            <!-- <div class="row">
               <div class="col-3 col-sm-3">
                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                   {% for menu in object_list|dictsortreversed:"id" %}
-                      <a  id="vert-tabs-{{menu}}-tab" class="nav-link {% if forloop.first%}active{% endif %}"" 
+                      <a  id="vert-tabs-{{menu}}-tab" class="nav-link {% if forloop.first%}active{% endif %}" 
                       data-toggle="pill" href="#vert-tabs-{{menu}}" 
                       role="tab" aria-controls="vert-tabs-{{menu}}" 
                       aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
                       {{menu}}
                       </a>
-                      <!-- <p>
-                     
-                   </p> -->
+                  
                   {% endfor %}
                 </div>
               </div>
@@ -110,13 +203,11 @@
                                     <div class="ribbon bg-primary"> New </div>
                                   </div>
                                   {% endif %}
-                                <!-- /.card-header -->
                                 <div class="card-body text-center bg-light">
                                   <img src="{{obj.photo.url}}" style="width: 100%;" alt="">
                                   <h3>{{obj.name|title}}</h3>
                                   <p >{{obj.description}}</p>
                                 </div>
-                                <!-- /.card-body -->
                                 <div class="card-footer">
                                   {{obj.price}} AED
                                   {% if perms.dashboard.change_menu or perms.dashboard.delete_menu %}
@@ -133,9 +224,8 @@
                                   {%endif%}
 
                                 </div>
-                                <!-- /.card-footer -->
+
                             </div>
-                            <!-- /.card -->
                         </div>
                       {% endfor %}
                     </div>
@@ -144,10 +234,9 @@
 
                 </div>
               </div>
-            </div>
+            </div> -->
           
           </div>
-          <!-- /.card -->
       </div>
     </div>
 </div>

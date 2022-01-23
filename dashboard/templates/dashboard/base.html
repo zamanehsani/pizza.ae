@@ -24,6 +24,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     h1,h2,h3,h4,h5,h6, .title-fonts, .header-font{ font-family: 'Noto Sans Display', sans-serif; }
     p, a, i, span, .body-font{font-family: 'Ubuntu', sans-serif;}
 
+   .nav-item a{
+     border-radius: 0!important;
+   }
+   input, select {
+     border-radius: 0!important;
+   }
+   .card, .card-header {
+     border-radius: 0!important;
+     border: none!important;
+   }
+   .btn {
+     border-radius: 0!important;
+   }
   </style>
 </head>
 <body class="hold-transition sidebar-collapse layout-top-nav sidebar-mini sidebar-closed sidebar-collapse">
@@ -56,10 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-orange elevation-4">
     <!-- Brand Logo -->
-    <a href="{% url 'dashboard:dashboard' %}" class="brand-link">
-      <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">PIZZA.AE</span>
-    </a>
+    
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -103,17 +113,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           {%endif%}
-          {% if perms.dashboard.view_user %}
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Users</p>
-            </a>
-          </li>
-          {%endif%}
+
           {% if perms.dashboard.view_menu %}
           <li class="nav-item">
-            <a href="{%url 'dashboard:menulist' %}" class="nav-link {% if page_title == 'Menu' %} active {% endif %} ">
+            <a href="{%url 'dashboard:menulist' %}"class="nav-link {% if page_title == 'Menu' %} active {% endif %} ">
               <i class="nav-icon fas fa-bars"></i>
               <p>Menu</p>
             </a>
@@ -179,7 +182,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background-color: #fff;">
     {% if messages %}
       {% for message in messages %}
         <div class="container">

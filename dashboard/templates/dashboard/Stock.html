@@ -5,8 +5,7 @@
 {%endblock css%}
 
 {%block content %}
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container">
@@ -30,32 +29,33 @@
         <div class="row">
           <div class="col-12">
             <!-- /.card -->
-            <div class="card">
+            <div class="card rounded-0 border-0 shadow-none">
               <div class="card-header">
                 <h3 class="card-title">Stock</h3>
-                <a href="{% url 'dashboard:add_stock'%}" class="btn bg-orange float-right pt-0 pb-0"> Enter a new item</a>
+                <a href="{% url 'dashboard:add_stock'%}" class="btn rounded-0 text-white bg-orange float-right pt-0 pb-0"> Enter a new item</a>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+              <div class="card-body p-0 pt-1">
+                
+                <table id="example1" class="table table-striped">
                   <thead class="bg-orange">
-                    <tr>
-                      <th>Date</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Type</th>
-                      <th>Price</th>
-                      <th>Total Price</th>
-                      <th>Added By</th>
+                    <tr >
+                      <th class="text-white">Date</th>
+                      <th class="text-white">Name</th>
+                      <th class="text-white">Quantity</th>
+                      <th class="text-white">Type</th>
+                      <th class="text-white">Price</th>
+                      <th class="text-white">Total Price</th>
+                      <th class="text-white">Added By</th>
                       {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
-                      <th>Action</th>
+                      <th class="text-white">Action</th>
                       {%endif%}
                     </tr>
                   </thead>
                   <tbody>
                     {% for obj in object_list  %}
                       <tr>
-                        <td>{{obj.date}}</td>
+                        <td>{{obj.date|date:"d M Y"}}</td>
                         <td>{{obj.name|title}}</td>
                         <td>{{obj.quantity}}</td>
                         <td>{{obj.unit_type}}</td>
@@ -65,7 +65,7 @@
                         {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
                         <td class="text-center"> 
                           {% if perms.dashboard.change_stock %}
-                          <a href="{% url 'dashboard:update_stock' obj.id %}" class="mr-3 pt-0 pb-0 text-orange" title="make changes">
+                          <a href="{% url 'dashboard:update_stock' obj.id %}" class="mr-3 pt-0 pb-0 text-orange text-decoration-none" title="make changes">
                             <i class="fas fa-edit"></i>
                           </a> 
                           {%endif%}
@@ -82,15 +82,15 @@
                   </tbody>
                   <tfoot class="bg-orange">
                   <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Total Price</th>
-                    <th>Added by</th>
+                    <th class="text-white">Date</th>
+                    <th class="text-white">Name</th>
+                    <th class="text-white">Quantity</th>
+                    <th class="text-white">Type</th>
+                    <th class="text-white">Price</th>
+                    <th class="text-white">Total Price</th>
+                    <th class="text-white">Added by</th>
                     {% if perms.dashboard.change_stock or perms.dashboard.delete_stock %}
-                    <th>Action</th>
+                    <th class="text-white">Action</th>
                     {%endif%}
                   </tr>
                   </tfoot>
@@ -106,8 +106,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+
 
   {% endblock content %}
 

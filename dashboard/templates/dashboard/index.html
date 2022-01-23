@@ -34,17 +34,17 @@
           {% if perms.dashboard.view_order %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-warning rounded-0">
+            <div class="small-box bg-success rounded-0">
       
               <div class="inner">
-                <h3 class="text-white">{{orders}}</h3>
-                <p class="text-white">New Orders</p>
+                <h3 >{{orders}}</h3>
+                <p >New Orders</p>
               </div>
               <div class="icon">
                 <i class="fas fa-shopping-cart"></i>
               </div>
             
-              <a href="{% url 'dashboard:order' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:order' %}" class="small-box-footer ">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {% endif %}
@@ -146,7 +146,7 @@
               <div class="icon">
                 <i class="fa fa-money-bill"></i>
               </div>
-              <a href="{% url 'dashboard:salary' %}" class="small-box-footer">Go to the salary page <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:salary' %}" class="small-box-footer">Go to salary page <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {% endif %}
@@ -165,7 +165,7 @@
               <div class="icon">
                 <i class="fas fa-user"></i>
               </div>
-              <a href="{% url 'dashboard:users' %}" class="small-box-footer">Goto the Users settings <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:users' %}" class="small-box-footer">Go to Users settings <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {%endif%}
@@ -184,7 +184,7 @@
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
               </div>
-              <a href="{% url 'dashboard:area' %}" class="small-box-footer">Goto the Area settings <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:area' %}" class="small-box-footer">Go to Area settings <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {%endif%}
@@ -202,7 +202,7 @@
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
               </div>
-              <a href="{% url 'dashboard:customer' %}" class="small-box-footer">Goto the Customer settings <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:customer' %}" class="small-box-footer">Go to settings <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {%endif%}
@@ -219,7 +219,7 @@
               <div class="icon">
                 <i class="fas fa-map-marker"></i>
               </div>
-              <a href="{% url 'dashboard:company' pk=company.pk %}" class="small-box-footer">Goto the Customer settings <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'dashboard:company' pk=company.pk %}" class="small-box-footer">Go to settings <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           {%endif%}

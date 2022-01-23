@@ -282,6 +282,11 @@ class Add_Stock(LoginRequiredMixin,CreateView):
     template_name = 'dashboard/Stock_form.html'
     fields = ['name', 'quantity', 'unit_type', 'Unit_price']
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.totol_price = form.instance.quantity * form.instance.Unit_price
+        return super().form_valid(form)
+
     def get_context_data(self, *args, **kwargs):
         data = super(Add_Stock, self).get_context_data(*args, **kwargs)
         data['page_title'] = 'Stock'
