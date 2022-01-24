@@ -30,6 +30,7 @@ urlpatterns = [
     path("order", dashboard_views.Order.as_view(),name="order"),
     path("order/add", dashboard_views.Order_manual.as_view(), name="manual_order"),
     path("order/cart", dashboard_views.Manual_order_cart.as_view(), name="manual_order_cart"),
+    path("order/summary", dashboard_views.Manual_order_summary, name="manual_order_summary"),
 
     path("customer", dashboard_views.Customer.as_view(), name="customer"),
     path('add-customer/', dashboard_views.Add_Customer.as_view(), name="add_customer"),

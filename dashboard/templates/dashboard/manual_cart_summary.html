@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 
 {% block css %}
@@ -20,11 +20,8 @@
         <h3 class="mt-2">Location:</h3>
         <div id="address">     </div>  
 
-
         <div class="row mx-1 my-2">
-          <button type="submit" id="apply_pay" style="opacity: 0.4;" class="my-1 btn btn-dark title-fonts rounded-0 btn-lg btn-block"> 
-            <img src="https://svg-clipart.com/svg/logo/rzd7tfu-apple-logo-white-vector.svg" height="25" class="my-auto pb-1 mr-2" alt=""> Pay</button>
-          <button type="submit" id="payments" class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Payments</button>
+          <button type="submit" id="payments" class="my-1 btn btn-success title-fonts rounded-0 btn-lg btn-block">Place Order</button>
         </div>
 
       </div>
@@ -40,20 +37,60 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-
-  $(document).ready(function(){
-    $('#apply_pay').click(function(){
-      alert("coming soon.")
-    })
-  })
+  
   
   $(document).ready(function(){
     $('#payments').click(function(){
-      
-      window.location.assign('{% url "website:order_payment" %}')
+      data = {};
+      data['name'] = localStorage.getItem('order_name');
+      data['number'] = localStorage.getItem('order_number');
+      data['address'] = localStorage.getItem('order_address');
+      // data['area']    = localStorage.getItem('delivery_id')
+      data['location'] =  localStorage.getItem('order_location');
+      data['sms'] = true
+      data['payment'] = 'cash';
+      data['order'] = localStorage.getItem('order');
+      $.ajax({
+        url: "{% url 'website:cart_view' %}",
+        method: 'POST',
+        data : data,
+        success:function(response){
+          localStorage.clear();
+          if(typeof parseInt(response) == 'number'){
+            let timerInterval
+            Swal.fire({
+              html: 'Placing order...',
+              timer: 5000,
+              // timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                  b.textContent = Swal.getTimerLeft()
+                }, 100)
+              },
+              willClose: () => {
+                clearInterval(timerInterval)
+              }
+            });
+
+            Swal.fire({
+              html:"Order has been placed",
+              timer:3000
+            })
+
+          }else{
+            Swal.fire({
+              html:"somethign went wrong",
+              timer:6000
+            });
+
+          }
+        }
+      })
+        // window.location.assign('{% url "website:order_payment" %}')
+      })
     })
-  })
 
   load_order()
 
@@ -89,7 +126,7 @@ function load_order(){
       total_of_total = total_order + vat + delivery
 
       var prices = `
-      <div class="card py-1 px-1 rounded-0">
+      <div class="card py-1 px-3 rounded-0">
           <P class="m-0"> <b class="">ORDER:</b>     <b style="float: right;">${total_order} AED</b></P>
           <P class="m-0"> <b class="">VAT 5%:</b>    <span style="float: right;" class="text-secondary">${vat} AED</span></P>
           <P class="m-0"> <b class="">DELIVERY:</b>  <span style="float: right;" class="text-secondary">${delivery.toFixed(2)} AED</span></P>
@@ -98,10 +135,11 @@ function load_order(){
       `;
 
         var address = `
-        <div class="card rounded-0 py-1 px-1">
-          <p class="m-0"><b class="m-0">Address:</b>  ${localStorage.getItem('address')} </p>
-          <p class="m-0"><b class="m-0">Additional Direction:</b>${localStorage.getItem('address_details')}</p>
-          <p class="m-0"><b class="m-0">Mobile:</b> +971 ${localStorage.getItem('number')}</p>
+        <div class="card rounded-0 py-1 px-3">
+          <p class="m-0"><b class="m-0">Name:</b>  ${localStorage.getItem('order_name')} </p>
+          <p class="m-0"><b class="m-0">Address:</b>  ${localStorage.getItem('order_address')} </p>
+          <p class="m-0"><b class="m-0">Mobile:</b> +971 ${localStorage.getItem('order_number')}</p>
+          <p class="m-0"><b class="m-0">Additional Direction:</b>${localStorage.getItem('order_note')}</p>
         </div>  
         `;
       $("#orders").append(orders);
@@ -115,7 +153,7 @@ function load_order(){
           <img src="{% static 'img/pizza-empty.webp' %}" style="width: 100%;" alt="">
           <!-- <span class="iconify" data-icon="mdi-light:cart" style="color: #f96302;" data-width="150" data-height="150"></span> -->
           <p class="body-font"> Your cart is empty.</p>
-          <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'website:menu' %}">Goto Menu</a>
+          <a class="btn btn-outline-success rounded-0 mx-auto px-5 py-3 body-font" href="{% url 'dashboard:manual_order' %}">Add another</a>
         </div>
         </div>
       `

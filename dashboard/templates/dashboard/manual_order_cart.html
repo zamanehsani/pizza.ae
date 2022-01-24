@@ -49,19 +49,37 @@
       <!-- end of table -->
       <div class="container" >
         <div class="row" id="regform_row">
-          <form name="phone_number_form" onsubmit="return validateForm()" method="post"> {% csrf_token %}
+          <form name="phone_number_form" onsubmit="return validateForm()" method="post" > {% csrf_token %}
             <div class="col-sm-12 pt-3 mb-3">
               <div class="form-row">
-                <input type="hidden" name="otp_send">
-                <label for="number">Phone Number:</label>
-                <div class="input-group col-sm-12">
+                
+                <!-- <label for="number">Name:</label> -->
+                <div class="input-group col-sm-12 my-2">
+                  <input type="text" id="name" name="name" class="form-control rounded-0" placeholder="Name">
+                </div>
+                <!-- <label for="number">Address:</label> -->
+                <div class="input-group col-sm-12 my-2">
+                  <input type="text" id="address" name="address" class="form-control rounded-0" placeholder="Address">
+                </div>
+
+                <!-- <label for="number">Phone Number:</label> -->
+                <div class="input-group col-sm-12 my-2">
                   <span class="input-group-text rounded-0 " id="basic-addon1">
                     <img src="{% static 'img/united-arab-emirates.png'%}" height="20" alt="">
                   </span>
                   <input type="tel" id="number" onfocus="number_focus(this)" name="number" class="form-control rounded-0" placeholder="05--------">
                 </div>
+                <!-- <label for="number">location:</label> -->
+                <div class="input-group col-sm-12 my-2">
+                  <input type="text" id="location" name="location" class="form-control rounded-0" placeholder="Location">
+                </div>
+
+                <div class="input-group col-sm-12 my-2">
+                  <input type="text" placeholder="Note" id="note" class="form-control rounded-0" name="note">
+                </div>
+
                 <div class="row my-3 mx-1">
-                  <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Place order</button>
+                  <button type="submit" class="btn btn-success title-fonts rounded-0 btn-lg btn-block">Next</button>
                 </div>
               </div>
             </div>
@@ -90,25 +108,22 @@
 function validateForm() {
   let x = document.forms["phone_number_form"]["number"].value;
   var phoneno = /^\d{10}$/;
-  if(x.match(phoneno)){return true; }
+  if(x.match(phoneno)){
+
+    localStorage.setItem("order_name",     $("input[name='name']").val());
+    localStorage.setItem("order_address",  $("input[name='address']").val());
+    localStorage.setItem("order_location", $("input[name='location']").val());
+    localStorage.setItem("order_number",    $("input[name='number']").val());
+    localStorage.setItem("order_note",     $("input[name='note']").val());
+
+    window.location.assign('{% url "dashboard:manual_order_summary" %}')
+    return true; 
+  }
   else {
      alert("Not a valid Phone Number");
      return false;
   }
 
-  // if (x == "") {
-  //   alert("Please Enter your Phone number");
-  //   return false;
-  // }
-  // if(x.isNaN){
-  //     alert("please enter numeric")
-  //     return false
-  //   }
-  // if(x.length < 10 || x.length > 10){
-    
-  //   alert("invalide number")
-  //   return false
-  // }
 } 
 
 // on focus number input

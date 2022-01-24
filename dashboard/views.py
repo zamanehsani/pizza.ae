@@ -74,7 +74,16 @@ class Order_manual(LoginRequiredMixin, ListView):
 
 class Manual_order_cart(TemplateView):
     template_name="dashboard/manual_order_cart.html"
-    
+    def post(self, request, *args, **kwargs):
+        print("this is a post request")
+        # return redirect('dashbaord:manual_order_summary')
+        return render(request, "dashboard/manual_cart_summary.html")
+
+def Manual_order_summary(request):
+    if request.method == "POST":
+        return render(request, "dashboard/manual_cart_summary.html")
+
+
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     # login_url = "./dashboard/login"
