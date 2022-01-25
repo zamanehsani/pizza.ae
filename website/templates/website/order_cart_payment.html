@@ -156,6 +156,7 @@ $(document).ready(function(){
     data['area']    = localStorage.getItem('delivery_id')
     var location =  localStorage.getItem('lat') + "," +localStorage.getItem('lng')
     data['location'] = location;
+    data['order_source'] = 'online';
     data['sms'] = true
     data['payment'] = localStorage.getItem('pay_method');
     data['order'] = localStorage.getItem('order');

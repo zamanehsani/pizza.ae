@@ -69,12 +69,13 @@ class CartView(TemplateView):
         location_order = request.POST.get('location')
         address_order = request.POST.get('address')
         payment_order = request.POST.get('payment')
+        source = request.POST.get('order_source')
 
         order_obj = models.Order(
                 name = name_order, number = int(number_order), 
                 location = location_order, status = 'ordered',
                 address = address_order, payment_method = payment_order,
-                order_source = 'online')
+                order_source = source)
         order_obj.save()
 
         # send sms here

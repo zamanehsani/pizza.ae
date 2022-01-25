@@ -224,6 +224,8 @@ class Order(models.Model):
     def coordinate(self):
         "get the location coordinate"
         # if location exist for the record swap let to longt
+        if self.order_source == 'manual':
+            return self.order_source
         if self.location:
             loca = self.location.split(',')
             b = ''

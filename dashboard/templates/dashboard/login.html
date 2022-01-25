@@ -14,16 +14,24 @@
   <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <style>
+    input{
+      border-radius: 0px!important;
+    }
+    .alert{
+      border-radius: 0px!important;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
-    <div class="card-header text-center">
-      <a href="" class="h1"><b>PIZZA </b></a>
+  <div class="card rounded-0 ">
+    <div class="card-header border-0 text-center">
+      <a href="" class="h1" style="color: #ff5400;"><b>PIZZA </b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to your account</p>
+      <p class="login-box-msg">Sign into Dashboar</p>
       <form action="" method="post"> {% csrf_token  %}
         {{ form|crispy  }}
         <!-- <div class="input-group mb-3">
@@ -43,15 +51,15 @@
           </div>
         </div> -->
         <div class="row">
-          <div class="col-8">
+          <!-- <div class="col-8">
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember"> Remember Me </label>
             </div>
-          </div>
+          </div> -->
           <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <div class="col">
+            <button type="submit" style="background-color: #ff5400;" class="btn border-0 float-left rounded-0 btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -67,8 +75,8 @@
       </div> -->
       <!-- /.social-auth-links -->
 
-      <p class="mb-1">
-        <a href="{% url 'password_reset' %}">I forgot my password</a>
+      <p class="my-3">
+        <a href="{% url 'password_reset' %}" style="color: #ff5400;">I forgot my password</a>
       </p>
       <!-- <p class="mb-0">
         <a href="" class="text-center">Register a new membership</a>

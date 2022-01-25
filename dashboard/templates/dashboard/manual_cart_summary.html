@@ -47,6 +47,7 @@
       data['address'] = localStorage.getItem('order_address');
       // data['area']    = localStorage.getItem('delivery_id')
       data['location'] =  localStorage.getItem('order_location');
+      data['order_source'] = 'manual';
       data['sms'] = true
       data['payment'] = 'cash';
       data['order'] = localStorage.getItem('order');
@@ -55,39 +56,13 @@
         method: 'POST',
         data : data,
         success:function(response){
+          alert("order has been placed")
           localStorage.clear();
-          if(typeof parseInt(response) == 'number'){
-            let timerInterval
-            Swal.fire({
-              html: 'Placing order...',
-              timer: 5000,
-              // timerProgressBar: true,
-              didOpen: () => {
-                Swal.showLoading()
-                const b = Swal.getHtmlContainer().querySelector('b')
-                timerInterval = setInterval(() => {
-                  b.textContent = Swal.getTimerLeft()
-                }, 100)
-              },
-              willClose: () => {
-                clearInterval(timerInterval)
-              }
-            });
-
-            Swal.fire({
-              html:"Order has been placed",
-              timer:3000
-            })
-
-          }else{
-            Swal.fire({
-              html:"somethign went wrong",
-              timer:6000
-            });
-
-          }
+          window.location.reload()
+          
         }
       })
+      
         // window.location.assign('{% url "website:order_payment" %}')
       })
     })
