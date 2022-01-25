@@ -31,6 +31,9 @@
         <!-- Small boxes (Stat box) -->
       
         <div class="row">
+
+          {% comment %}
+          
           {% if perms.dashboard.view_order %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -49,7 +52,7 @@
           </div>
           {% endif %}
 
-          <!-- ./col -->
+          
           {% if perms.dashboard.view_delivery %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -65,7 +68,7 @@
             </div>
           </div>
           {% endif %}
-          <!-- ./col -->
+          
           {% if perms.dashboard.view_menu %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -82,7 +85,7 @@
             </div>
           </div>
           {% endif %}
-          <!-- ./col -->
+         
           {% if perms.dashboard.view_menu %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -99,7 +102,7 @@
             </div>
           </div>
           {% endif %}
-          <!-- ./col -->
+          
           {% if perms.dashboard.view_stock %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -116,7 +119,6 @@
           </div>
           {% endif %}
 
-          <!-- ./col -->
           {% if perms.dashboard.view_report %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -133,7 +135,7 @@
             </div>
           </div>
           {%endif%}
-          <!-- ./col -->
+         
           {% if perms.dashboard.view_staff_salary %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -150,11 +152,9 @@
             </div>
           </div>
           {% endif %}
-        
-          <!-- ./col -->
-            <!-- ./col -->
-            {% if perms.dashboard.view_user %}
-            <div class="col-lg-3 col-6">
+     
+          {% if perms.dashboard.view_user %}
+          <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box rounded-0 bg-orange">
               <div class="inner">
@@ -169,11 +169,9 @@
             </div>
           </div>
           {%endif%}
-          <!-- ./col -->
-
-            <!-- ./col -->
-            {% if perms.dashboard.view_user %}
-            <div class="col-lg-3 col-6">
+ 
+          {% if perms.dashboard.view_user %}
+          <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box rounded-0 bg-orange">
               <div class="inner">
@@ -188,8 +186,7 @@
             </div>
           </div>
           {%endif%}
-          <!-- ./col -->
-          <!-- ./col -->
+       
           {% if perms.dashboard.view_customer %}
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -225,6 +222,8 @@
           {%endif%}
 
           <!-- ./col -->
+
+            {% endcomment %}
 
 
         </div>
